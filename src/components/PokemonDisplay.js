@@ -8,58 +8,65 @@ import '../styles/PokemonDisplay.scss';
 
 function PokemonDisplay (props) {
 
-  const [pokemonInfo, setPokemonInfo] = useState();
+  const [pokemon, setPokemon] = useState([]);
 
   useEffect(() => {
 
     (async function () {
-      await props.pokemon.fetchDetails();
-      setPokemonInfo(props.pokemon.details);
+    
+      const pokemonDetails = await props.pokemon.fetchDetails();
+      
+      props.pokemon.setDetails(pokemonDetails);
+      
+      setPokemon(props.pokemon);
+    
     })();
 
   }, [props.pokemon]);
 
 
   return (
+
     <React.Fragment>
-      {pokemonInfo ?
+      
+      { pokemon.details ?
 
         <div className="display">
 
           <Link className="home-link" to="/">&larr;back</Link>
 
-          <img className="display__image" src={ pokemonInfo.image } alt={props.pokemon.name}/>
+          <img className="display__image" src={ pokemon.details.image } alt={pokemon.name}/>
 
           <div className="display__qualities">
-            <h1>{ props.pokemon.name }</h1>
-            <p>{ pokemonInfo.description.charAt(0).toUpperCase() + pokemonInfo.description.slice(1).toLowerCase() }</p>
+            <h1>{ pokemon.name }</h1>
+            <p>{ pokemon.details.description }</p>
             <ul>
               <li>
                 <h6>Height:</h6>
-                <span>{pokemonInfo.height}</span>
+                <span>{pokemon.details.height}</span>
               </li>
               <li>
                 <h6>Weight:</h6>
-                <span>{pokemonInfo.weight}</span>
+                <span>{pokemon.details.weight}</span>
               </li>
               <li>
                 <h6>Type:</h6>
-                <span>{pokemonInfo.type}</span>
+                <span>{pokemon.details.type}</span>
               </li>
               <li>
                 <h6>Abilities:</h6>
-                <span>{pokemonInfo.ability.join("\n")}</span>
+                <span>{pokemon.details.ability}</span>
               </li>
             </ul>
           </div>
 
-          <Chart pokemonData={pokemonInfo}/>
+          <Chart pokemonData={pokemon.details}/>
 
-          <EvolutionChain handleClick={props.handleClick} pokemonEvolution={pokemonInfo.evolutionsArray}/>
+          <EvolutionChain handleClick={props.handleClick} pokemonEvolution={pokemon.details.evolutionsArray}/>
 
         </div>
 
-        : <Loader/>}
+        : <Loader/> }
 
     </React.Fragment>
 

@@ -20,7 +20,7 @@ export default class Pokemon {
     const evolutionData = await fetchData(pokemonSpecies.evolution_chain.url);
 
     //get pokemon description
-    const description = pokemonSpecies.flavor_text_entries[1].flavor_text.split('\n').join(' ');
+    const description = ( pokemonSpecies.flavor_text_entries[1].flavor_text.charAt(0).toUpperCase() + pokemonSpecies.flavor_text_entries[1].flavor_text.slice(1).toLowerCase() ).split('\n').join(' ');
 
     //get physical properties of the pokemon
     height = `${height/ 10} m`;
@@ -32,39 +32,18 @@ export default class Pokemon {
 
       return abilities[index].ability.name;
 
-    });
+    }).join('\n');
 
     //extract stats
     const statsObject = stats.reduce((statsData, currentStatData) => {
 
-      let statsName = currentStatData.stat.name;
-
-      if(statsName === "special-attack"){
-
-        statsName = "attack (S)";
-
-      } else if(statsName === "special-defense"){
-
-        statsName = "defense (S)";
-
-      }
+      let statsName = currentStatData.stat.name === "special-attack" ? "special (S)" : currentStatData.stat.name === "special-defense" ? "defense(S)" : currentStatData.stat.name;
 
       statsData[statsName] = currentStatData.base_stat;
 
       return statsData;
 
     }, {});
-
-    //extract evolution data
-    function extractEvolutionChain (chainObject, evolutionChain = []) {
-
-      evolutionChain.push(chainObject.species.name);
-
-      if (chainObject.evolves_to.length > 0) { extractEvolutionChain(chainObject.evolves_to[0], evolutionChain); }
-
-      return evolutionChain;
-
-    }
 
     //extract type string
     const typeArray = types.map( currentType => currentType.type.name );
@@ -73,7 +52,7 @@ export default class Pokemon {
 
 
     //extract evolution chain
-    const evolutionsArray = extractEvolutionChain(evolutionData.chain);
+    const evolutionsArray = this.extractEvolutionChain(evolutionData.chain);
 
     for(let i = 0; i < evolutionsArray.length; i++){
 
@@ -83,9 +62,21 @@ export default class Pokemon {
 
     }
 
-    this.details = { evolutionsArray, ability, weight, height, statsObject, image, description, type };
+    return { evolutionsArray, ability, weight, height, statsObject, image, description, type };
 
   }
+
+  setDetails (details) { this.details = details; }
+
+  extractEvolutionChain (chainObject, evolutionChain = []) {
+
+      evolutionChain.push(chainObject.species.name);
+
+      if (chainObject.evolves_to.length > 0) { this.extractEvolutionChain(chainObject.evolves_to[0], evolutionChain); }
+
+      return evolutionChain;
+
+    }
 
   static async fetchPokemonBasicInfo (pokemonName) {
 

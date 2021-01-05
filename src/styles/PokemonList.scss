@@ -1,0 +1,21 @@
+.list-container{
+
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+
+  .pokemon-logo{
+    display: block;
+    margin: 0 auto 25px;
+    max-width: 60%;
+  }
+
+  .pokemon-list{
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    list-style-type: none;
+
+  }
+
+}

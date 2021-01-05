@@ -1,0 +1,22 @@
+.evolution-chain{
+
+	grid-column: span 2;
+	position: relative;
+	text-align: center;
+	padding-top: 20px;
+
+	& > h1 {
+
+		font-size: 3rem;
+		margin-bottom: 30px;
+	}
+
+	& > ul {
+		list-style-type: none;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		width: 100%;
+	}
+
+}

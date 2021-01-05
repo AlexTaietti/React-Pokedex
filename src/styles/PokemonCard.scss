@@ -1,0 +1,81 @@
+@keyframes rotate-back{
+  0%{ transform: rotateY(180deg); }
+  50%{ transform: rotateY(360deg); }
+  100%{ transform: rotateY(180deg); }
+}
+
+@keyframes rotate-front{
+  0%{ transform: rotateY(0deg); }
+  50%{ transform: rotateY(180deg); }
+  100%{ transform: rotateY(360deg); }
+}
+
+@keyframes rotate-normal-back{
+  100%{ transform: rotateY(180deg); }
+}
+
+@keyframes rotate-normal-front{
+  100%{ transform: rotateY(0deg); }
+}
+
+.pokemon-card{
+
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  padding: 15px 15px 25px;
+  width: 150px;
+  margin: 10px;
+  font-size: 1.6rem;
+  border-radius: 10px;
+  background: var(--pokecard-bg);
+  cursor: pointer;
+  transform-origin: center center;
+  box-shadow: 0px 7px 11px -3px black;
+
+  &:hover{
+
+    .sprite__side{
+
+      &--front{
+        animation-name: rotate-front;
+      }
+
+      &--back{
+        animation-name: rotate-back;
+      }
+
+    } 
+
+  }
+
+  .sprite{
+
+    position: relative;
+    display: inline-block;
+    backface-visibility: hidden;
+
+    &__side{
+
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+
+      backface-visibility: hidden;
+
+      &--front{
+        position: relative;
+        transform: rotateY(0deg);
+      }
+
+      &--back{
+        position: absolute;
+        transform: rotateY(180deg);
+      }
+
+    }
+
+
+  }
+
+}

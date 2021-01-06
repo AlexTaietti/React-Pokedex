@@ -11,7 +11,8 @@ import '../styles/Pokedex.scss';
 function Pokedex () {
 
   const [pokemonData, setPokemonData] = useState();
-  const [activePokemon, setActivePokemon] = useState();
+
+  const [selectedPokemon, selectPokemon] = useState();
 
   useEffect(() => {
 
@@ -27,12 +28,12 @@ function Pokedex () {
       <Switch>
         <Route path="/pokemon/:pokemon">
           <div className="pokedex">
-            {activePokemon ? <PokemonDisplay handleClick={setActivePokemon} pokemon={activePokemon} /> : <Loader/>}
+            {selectedPokemon ? <PokemonDisplay handleClick={selectPokemon} selectedPokemon={selectedPokemon} /> : <Loader/>}
           </div>
         </Route>
         <Route path="/">
           <div className="pokedex">
-            {pokemonData ? <PokemonList handleClick={setActivePokemon} pokemons={pokemonData} /> : <Loader/>}
+            {pokemonData ? <PokemonList handleClick={selectPokemon} pokemons={pokemonData} /> : <Loader/>}
           </div>
         </Route>
       </Switch>

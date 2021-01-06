@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+
 import PolygonChart from '../classes/PolygonChart.js';
 
 import '../styles/Chart.scss';
@@ -11,7 +12,7 @@ function Chart (props) {
 
     if(container.current.children.length) container.current.removeChild(container.current.lastChild);
 
-    const chart = new PolygonChart(props.pokemonData.statsObject, container.current, 10, {
+    const chart = new PolygonChart(props.pokemonData, container.current, 10, {
 
       maxValue: 170,
 

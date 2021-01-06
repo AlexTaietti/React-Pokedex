@@ -62,7 +62,7 @@ export default class Pokemon {
 
     }
 
-    return { evolutionsArray, ability, weight, height, statsObject, image, description, type };
+    return { evolutionsArray, statsObject, ability, weight, height, image, description, type };
 
   }
 

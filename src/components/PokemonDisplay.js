@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import Loader from './Loader.js';
+
+import PokemonInfo from './PokemonInfo.js';
 import Chart from './Chart.js';
 import EvolutionChain from './EvolutionChain.js';
 
 import '../styles/PokemonDisplay.scss';
 
-function PokemonDisplay (props) {
+function PokemonDisplay ({selectedPokemon, handleClick}) {
 
   const [pokemon, setPokemon] = useState([]);
 
@@ -14,55 +17,34 @@ function PokemonDisplay (props) {
 
     (async function () {
     
-      const pokemonDetails = await props.pokemon.fetchDetails();
+      const pokemonDetails = await selectedPokemon.fetchDetails();
       
-      props.pokemon.setDetails(pokemonDetails);
-      
-      setPokemon(props.pokemon);
-    
+      selectedPokemon.setDetails(pokemonDetails);
+
+      setPokemon(selectedPokemon);
+
     })();
 
-  }, [props.pokemon]);
+  }, [selectedPokemon]);
 
 
   return (
 
     <React.Fragment>
       
-      { pokemon.details ?
+      { ( pokemon && pokemon.details ) ?
 
         <div className="display">
 
           <Link className="home-link" to="/">&larr;back</Link>
 
-          <img className="display__image" src={ pokemon.details.image } alt={pokemon.name}/>
+          <img className="display__image" src={ pokemon.details.image } alt={ pokemon.name }/>
 
-          <div className="display__qualities">
-            <h1>{ pokemon.name }</h1>
-            <p>{ pokemon.details.description }</p>
-            <ul>
-              <li>
-                <h6>Height:</h6>
-                <span>{pokemon.details.height}</span>
-              </li>
-              <li>
-                <h6>Weight:</h6>
-                <span>{pokemon.details.weight}</span>
-              </li>
-              <li>
-                <h6>Type:</h6>
-                <span>{pokemon.details.type}</span>
-              </li>
-              <li>
-                <h6>Abilities:</h6>
-                <span>{pokemon.details.ability}</span>
-              </li>
-            </ul>
-          </div>
+          <PokemonInfo pokemon={ pokemon }/>
 
-          <Chart pokemonData={pokemon.details}/>
+          <Chart pokemonData={ pokemon.details.statsObject }/>
 
-          <EvolutionChain handleClick={props.handleClick} pokemonEvolution={pokemon.details.evolutionsArray}/>
+          <EvolutionChain handleClick={ handleClick } pokemonEvolution={ pokemon.details.evolutionsArray }/>
 
         </div>
 
@@ -70,7 +52,8 @@ function PokemonDisplay (props) {
 
     </React.Fragment>
 
-  )
+  );
+
 }
 
 export default PokemonDisplay;

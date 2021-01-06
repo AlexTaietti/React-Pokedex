@@ -4,7 +4,7 @@ import PolygonChart from '../classes/PolygonChart.js';
 
 import '../styles/Chart.scss';
 
-function Chart (props) {
+function Chart ({pokemonData}) {
 
   const container = useRef();
 
@@ -12,7 +12,7 @@ function Chart (props) {
 
     if(container.current.children.length) container.current.removeChild(container.current.lastChild);
 
-    const chart = new PolygonChart(props.pokemonData, container.current, 10, {
+    const chart = new PolygonChart(pokemonData, container.current, 10, {
 
       maxValue: 170,
 
@@ -46,7 +46,7 @@ function Chart (props) {
 
     window.addEventListener('resize', chart.resizeAndCenter.bind(chart));
 
-  }, [props.pokemonData]);
+  }, [pokemonData]);
 
   return <div className="display__chart" ref={container}></div>;
 

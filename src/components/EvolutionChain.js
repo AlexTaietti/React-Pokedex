@@ -4,14 +4,14 @@ import PokemonCard from './PokemonCard.js';
 import '../styles/EvolutionChain.scss';
 
 
-function EvolutionChain (props) {
+function EvolutionChain ({ pokemonEvolution, selectPokemon }) {
 
 
   return (
   	<div className="evolution-chain">
   		<h1>Evolution Chain</h1>
 	    <ul>
-	      { props.pokemonEvolution.map((pokemon, index) => <PokemonCard handleClick={props.handleClick} key={index} pokemon={pokemon} />) }
+	      { pokemonEvolution.map((pokemon, index) => <PokemonCard selectPokemon={ selectPokemon } key={index} pokemon={pokemon} />) }
 	    </ul>
     </div>
   );

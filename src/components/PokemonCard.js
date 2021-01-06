@@ -3,21 +3,33 @@ import { Link } from 'react-router-dom';
 
 import '../styles/PokemonCard.scss';
 
-const PokemonCard = (props) => {
+const PokemonCard = ({ selectPokemon, pokemon }) => {
 
-  function handleClick () { props.handleClick(props.pokemon); }
+  async function handleClick () {
+
+    if(!pokemon.details){
+
+      const pokemonDetails = await pokemon.fetchDetails();
+      
+      pokemon.setDetails(pokemonDetails);
+
+    }
+
+    selectPokemon(pokemon);
+
+  }
 
   return (
-    <Link to={`/pokemon/${props.pokemon.name}`}>
+    <Link to={`/pokemon/${pokemon.name}`}>
       <li onClick={handleClick} className="pokemon-card">
         <div className="sprite">
-          <img className="sprite__side sprite__side--back" src={props.pokemon.sprite.back} alt={props.pokemon.name}/>
-          <img className="sprite__side sprite__side--front" src={props.pokemon.sprite.front} alt={props.pokemon.name}/>
+          <img className="sprite__side sprite__side--back" src={pokemon.sprite.back} alt={pokemon.name}/>
+          <img className="sprite__side sprite__side--front" src={pokemon.sprite.front} alt={pokemon.name}/>
         </div>
-        <p>{props.pokemon.name}</p>
+        <p>{pokemon.name}</p>
       </li>
     </Link>
-  )
+  );
 
 }
 

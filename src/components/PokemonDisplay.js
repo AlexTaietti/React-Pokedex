@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import Pokemon from '../classes/Pokemon.js';
 
 import Loader from './Loader.js';
 
@@ -9,7 +10,9 @@ import EvolutionChain from './EvolutionChain.js';
 
 import '../styles/PokemonDisplay.scss';
 
-function PokemonDisplay ({selectedPokemon, selectPokemon}) {
+function PokemonDisplay ({ selectedPokemon, selectPokemon }) {
+
+  function resetDisplay () { selectPokemon(undefined); }
 
   return (
 
@@ -19,7 +22,7 @@ function PokemonDisplay ({selectedPokemon, selectPokemon}) {
 
         <div className="display">
 
-          <Link className="home-link" to="/">&larr;back</Link>
+          <Link onClick={resetDisplay} className="home-link" to="/">&larr;back</Link>
 
           <img className="display__image" src={ selectedPokemon.details.image } alt={ selectedPokemon.name }/>
 

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Pokemon from '../classes/Pokemon.js';
+
+import Loader from './Loader.js';
+
 import PokemonList from './PokemonList.js';
 import PokemonDisplay from './PokemonDisplay.js';
-import Loader from './Loader.js';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -27,18 +29,23 @@ function Pokedex () {
   }, []);
 
   return (
+
     <Router>
+  
       <Route exact path="/pokemon/:pokemonName">
         <div className="pokedex">
-          {selectedPokemon && selectedPokemon.details ? <PokemonDisplay selectPokemon={selectPokemon} selectedPokemon={selectedPokemon} /> : <Loader/>}
+          {selectedPokemon && selectedPokemon.details ? <PokemonDisplay pokemonData={pokemonData} setPokemonData={setPokemonData} selectPokemon={selectPokemon} selectedPokemon={selectedPokemon} /> : <Loader/>}
         </div>
       </Route>
+  
       <Route exact path="/">
         <div className="pokedex">
           {pokemonData ? <PokemonList selectPokemon={selectPokemon} pokemons={pokemonData} /> : <Loader/>}
         </div>
       </Route>
+  
     </Router>
+  
   );
 
 }

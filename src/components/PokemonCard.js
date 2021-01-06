@@ -20,6 +20,7 @@ const PokemonCard = ({ selectPokemon, pokemon }) => {
   }
 
   return (
+
     <Link to={`/pokemon/${pokemon.name}`}>
       <li onClick={handleClick} className="pokemon-card">
         <div className="sprite">
@@ -29,6 +30,7 @@ const PokemonCard = ({ selectPokemon, pokemon }) => {
         <p>{pokemon.name}</p>
       </li>
     </Link>
+  
   );
 
 }

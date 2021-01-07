@@ -20,7 +20,9 @@ export default class Pokemon {
     const evolutionData = await fetchData(pokemonSpecies.evolution_chain.url);
 
     //get pokemon description
-    const description = ( pokemonSpecies.flavor_text_entries[1].flavor_text.charAt(0).toUpperCase() + pokemonSpecies.flavor_text_entries[1].flavor_text.slice(1).toLowerCase() ).split('\n').join(' ');
+    const description = pokemonSpecies.flavor_text_entries.find(text => text.language.name === 'en').flavor_text;
+
+    const formattedDescription = description.replace(/\n|\u000c/g, ' ');
 
     //get physical properties of the pokemon
     height = `${height/ 10} m`;
@@ -62,7 +64,7 @@ export default class Pokemon {
 
     }
 
-    return { evolutionsArray, statsObject, ability, weight, height, image, description, type };
+    return { evolutionsArray, statsObject, ability, weight, height, image, formattedDescription, type };
 
   }
 

@@ -1,24 +1,26 @@
 .evolution-chain{
 
-	grid-column: span 2;
 	position: relative;
-	text-align: center;
+	grid-column: span 2;
 	padding-top: 20px;
 
 	& > h1 {
+		color: white;
+		text-align: center;
 		font-size: 3rem;
 		font-weight: lighter;
 		margin-bottom: 30px;
+		text-shadow: 2px 2px black;
 	}
 
 	& > ul {
-		list-style-type: none;
+
 		display: flex;
+		list-style-type: none;
 		align-items: center;
 		justify-content: space-around;
-		width: 100%;
 
-		& > li:not(:last-child):after{
+		& li:not(:last-child):after{
 
 	      content: "\227B";
 	      position: absolute;
@@ -26,6 +28,8 @@
 	      top: 50%;
 	      font-size: 3rem;
 	      transform: translate(-50%, -50%);
+				color: white;
+				text-shadow: 1px 1px black;
 
 	  }
 

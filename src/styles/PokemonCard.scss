@@ -25,16 +25,25 @@
   margin: 10px 10px 60px;
   font-size: 1.6rem;
   position: relative;
+  flex-basis: 20%;
 
   & > a {
 
     padding: 15px 15px 25px;
     border-radius: 10px;
     background: var(--pokecard-bg);
-    width: 175px;
+    width: 165px;
     display: inline-block;
     position: relative;
     box-shadow: 0px 7px 11px -3px black;
+
+    & > p{
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+      letter-spacing: .5px;
+      text-transform: capitalize;
+    }
 
   }
 
@@ -58,7 +67,7 @@
 
     &__side{
 
-      animation-duration: 2s;
+      animation-duration: 1.5s;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
       animation-fill-mode: forwards;

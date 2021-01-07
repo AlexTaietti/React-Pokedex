@@ -8,7 +8,7 @@ function PokemonInfo ( { pokemon, pokemon : { details : pokemonDetails } } ) {
 
 		<div className="display__qualities">
 	        <h1>{ pokemon.name }</h1>
-	        <p>{ pokemonDetails.description }</p>
+	        <p>{ pokemonDetails.formattedDescription }</p>
 	        <ul>
 	          <li>
 	            <h6>Height:</h6>

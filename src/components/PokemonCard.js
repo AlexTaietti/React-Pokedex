@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import '../styles/PokemonCard.scss';
 
-const PokemonCard = ({ selectPokemon, pokemon }) => {
+const PokemonCard = ({ pokemon }) => {
 
   return (
 

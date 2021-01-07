@@ -13,7 +13,7 @@ export default class Pokemon {
 
     const pokemonData = await fetchData(this.url);
 
-    let { abilities, weight, height, stats, types, sprites: { other: { dream_world: { front_default: image}}}, species: { url: speciesURL }  } = pokemonData;
+    let { abilities, weight, height, stats, types, sprites: { other: { 'official-artwork': { front_default: image}}}, species: { url: speciesURL }  } = pokemonData;
 
     const pokemonSpecies = await fetchData(speciesURL);
 
@@ -52,7 +52,7 @@ export default class Pokemon {
 
 
     //extract evolution chain
-    const evolutionsArray = this.extractEvolutionChain(evolutionData.chain);
+    const evolutionsArray = Pokemon.extractEvolutionChain(evolutionData.chain);
 
     for(let i = 0; i < evolutionsArray.length; i++){
 
@@ -68,28 +68,27 @@ export default class Pokemon {
 
   setDetails (details) { this.details = details; }
 
-  extractEvolutionChain (chainObject, evolutionChain = []) {
+  static extractEvolutionChain (chainObject, evolutionChain = []) {
 
-      evolutionChain.push(chainObject.species.name);
+    evolutionChain.push(chainObject.species.name);
 
-      if (chainObject.evolves_to.length > 0) { this.extractEvolutionChain(chainObject.evolves_to[0], evolutionChain); }
+    if (chainObject.evolves_to.length > 0) { Pokemon.extractEvolutionChain(chainObject.evolves_to[0], evolutionChain); }
 
-      return evolutionChain;
+    return evolutionChain;
 
-    }
+  }
 
   static async fetchPokemonBasicInfo (pokemonName) {
 
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
-
-    const pokemonData = await fetchData(url);
+    const { id, name, sprites : { front_default, back_default }} = await fetchData(url);
 
     const pokemon = new Pokemon({
-      id: pokemonData.id,
-      name: pokemonData.name,
+      id: id,
+      name: name,
       sprite: {
-        front: pokemonData.sprites.front_default,
-        back: pokemonData.sprites.back_default
+        front: front_default,
+        back: back_default
       },
       url: url
     });
@@ -100,21 +99,24 @@ export default class Pokemon {
 
   static async fetchFirstGenPokemons () {
 
+    //total number of pokemons in first gen
     const numberOfFirstGenPokemons = 151;
     const pokemons = [];
 
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${numberOfFirstGenPokemons}`);
-    const data = await response.json();
+    //catch 'em all!
+    const data = await fetchData(`https://pokeapi.co/api/v2/pokemon?limit=${numberOfFirstGenPokemons}`);
 
-    for(let i=0, pokemonData = null, pokemon = null, url=null; i < numberOfFirstGenPokemons; i++){
-      url = data.results[i].url;
-      pokemonData = await fetchData(url);
-      pokemon = new Pokemon({
-        id: pokemonData.id,
-        name: pokemonData.name,
+    for(let i=0; i < numberOfFirstGenPokemons; i++){
+
+      const url = data.results[i].url;
+      const { id, name, sprites : { front_default, back_default }} = await fetchData(url);
+
+      const pokemon = new Pokemon({
+        id: id,
+        name: name,
         sprite: {
-          front: pokemonData.sprites.front_default,
-          back: pokemonData.sprites.back_default
+          front: front_default,
+          back: back_default
         },
         url: url
       });
@@ -123,6 +125,7 @@ export default class Pokemon {
 
     }
 
+    //return pokemons array
     return pokemons;
 
   }

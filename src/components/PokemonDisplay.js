@@ -10,14 +10,48 @@ import EvolutionChain from './EvolutionChain.js';
 
 import '../styles/PokemonDisplay.scss';
 
-function PokemonDisplay ({ selectedPokemon, selectPokemon }) {
+function PokemonDisplay ({ pokemonData }) {
+
+  const { pokemonName } = useParams();
+
+  const [selectedPokemon, selectPokemon] = useState(undefined);
 
   function resetDisplay () { selectPokemon(undefined); }
+
+  useEffect(() => {
+
+    (async () => {
+
+      const pokemon = pokemonData.find( pokemon => pokemon.name === pokemonName );
+
+      if(pokemon){
+
+        const pokemonDetails = await pokemon.fetchDetails();
+
+        pokemon.setDetails(pokemonDetails);
+
+        selectPokemon(pokemon);
+
+      } else {
+
+        const specialPokemon = await Pokemon.fetchPokemonBasicInfo(pokemonName);
+
+        const pokemonDetails = await specialPokemon.fetchDetails();
+
+        specialPokemon.setDetails(pokemonDetails);
+
+        selectPokemon(specialPokemon);
+
+      }
+
+    })();
+
+  }, [pokemonName] );
 
   return (
 
     <React.Fragment>
-      
+
       { ( selectedPokemon && selectedPokemon.details ) ?
 
         <div className="display">

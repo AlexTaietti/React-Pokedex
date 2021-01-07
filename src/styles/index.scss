@@ -6,7 +6,7 @@
 :root{
   --pokedex-bg: linear-gradient(15deg, rgba(255,45,157,1) 0%, rgba(255,23,0,1) 100%);
   --pokecard-bg: linear-gradient(30deg, rgba(45,255,209,1) 0%, rgba(0,187,255,1) 100%);
-  --content-max-width: 800px;
+  --content-max-width: 850px;
 }
 
 a{
@@ -22,7 +22,7 @@ html{ font-size: 10px; }
   box-sizing: border-box;
 }
 
-body, html{ 
+body, html{
 
   min-height: 100%;
   position: relative;

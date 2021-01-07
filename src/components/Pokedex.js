@@ -14,8 +14,6 @@ function Pokedex () {
 
   const [pokemonData, setPokemonData] = useState();
 
-  const [selectedPokemon, selectPokemon] = useState();
-
   useEffect(() => {
 
     (async function () {
@@ -31,21 +29,21 @@ function Pokedex () {
   return (
 
     <Router>
-  
+
       <Route exact path="/pokemon/:pokemonName">
         <div className="pokedex">
-          {selectedPokemon && selectedPokemon.details ? <PokemonDisplay pokemonData={pokemonData} setPokemonData={setPokemonData} selectPokemon={selectPokemon} selectedPokemon={selectedPokemon} /> : <Loader/>}
+          {pokemonData ? <PokemonDisplay pokemonData={pokemonData} setPokemonData={setPokemonData} /> : <Loader/>}
         </div>
       </Route>
-  
+
       <Route exact path="/">
         <div className="pokedex">
-          {pokemonData ? <PokemonList selectPokemon={selectPokemon} pokemons={pokemonData} /> : <Loader/>}
+          {pokemonData ? <PokemonList pokemons={pokemonData} /> : <Loader/>}
         </div>
       </Route>
-  
+
     </Router>
-  
+
   );
 
 }

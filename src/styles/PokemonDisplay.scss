@@ -6,11 +6,11 @@
   max-width: var(--content-max-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 48.5% 48.5%;
   grid-template-rows: 1fr 600px auto;
   padding-top: 50px;
   padding-bottom: 50px;
-  column-gap: 30px;
+  column-gap: 3%;
   align-items: center;
 
   .home-link{
@@ -21,7 +21,7 @@
   }
 
   &__image{
-    padding: 40px;
+    padding: 10px;
     width: 100%;
     max-height: 400px;
   }

@@ -18,7 +18,7 @@ function PokemonDisplay ({ pokemonData }) {
 
   const polygonChartOptions = useRef({
 
-    maxValue: 170,
+    maxValue: 200,
 
     description: `${pokemonName}'s stats`,
 

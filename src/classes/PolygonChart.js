@@ -4,7 +4,7 @@ import easingFunctions from '../utils/easingFunctions.js';
 
 class PolygonChart {
 
-  constructor (data, element, increments, options = {}) {
+  constructor (data, element, options = {}) {
 
     const _that = this;
 
@@ -12,11 +12,16 @@ class PolygonChart {
 
       maxValue: undefined,
 
+      increments: 10,
+
+      description: undefined,
+
       animation: {
         animated: false,
         duration: 0,
         delay: 0,
-        easingFunction: undefined
+        easingFunction: undefined,
+        tween: false
       },
 
       style: {
@@ -114,6 +119,11 @@ class PolygonChart {
     //graphical properties
     [this.container, this.canvas, this.context] = createFittingCanvas(element);
 
+    if(this.options.description){
+      this.canvas.ariaLabel = this.options.description;
+      this.canvas.title = this.options.description;
+    }
+
     this.widestLabel = getLongestStringWidth(this.options.style.label.font, this.labels);
 
     this.position = {
@@ -123,7 +133,7 @@ class PolygonChart {
 
     this.labelMargin = 5;
     this.radius = ((this.context.canvas.width / 2) - this.widestLabel) - this.labelMargin;
-    this.increments = increments;
+    this.increments = this.options.increments;
     this.incrementStep = this.radius / this.increments;
     this.angleStep = (Math.PI * 2) / this.dataDimensions;
 
@@ -132,6 +142,95 @@ class PolygonChart {
     this.valueStep = this.radius / this.maxValue;
 
   }
+
+  clearCanvas () { this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); }
+
+  updateData (newData) {
+
+    const _that = this;
+
+    try{
+
+      if(Array.isArray(newData)){
+
+        this.labels = Object.keys(newData[0]);
+        this.dataDimensions = this.labels.length;
+        this.data = PolygonChart.extractDataFrom(newData);
+        this.poly = [];
+        this.currentPolygon = -1;
+
+        for(let i=0; i < this.data.length; i++) {
+
+          const polygon = new Polygon(this.data[i], {
+
+            animation: {
+              animated: _that.options.animation.animated[i],
+              duration: _that.options.animation.duration[i],
+              delay: _that.options.animation.delay[i],
+              easingFunction: easingFunctions[_that.options.animation.easingFunction[i]]
+            },
+
+            style: {
+              contour: _that.options.style.polygon.contour[i],
+              fill: _that.options.style.polygon.fill[i],
+              stroke: _that.options.style.polygon.stroke[i],
+              lineWidth: _that.options.style.polygon.lineWidth[i]
+            }
+
+          });
+
+          this.poly.push(polygon);
+
+        }
+
+      } else if (newData.toString() === "[object Object]") {
+
+        this.labels = Object.keys(newData);
+        this.dataDimensions = this.labels.length;
+        this.data = Object.values(newData);
+
+        this.poly = new Polygon(this.data, {
+
+          animation: {
+            animated: _that.options.animation.animated,
+            duration: _that.options.animation.duration,
+            delay: _that.options.animation.delay,
+            easingFunction: easingFunctions[_that.options.animation.easingFunction]
+          },
+
+          style: {
+            contour: _that.options.style.polygon.contour,
+            fill: _that.options.style.polygon.fill,
+            stroke: _that.options.style.polygon.stroke,
+            lineWidth: _that.options.style.polygon.lineWidth
+          }
+
+        });
+
+      } else { throw new TypeError("The 'data' parameter can only be an array or an object"); }
+
+    } catch(e) { console.error(e); }
+
+    this.widestLabel = getLongestStringWidth(this.options.style.label.font, this.labels);
+
+    this.position = {
+      x: _that.context.canvas.width / 2,
+      y: _that.context.canvas.height / 2
+    };
+
+    this.labelMargin = 5;
+    this.radius = ((this.context.canvas.width / 2) - this.widestLabel) - this.labelMargin;
+    this.increments = this.options.increments;
+    this.incrementStep = this.radius / this.increments;
+    this.angleStep = (Math.PI * 2) / this.dataDimensions;
+
+    //data properties
+    this.maxValue = this.options.maxValue ? this.options.maxValue : getMaxValueInArray(this.data);
+    this.valueStep = this.radius / this.maxValue;
+
+  }
+
+  updateOptions (newOptions) { this.options = mergeObjects(this.options, newOptions, true); }
 
   static extractDataFrom (array) {
 
@@ -335,6 +434,21 @@ class PolygonChart {
 
 
   animate () {
+
+    if(this.options.animation.tween) {
+
+      this.tween();
+
+    } else {
+
+      this.basicAnimate();
+
+    }
+
+  }
+
+
+  basicAnimate () {
 
     this.context.save();
 

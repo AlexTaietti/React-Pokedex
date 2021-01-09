@@ -37,56 +37,44 @@
     position: relative;
     box-shadow: 0px 7px 11px -3px black;
 
-    & > p{
-      color: white;
-      font-weight: bold;
-      text-shadow: 1px 1px black;
-      letter-spacing: .5px;
-      text-transform: capitalize;
-    }
-
   }
 
   &:hover{
 
-    .sprite__side--front{
-      animation-name: rotate-front;
+    .sprite__side--front{ animation-name: rotate-front; }
+
+    .sprite__side--back{ animation-name: rotate-back; }
+
+  }
+
+
+  .sprite__side{
+
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+
+    backface-visibility: hidden;
+
+    &--front{
+      position: relative;
+      transform: rotateY(0deg);
     }
 
-    .sprite__side--back{
-      animation-name: rotate-back;
+    &--back{
+      position: absolute;
+      transform: rotateY(180deg);
     }
 
   }
 
-  .sprite{
-
-    position: relative;
-    display: inline-block;
-    backface-visibility: hidden;
-
-    &__side{
-
-      animation-duration: 1.5s;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-      animation-fill-mode: forwards;
-
-      backface-visibility: hidden;
-
-      &--front{
-        position: relative;
-        transform: rotateY(0deg);
-      }
-
-      &--back{
-        position: absolute;
-        transform: rotateY(180deg);
-      }
-
-    }
-
-
+  .sprite > figcaption{
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    letter-spacing: .5px;
+    text-transform: capitalize;
   }
 
 }

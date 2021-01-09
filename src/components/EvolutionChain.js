@@ -4,16 +4,16 @@ import PokemonCard from './PokemonCard.js';
 import '../styles/EvolutionChain.scss';
 
 
-function EvolutionChain ({ pokemonEvolution }) {
+function EvolutionChain ({ pokemonEvolution, pokemonName }) {
 
   return (
 
-  	<div className="evolution-chain">
+  	<section aria-label={ `${pokemonName}'s evolution chain'` } className="evolution-chain">
   		<h1>Evolution Chain</h1>
-	    <ul>
+	    <ul role="listbox">
 	      { pokemonEvolution.map((pokemon, index) => <PokemonCard key={index} pokemon={pokemon} />) }
 	    </ul>
-    </div>
+    </section>
 
   );
 

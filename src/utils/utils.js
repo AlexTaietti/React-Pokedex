@@ -53,6 +53,8 @@ export function createFittingCanvas (element) {
 
   context.canvas.width = context.canvas.height = minDimension;
 
+  context.canvas.tabIndex = "0";
+
   element.append(canvas);
 
   return [element, canvas, context];

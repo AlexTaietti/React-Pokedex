@@ -7,13 +7,13 @@ const PokemonCard = ({ pokemon }) => {
 
   return (
 
-      <li className="pokemon-card">
+      <li aria-label={pokemon.name} className="pokemon-card">
         <Link to={`/pokemon/${pokemon.name}`}>
-        <div className="sprite">
-          <img className="sprite__side sprite__side--back" src={pokemon.sprite.back} alt={pokemon.name}/>
-          <img className="sprite__side sprite__side--front" src={pokemon.sprite.front} alt={pokemon.name}/>
-        </div>
-        <p>{pokemon.name}</p>
+        <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
+          <img alt={`${pokemon.name}'s back side`} className="sprite__side sprite__side--back" src={pokemon.sprite.back}/>
+          <img alt={`${pokemon.name}'s front side`} className="sprite__side sprite__side--front" src={pokemon.sprite.front}/>
+          <figcaption>{pokemon.name}</figcaption>
+        </figure>
         </Link>
       </li>
 

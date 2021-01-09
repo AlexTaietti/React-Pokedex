@@ -30,7 +30,7 @@ export default class Pokemon {
     weight = `${weight/ 10} kg`;
 
     //extract abilities
-    const ability = abilities.map((ability, index) => {
+    abilities = abilities.map((ability, index) => {
 
       return abilities[index].ability.name;
 
@@ -64,7 +64,7 @@ export default class Pokemon {
 
     }
 
-    return { evolutionsArray, statsObject, ability, weight, height, image, formattedDescription, type };
+    return { evolutionsArray, statsObject, abilities, weight, height, image, formattedDescription, type };
 
   }
 

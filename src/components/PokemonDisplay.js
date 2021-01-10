@@ -32,7 +32,7 @@ function PokemonDisplay ({ pokemonData }) {
 
     style: {
 
-      label: { font: "1.3rem Orbitron" },
+      label: { font: `${ 11 * window.devicePixelRatio }px Orbitron` },
 
       chart: {
         background: true,

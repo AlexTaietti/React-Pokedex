@@ -41,7 +41,9 @@ export function createFittingCanvas (element) {
 
   const minDimension = Math.min(element.clientWidth, element.clientHeight);
 
-  canvas.style.height = canvas.style.width = minDimension;
+  const pixelRatio = window.devicePixelRatio;
+
+  canvas.style.height = canvas.style.width = `${ minDimension + "px"}`;
 
   canvas.style.position = "absolute";
 
@@ -51,7 +53,7 @@ export function createFittingCanvas (element) {
 
   canvas.style.transform = "translate(-50%, -50%)";
 
-  context.canvas.width = context.canvas.height = minDimension;
+  context.canvas.width = context.canvas.height = Math.floor(minDimension * pixelRatio);
 
   context.canvas.tabIndex = "0";
 

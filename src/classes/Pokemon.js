@@ -39,7 +39,7 @@ export default class Pokemon {
     //extract stats
     const statsObject = stats.reduce((statsData, currentStatData) => {
 
-      let statsName = currentStatData.stat.name === "special-attack" ? "special (S)" : currentStatData.stat.name === "special-defense" ? "defense(S)" : currentStatData.stat.name;
+      let statsName = currentStatData.stat.name === "special-attack" ? "atk(S)" : currentStatData.stat.name === "special-defense" ? "def(S)" : currentStatData.stat.name;
 
       statsData[statsName] = currentStatData.base_stat;
 

@@ -32,7 +32,7 @@ function PokemonDisplay ({ pokemonData }) {
 
     style: {
 
-      label: { font: "1.6rem Orbitron" },
+      label: { font: "1.3rem Orbitron" },
 
       chart: {
         background: true,
@@ -80,6 +80,7 @@ function PokemonDisplay ({ pokemonData }) {
 
     })();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemonName] );
 
   return (
@@ -90,17 +91,23 @@ function PokemonDisplay ({ pokemonData }) {
 
         <div className="display-container">
 
-          <main tabIndex="0" aria-label={ `reasons why ${selectedPokemon.name} is awesome!` } className="display-content">
+          <main tabIndex="0" className="display-content" aria-label={ `reasons why ${selectedPokemon.name} is awesome!` }>
 
-            <figure tabIndex="0" aria-label={ `${selectedPokemon.name}'s artwork'` } className="pokemon-artwork">
+            <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${selectedPokemon.name}'s artwork` }>
               <img src={ selectedPokemon.details.image } alt={ selectedPokemon.name }/>
             </figure>
 
-            <PokemonInfo pokemonDetails={ selectedPokemon.details } pokemonName={ selectedPokemon.name }/>
+            <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${selectedPokemon.name}` }>
+              <PokemonInfo pokemonDetails={ selectedPokemon.details } pokemonName={ selectedPokemon.name }/>
+            </section>
 
-            <Chart data={ selectedPokemon.details.statsObject } options={ polygonChartOptions.current }/>
+            <div tabIndex="0" className="chart-container" aria-label={ `${selectedPokemon.name}'s stats` }>
+              <Chart data={ selectedPokemon.details.statsObject } options={ polygonChartOptions.current }/>
+            </div>
 
-            <EvolutionChain pokemonName={ selectedPokemon.name } pokemonEvolution={ selectedPokemon.details.evolutionsArray }/>
+            <section tabIndex="0" className="pokemon-evolution" aria-label={ `${selectedPokemon.name}'s evolution chain` }>
+              <EvolutionChain pokemonName={ selectedPokemon.name } pokemonEvolution={ selectedPokemon.details.evolutionsArray }/>
+            </section>
 
             <Link onClick={ resetDisplay } className="home-link" to="/">&larr;back</Link>
 

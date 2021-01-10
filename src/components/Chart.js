@@ -11,8 +11,6 @@ function Chart ({data, options}) {
 
   useEffect(() => {
 
-    console.log('mounting chart')
-
     chart.current = new PolygonChart(data, container.current, options);
 
     if(chart.current.options.animation.animated) {
@@ -29,11 +27,10 @@ function Chart ({data, options}) {
 
     return function () { window.removeEventListener('resize', chart.current.resizeAndCenter.bind(chart.current)); }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-
-    console.log('changing data');
 
     chart.current.updateData(data);
 
@@ -53,8 +50,6 @@ function Chart ({data, options}) {
 
   useEffect(() => {
 
-    console.log('changing options');
-
     chart.current.updateOptions(options);
 
     chart.current.clearCanvas();
@@ -71,7 +66,7 @@ function Chart ({data, options}) {
 
   }, [options]);
 
-  return <section aria-label='chart' className="stats-chart" ref={container}></section>;
+  return <figure aria-label='chart' className="chart" ref={container}></figure>;
 
 }
 

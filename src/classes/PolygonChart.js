@@ -35,7 +35,7 @@ class PolygonChart {
 
         label: {
           contour: false,
-          font: '1.2rem sans-serif',
+          font: '1.6rem sans-serif',
           fill: 'rgba(0, 0, 0, 1)',
           stroke: 'rgba(255, 0, 0 , 1)',
           lineWidth: 0.2

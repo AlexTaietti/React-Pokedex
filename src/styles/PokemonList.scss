@@ -22,3 +22,15 @@
   justify-content: space-around;
   list-style-type: none;
 }
+
+@media screen and (max-width: 700px){
+
+  .list-container > header { max-width: 80%; }
+
+}
+
+@media screen and (max-width: 500px){
+
+  .list-container > header { max-width: 100%; }
+
+}

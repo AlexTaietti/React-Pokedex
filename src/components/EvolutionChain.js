@@ -8,12 +8,12 @@ function EvolutionChain ({ pokemonEvolution, pokemonName }) {
 
   return (
 
-  	<section aria-label={ `${pokemonName}'s evolution chain'` } className="evolution-chain">
+  	<div className="evolution-chain-container">
   		<h1>Evolution Chain</h1>
 	    <ul role="listbox">
 	      { pokemonEvolution.map((pokemon, index) => <PokemonCard key={index} pokemon={pokemon} />) }
 	    </ul>
-    </section>
+    </div>
 
   );
 

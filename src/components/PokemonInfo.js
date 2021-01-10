@@ -6,7 +6,7 @@ function PokemonInfo ( { pokemonName, pokemonDetails } ) {
 
 	return (
 
-		<section aria-label={ `some information about ${pokemonName}` } className="pokemon-details">
+		<div className="info-container">
       <h1 tabIndex="0">{ pokemonName }</h1>
       <p tabIndex="0">{ pokemonDetails.formattedDescription }</p>
       <ul>
@@ -27,7 +27,7 @@ function PokemonInfo ( { pokemonName, pokemonDetails } ) {
           <span tabIndex="0" aria-labelledby="attribute-label">{pokemonDetails.abilities}</span>
         </li>
       </ul>
-   </section>
+   </div>
 
 	);
 

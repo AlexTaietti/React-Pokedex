@@ -1,10 +1,8 @@
-.evolution-chain{
+.evolution-chain-container{
 
-	position: relative;
-	grid-column: span 2;
 	padding-top: 20px;
 
-	& > h1 {
+	& h1 {
 		color: white;
 		text-align: center;
 		font-size: 3rem;
@@ -13,26 +11,37 @@
 		text-shadow: 2px 2px black;
 	}
 
-	& > ul {
-
+	& ul {
 		display: flex;
 		list-style-type: none;
 		align-items: center;
 		justify-content: space-around;
-
-		& li:not(:last-child):after{
-
-	      content: "\227B";
-	      position: absolute;
-	      right: -50px;
-	      top: 50%;
-	      font-size: 3rem;
-	      transform: translate(-50%, -50%);
-				color: white;
-				text-shadow: 1px 1px black;
-
-	  }
-
 	}
+
+	& .pokemon-card:not(:last-of-type):after{
+      content: "\227B";
+      position: absolute;
+      right: -50px;
+      bottom: 50%;
+      font-size: 3rem;
+      transform: translate(-50%, -50%);
+			color: white;
+			text-shadow: 1px 1px black;
+  }
+
+}
+
+@media screen and (max-width: 700px) {
+
+	.evolution-chain-container ul{ flex-direction: column; }
+
+	.evolution-chain-container .pokemon-card:not(:last-of-type):after{
+      content: "\22CE";
+			position: absolute;
+      right: 50%;
+      bottom: -50px;
+			transform: translateX(50%);
+			text-shadow: 0px 2px black;
+  }
 
 }

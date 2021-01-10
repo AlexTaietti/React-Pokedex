@@ -590,7 +590,9 @@ class PolygonChart {
 
     const minDimension = Math.min(this.container.clientWidth, this.container.clientHeight);
 
-    this.canvas.style.height = this.canvas.style.width = minDimension;
+    const pixelRatio = window.devicePixelRatio;
+
+    this.canvas.style.height = this.canvas.style.width = `${ minDimension + "px"}`;
 
     this.canvas.style.position = "absolute";
 
@@ -600,7 +602,7 @@ class PolygonChart {
 
     this.canvas.style.transform = "translate(-50%, -50%)";
 
-    this.context.canvas.width = this.context.canvas.height = minDimension;
+    this.context.canvas.width = this.context.canvas.height = Math.floor(minDimension * pixelRatio);
 
     this.position = {
       x: _that.context.canvas.width / 2,

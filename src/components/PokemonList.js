@@ -8,10 +8,14 @@ const PokemonList = ({ pokemons }) => {
 
   return (
     <div className="list-container">
-      <img className="pokemon-logo" src={PokemonLogo} alt="Pokemon"/>
-      <ul className="pokemon-list">
-        {pokemons.map( pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} /> )}
-      </ul>
+      <header role="banner" aria-label="pokemon logo">
+        <img className="pokemon-logo" src={PokemonLogo} alt="Pokemon"/>
+      </header>
+      <main aria-label="list of all first-generation pokemons">
+        <ul role="listbox" className="pokemon-list">
+          {pokemons.map( pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} /> )}
+        </ul>
+      </main>
     </div>
   );
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Pokemon from '../classes/Pokemon.js';
 
@@ -15,6 +15,40 @@ function PokemonDisplay ({ pokemonData }) {
   const { pokemonName } = useParams();
 
   const [selectedPokemon, selectPokemon] = useState(undefined);
+
+  const polygonChartOptions = useRef({
+
+    maxValue: 200,
+
+    description: `${pokemonName}'s stats`,
+
+    increments: 10,
+
+    animation:{
+      animated: true,
+      duration: 2000,
+      easingFunction: 'easeOutElastic'
+    },
+
+    style: {
+
+      label: { font: "1.3rem Orbitron" },
+
+      chart: {
+        background: true,
+        fill: 'rgba(0, 255, 255, 0.7)'
+      },
+
+      polygon: {
+        contour: true,
+        fill: 'rgba(255, 0, 0, 0.4)',
+        stroke: 'rgba(255, 0, 0, 1)',
+        lineWidth: 2
+      }
+
+    }
+
+  });
 
   function resetDisplay () { selectPokemon(undefined); }
 
@@ -46,6 +80,7 @@ function PokemonDisplay ({ pokemonData }) {
 
     })();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemonName] );
 
   return (
@@ -54,17 +89,29 @@ function PokemonDisplay ({ pokemonData }) {
 
       { ( selectedPokemon && selectedPokemon.details ) ?
 
-        <div className="display">
+        <div className="display-container">
 
-          <Link onClick={resetDisplay} className="home-link" to="/">&larr;back</Link>
+          <main tabIndex="0" className="display-content" aria-label={ `reasons why ${selectedPokemon.name} is awesome!` }>
 
-          <img className="display__image" src={ selectedPokemon.details.image } alt={ selectedPokemon.name }/>
+            <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${selectedPokemon.name}'s artwork` }>
+              <img src={ selectedPokemon.details.image } alt={ selectedPokemon.name }/>
+            </figure>
 
-          <PokemonInfo pokemon={ selectedPokemon }/>
+            <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${selectedPokemon.name}` }>
+              <PokemonInfo pokemonDetails={ selectedPokemon.details } pokemonName={ selectedPokemon.name }/>
+            </section>
 
-          <Chart pokemonData={ selectedPokemon.details.statsObject }/>
+            <div tabIndex="0" className="chart-container" aria-label={ `${selectedPokemon.name}'s stats` }>
+              <Chart data={ selectedPokemon.details.statsObject } options={ polygonChartOptions.current }/>
+            </div>
 
-          <EvolutionChain selectPokemon={ selectPokemon } pokemonEvolution={ selectedPokemon.details.evolutionsArray }/>
+            <section tabIndex="0" className="pokemon-evolution" aria-label={ `${selectedPokemon.name}'s evolution chain` }>
+              <EvolutionChain pokemonName={ selectedPokemon.name } pokemonEvolution={ selectedPokemon.details.evolutionsArray }/>
+            </section>
+
+            <Link onClick={ resetDisplay } className="home-link" to="/">&larr;back</Link>
+
+          </main>
 
         </div>
 

@@ -21,57 +21,27 @@
 .pokemon-card{
 
   text-align: center;
-  font-family: 'Orbitron', sans-serif;
   margin: 10px 10px 60px;
-  font-size: 1.6rem;
+  font-family: 'Orbitron', sans-serif;
   position: relative;
-  flex-basis: 20%;
+  border-radius: 10px;
+  background: var(--pokecard-bg);
+  width: 165px;
+  box-shadow: 0px 7px 11px -3px black;
 
-  & > a {
-
-    padding: 15px 15px 25px;
-    border-radius: 10px;
-    background: var(--pokecard-bg);
-    width: 165px;
-    display: inline-block;
-    position: relative;
-    box-shadow: 0px 7px 11px -3px black;
-
-    & > p{
-      color: white;
-      font-weight: bold;
-      text-shadow: 1px 1px black;
-      letter-spacing: .5px;
-      text-transform: capitalize;
-    }
-
-  }
-
-  &:hover{
-
-    .sprite__side--front{
-      animation-name: rotate-front;
-    }
-
-    .sprite__side--back{
-      animation-name: rotate-back;
-    }
-
-  }
+  & a { display: block; }
 
   .sprite{
 
     position: relative;
-    display: inline-block;
-    backface-visibility: hidden;
+    padding: 15px 15px 25px;
 
-    &__side{
+    &-side{
 
       animation-duration: 1.5s;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
       animation-fill-mode: forwards;
-
       backface-visibility: hidden;
 
       &--front{
@@ -86,6 +56,39 @@
 
     }
 
+    & > figcaption{
+      color: white;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+      letter-spacing: .5px;
+      text-transform: capitalize;
+    }
+
+  }
+
+  &:hover{
+
+    .sprite-side--front{ animation-name: rotate-front; }
+
+    .sprite-side--back{ animation-name: rotate-back; }
+
+  }
+
+}
+
+
+@media screen and (max-width: 450px) {
+
+  .sprite-side{
+    width: 75px;
+  }
+
+  .pokemon-card{
+
+    width: 140px;
+
+    .sprite > figcaption { font-size: 1.3rem; }
 
   }
 

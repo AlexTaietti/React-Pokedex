@@ -2,18 +2,35 @@
 
   max-width: var(--content-max-width);
   margin: 0 auto;
+  padding-top: 40px;
 
-  .pokemon-logo{
+  & > header{
+
     display: block;
     margin: 0 auto 60px;
     max-width: 60%;
+
+    & > img{ width: 100%; }
+
   }
 
-  .pokemon-list{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    list-style-type: none;
-  }
+}
+
+.pokemon-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  list-style-type: none;
+}
+
+@media screen and (max-width: 700px){
+
+  .list-container > header { max-width: 80%; }
+
+}
+
+@media screen and (max-width: 500px){
+
+  .list-container > header { max-width: 100%; }
 
 }

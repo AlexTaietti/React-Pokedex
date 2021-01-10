@@ -3,51 +3,70 @@ import PolygonChart from '../classes/PolygonChart.js';
 
 import '../styles/Chart.scss';
 
-function Chart ({pokemonData}) {
+function Chart ({data, options}) {
 
   const container = useRef();
 
+  const chart = useRef();
+
   useEffect(() => {
 
-    if(container.current.children.length) container.current.removeChild(container.current.lastChild);
+    chart.current = new PolygonChart(data, container.current, options);
 
-    const chart = new PolygonChart(pokemonData, container.current, 10, {
+    if(chart.current.options.animation.animated) {
 
-      maxValue: 170,
+      chart.current.animate();
 
-      animation:{
-        animated: true,
-        duration: 2000,
-        easingFunction: 'easeOutElastic'
-      },
+    } else {
 
-      style: {
+      chart.current.draw();
 
-        label: { font: "1.6rem Orbitron" },
+    }
 
-        chart: {
-          background: true,
-          fill: 'rgba(0, 255, 255, 0.7)'
-        },
+    window.addEventListener('resize', chart.current.resizeAndCenter.bind(chart.current));
 
-        polygon: {
-          contour: true,
-          fill: 'rgba(255, 0, 0, 0.4)',
-          stroke: 'rgba(255, 0, 0, 1)',
-          lineWidth: 2
-        }
+    return function () { window.removeEventListener('resize', chart.current.resizeAndCenter.bind(chart.current)); }
 
-      }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    });
+  useEffect(() => {
 
-    chart.animate();
+    chart.current.updateData(data);
 
-    window.addEventListener('resize', chart.resizeAndCenter.bind(chart));
+    chart.current.clearCanvas();
 
-  }, [pokemonData]);
+    if(chart.current.options.animation.animated) {
 
-  return <div className="display__chart" ref={container}></div>;
+      chart.current.animate();
+
+    } else {
+
+      chart.current.draw();
+
+    }
+
+  }, [data]);
+
+  useEffect(() => {
+
+    chart.current.updateOptions(options);
+
+    chart.current.clearCanvas();
+
+    if(chart.current.options.animation.animated) {
+
+      chart.current.animate();
+
+    } else {
+
+      chart.current.draw();
+
+    }
+
+  }, [options]);
+
+  return <figure aria-label='chart' className="chart" ref={container}></figure>;
 
 }
 

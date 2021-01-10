@@ -23,6 +23,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "rules": { "no-control-regex": 0 },
     "extends": [
       "react-app",
       "react-app/jest"

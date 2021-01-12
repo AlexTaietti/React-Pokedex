@@ -99,16 +99,15 @@ export default class Pokemon {
 
   }
 
-  static async fetchFirstGenPokemons () {
+  static async fetchBatchPokemons (limit, offset) {
 
     //total number of pokemons in first gen
-    const numberOfFirstGenPokemons = 151;
     const pokemons = [];
 
     //catch 'em all!
-    const data = await fetchData(`https://pokeapi.co/api/v2/pokemon?limit=${numberOfFirstGenPokemons}`);
+    const data = await fetchData(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
 
-    for(let i=0; i < numberOfFirstGenPokemons; i++){
+    for(let i=0; i < data.results.length; i++){
 
       const url = data.results[i].url;
       const { id, name, sprites : { front_default, back_default }} = await fetchData(url);
@@ -129,6 +128,7 @@ export default class Pokemon {
 
     //return pokemons array
     return pokemons;
+
 
   }
 

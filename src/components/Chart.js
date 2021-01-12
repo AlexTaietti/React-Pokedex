@@ -5,6 +5,8 @@ import '../styles/Chart.scss';
 
 function Chart ({data, options}) {
 
+  console.log('Rendering chart...');
+
   const container = useRef();
 
   const chart = useRef();
@@ -25,46 +27,36 @@ function Chart ({data, options}) {
 
     window.addEventListener('resize', chart.current.resizeAndCenter.bind(chart.current));
 
-    return function () { window.removeEventListener('resize', chart.current.resizeAndCenter.bind(chart.current)); }
+    return function () {
+
+      console.log('Unmounting chart and cleaning up event handlers...');
+
+      window.removeEventListener('resize', chart.current.resizeAndCenter.bind(chart.current));
+
+    }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
 
-    chart.current.updateData(data);
+    console.log('Updating chart data...')
 
-    chart.current.clearCanvas();
+    chart.current.updateData(data);
 
     if(chart.current.options.animation.animated) {
 
       chart.current.animate();
 
     } else {
+
+      chart.current.clearCanvas();
 
       chart.current.draw();
 
     }
 
   }, [data]);
-
-  useEffect(() => {
-
-    chart.current.updateOptions(options);
-
-    chart.current.clearCanvas();
-
-    if(chart.current.options.animation.animated) {
-
-      chart.current.animate();
-
-    } else {
-
-      chart.current.draw();
-
-    }
-
-  }, [options]);
 
   return <figure aria-label='chart' className="chart" ref={container}></figure>;
 

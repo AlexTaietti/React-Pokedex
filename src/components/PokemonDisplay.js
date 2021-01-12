@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Pokemon from '../classes/Pokemon.js';
 
@@ -16,11 +16,9 @@ function PokemonDisplay ({ pokemonData }) {
 
   const [selectedPokemon, selectPokemon] = useState(undefined);
 
-  const polygonChartOptions = useRef({
+  const polygonChartOptions = {
 
     maxValue: 200,
-
-    description: `${pokemonName}'s stats`,
 
     increments: 10,
 
@@ -48,7 +46,7 @@ function PokemonDisplay ({ pokemonData }) {
 
     }
 
-  });
+  };
 
   function resetDisplay () { selectPokemon(undefined); }
 
@@ -102,7 +100,7 @@ function PokemonDisplay ({ pokemonData }) {
             </section>
 
             <div tabIndex="0" className="chart-container" aria-label={ `${selectedPokemon.name}'s stats` }>
-              <Chart data={ selectedPokemon.details.statsObject } options={ polygonChartOptions.current }/>
+              <Chart data={ selectedPokemon.details.statsObject } options={ polygonChartOptions }/>
             </div>
 
             <section tabIndex="0" className="pokemon-evolution" aria-label={ `${selectedPokemon.name}'s evolution chain` }>

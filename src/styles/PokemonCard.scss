@@ -28,6 +28,15 @@
   background: var(--pokecard-bg);
   width: 165px;
   box-shadow: 0px 7px 11px -3px black;
+  transition-property: opacity transform;
+  transition-duration: 1s;
+  transform: translateY(0);
+  opacity: 1;
+
+  &.hidden{
+    transform: translateY(-10px);
+    opacity: 0;
+  }
 
   & a { display: block; }
 

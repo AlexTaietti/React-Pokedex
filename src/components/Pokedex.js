@@ -12,39 +12,35 @@ import '../styles/Pokedex.scss';
 
 function Pokedex () {
 
-  //set up the pokedex's constants, state and references
+  //set up the pokedex's constants and references
   const pokemonFetchAmount = 20;
-
-  const [loadedEveryPokemon, setLoadedEveryPokemon] = useState(false);
-
-  const [pokemonData, setPokemonData] = useState([]);
-
   const pokemonListReference = useRef([]);
+  const loadingReference = useRef(false);
+
+  //set pokedex state
+  const [pokemonList, setpokemonList] = useState([]);
 
   //handle inifite scroll pokemon loading
   async function loadBatchOfPokemons () {
 
+    loadingReference.current = true;
+
     console.log('Loading a fresh batch of pokemons!');
 
-    const newPokemons = await Pokemon.fetchBatchPokemons(pokemonFetchAmount, pokemonData.length);
+    const newPokemons = await Pokemon.fetchBatchPokemons(pokemonFetchAmount, pokemonListReference.current.length);
 
     if(newPokemons) {
 
-      const newPokemonsList = pokemonListReference.current.concat(newPokemons);
+      const newPokemonList = pokemonListReference.current.concat(newPokemons);
 
-      setPokemonData(newPokemonsList);
+      loadingReference.current = false;
+      setpokemonList( newPokemonList );
 
-      pokemonListReference.current = newPokemonsList;
-
-    } else {
-
-      setLoadedEveryPokemon(true);
-
-      console.warn('Every single pokemon in existance has been loaded already');
+      pokemonListReference.current = newPokemonList;
 
     }
 
-  }
+  };
 
   function handleScroll () {
 
@@ -54,9 +50,9 @@ function Pokedex () {
 
     const windowHeight = window.innerHeight;
 
-    if(scrolledFromTop + windowHeight === documentHeight) loadBatchOfPokemons();
+    if(!loadingReference.current && scrolledFromTop + windowHeight === documentHeight) loadBatchOfPokemons();
 
-  }
+  };
 
   //on mount fetch the first 20 pokemons
   useEffect(() => {
@@ -74,7 +70,7 @@ function Pokedex () {
       <Route exact path="/pokemon/:pokemonName">
 
         <div className="pokedex">
-          { pokemonData.length ? <PokemonDisplay pokemonData={pokemonData} /> : <Loader/> }
+          { pokemonList.length ? <PokemonDisplay pokemonList={pokemonList} /> : <Loader/> }
         </div>
 
       </Route>
@@ -83,11 +79,11 @@ function Pokedex () {
 
         <div className="pokedex">
 
-          { pokemonData.length ?
+          { pokemonList.length ?
 
             <React.Fragment>
-              <PokemonList handleScroll={ handleScroll } pokemons={pokemonData}/>
-              {!loadedEveryPokemon ? <span>Catch some more!</span> : <React.Fragment/> }
+              <PokemonList handleScroll={ handleScroll } pokemons={pokemonList}/>
+              {true ? <span>Catch some more!</span> : <React.Fragment/> }
             </React.Fragment>
 
             : <Loader/> }

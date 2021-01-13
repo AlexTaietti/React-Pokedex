@@ -10,7 +10,7 @@ import EvolutionChain from './EvolutionChain.js';
 
 import '../styles/PokemonDisplay.scss';
 
-function PokemonDisplay ({ pokemonData }) {
+function PokemonDisplay ({ pokemonList }) {
 
   const { pokemonName } = useParams();
 
@@ -54,7 +54,7 @@ function PokemonDisplay ({ pokemonData }) {
 
     (async () => {
 
-      const pokemon = pokemonData.find( pokemon => pokemon.name === pokemonName );
+      const pokemon = pokemonList.find( pokemon => pokemon.name === pokemonName );
 
       if(pokemon){
 

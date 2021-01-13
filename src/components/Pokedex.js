@@ -15,8 +15,6 @@ function Pokedex () {
   //set up the pokedex's constants, state and references
   const pokemonFetchAmount = 20;
 
-  const lastPokemon = useRef(0);
-
   const [loadedEveryPokemon, setLoadedEveryPokemon] = useState(false);
 
   const [pokemonData, setPokemonData] = useState([]);
@@ -28,11 +26,9 @@ function Pokedex () {
 
     console.log('Loading a fresh batch of pokemons!');
 
-    const newPokemons = await Pokemon.fetchBatchPokemons(pokemonFetchAmount, lastPokemon.current);
+    const newPokemons = await Pokemon.fetchBatchPokemons(pokemonFetchAmount, pokemonData.length);
 
     if(newPokemons) {
-
-      lastPokemon.current += pokemonFetchAmount;
 
       const newPokemonsList = pokemonListReference.current.concat(newPokemons);
 

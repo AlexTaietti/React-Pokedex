@@ -12,8 +12,7 @@ const PokemonList = ({ pokemons, handleScroll }) => {
 
     return () => window.removeEventListener('scroll', handleScroll);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+}, [handleScroll]);
 
   return (
     <div className="list-container">

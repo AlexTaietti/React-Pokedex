@@ -4,146 +4,7 @@ import easingFunctions from '../utils/easingFunctions.js';
 
 class PolygonChart {
 
-  constructor (data, element, options = {}) {
-
-    const _that = this;
-
-    const _defaults = {
-
-      maxValue: undefined,
-
-      increments: 10,
-
-      description: undefined,
-
-      animation: {
-        animated: false,
-        duration: 0,
-        delay: 0,
-        easingFunction: undefined,
-        tween: false
-      },
-
-      style: {
-
-        chart: {
-          background: false,
-          fill: 'rgba(0, 0, 255, 0.6)',
-          stroke: 'rgba(0, 0, 0, 1)',
-          lineWidth: 1
-        },
-
-        label: {
-          contour: false,
-          font: '1.6rem sans-serif',
-          fill: 'rgba(0, 0, 0, 1)',
-          stroke: 'rgba(255, 0, 0 , 1)',
-          lineWidth: 0.2
-        },
-
-        polygon: {
-          contour: true,
-          fill: 'rgba(255, 0, 0, 0.4)',
-          stroke: 'rgba(255, 0, 0, 1)',
-          lineWidth: 2
-        }
-
-      }
-
-    };
-
-    this.options = mergeObjects(_defaults, options, true);
-
-    try{
-
-      if(Array.isArray(data)){
-
-        this.labels = Object.keys(data[0]);
-        this.dataDimensions = this.labels.length;
-        this.data = PolygonChart.extractDataFrom(data);
-        this.poly = [];
-        this.currentPolygon = -1;
-
-        for(let i=0; i < this.data.length; i++) {
-
-          const polygon = new Polygon(this.data[i], {
-
-            animation: {
-              animated: _that.options.animation.animated[i],
-              duration: _that.options.animation.duration[i],
-              delay: _that.options.animation.delay[i],
-              easingFunction: easingFunctions[_that.options.animation.easingFunction[i]]
-            },
-
-            style: {
-              contour: _that.options.style.polygon.contour[i],
-              fill: _that.options.style.polygon.fill[i],
-              stroke: _that.options.style.polygon.stroke[i],
-              lineWidth: _that.options.style.polygon.lineWidth[i]
-            }
-
-          });
-
-          this.poly.push(polygon);
-
-        }
-
-      } else if (data.toString() === "[object Object]") {
-
-        this.labels = Object.keys(data);
-        this.dataDimensions = this.labels.length;
-        this.data = Object.values(data);
-
-        this.poly = new Polygon(this.data, {
-
-          animation: {
-            animated: _that.options.animation.animated,
-            duration: _that.options.animation.duration,
-            delay: _that.options.animation.delay,
-            easingFunction: easingFunctions[_that.options.animation.easingFunction]
-          },
-
-          style: {
-            contour: _that.options.style.polygon.contour,
-            fill: _that.options.style.polygon.fill,
-            stroke: _that.options.style.polygon.stroke,
-            lineWidth: _that.options.style.polygon.lineWidth
-          }
-
-        });
-
-      } else { throw new TypeError("The 'data' parameter can only be an array or an object"); }
-
-    } catch(e) { console.error(e); }
-
-    //graphical properties
-    [this.container, this.canvas, this.context] = createFittingCanvas(element);
-
-    if(this.options.description){
-      this.canvas.ariaLabel = this.options.description;
-      this.canvas.title = this.options.description;
-    }
-
-    this.widestLabel = getLongestStringWidth(this.options.style.label.font, this.labels);
-
-    this.position = {
-      x: _that.context.canvas.width / 2,
-      y: _that.context.canvas.height / 2
-    };
-
-    this.labelMargin = 5;
-    this.radius = ((this.context.canvas.width / 2) - this.widestLabel) - this.labelMargin;
-    this.increments = this.options.increments;
-    this.incrementStep = this.radius / this.increments;
-    this.angleStep = (Math.PI * 2) / this.dataDimensions;
-
-    //data properties
-    this.maxValue = this.options.maxValue ? this.options.maxValue : getMaxValueInArray(this.data);
-    this.valueStep = this.radius / this.maxValue;
-
-  }
-
-  clearCanvas () { this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); }
+  constructor (element) { [this.container, this.canvas, this.context] = createFittingCanvas(element); }
 
   updateData (newData) {
 
@@ -230,7 +91,65 @@ class PolygonChart {
 
   }
 
-  updateOptions (newOptions) { this.options = mergeObjects(this.options, newOptions, true); }
+  updateOptions (newOptions) {
+
+    const _defaults = {
+
+      maxValue: undefined,
+
+      increments: 10,
+
+      description: undefined,
+
+      animation: {
+        animated: false,
+        duration: 0,
+        delay: 0,
+        easingFunction: undefined,
+        tween: false
+      },
+
+      style: {
+
+        chart: {
+          background: false,
+          fill: 'rgba(0, 0, 255, 0.6)',
+          stroke: 'rgba(0, 0, 0, 1)',
+          lineWidth: 1
+        },
+
+        label: {
+          contour: false,
+          font: '1.6rem sans-serif',
+          fill: 'rgba(0, 0, 0, 1)',
+          stroke: 'rgba(255, 0, 0 , 1)',
+          lineWidth: 0.2
+        },
+
+        polygon: {
+          contour: true,
+          fill: 'rgba(255, 0, 0, 0.4)',
+          stroke: 'rgba(255, 0, 0, 1)',
+          lineWidth: 2
+        }
+
+      }
+
+    };
+
+    this.options = this.options ? mergeObjects(this.options, newOptions, true) : mergeObjects(_defaults, newOptions, true);
+
+  }
+
+  masterDraw () {
+
+    if(this.options.animation.animated === true) {
+
+      this.animate();
+
+    } else { this.draw(); }
+
+  }
 
   static extractDataFrom (array) {
 
@@ -241,12 +160,6 @@ class PolygonChart {
     }
 
     return data;
-
-  }
-
-  pauseAnimation () {
-
-    if(this.frameID) window.cancelAnimationFrame(this.frameID);
 
   }
 
@@ -403,6 +316,8 @@ class PolygonChart {
   draw (index = undefined, lastIndex = undefined) {
 
     this.context.save();
+
+    this.clearCanvas();
 
     this.drawChart();
 
@@ -583,6 +498,10 @@ class PolygonChart {
     }
 
   }
+
+  clearCanvas () { this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); }
+
+  pauseAnimation () { if(this.frameID) window.cancelAnimationFrame(this.frameID); }
 
   resizeAndCenter () {
 

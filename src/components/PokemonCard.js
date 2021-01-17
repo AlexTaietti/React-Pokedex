@@ -7,15 +7,11 @@ const PokemonCard = ({ pokemon }) => {
 
   const [visible, setVisibility] = useState(false);
 
-  useEffect(() => {
-
-    setVisibility(true);
-
-  }, []);
+  useEffect(() => { setTimeout(() => setVisibility(true)); }, []);
 
   return (
 
-      <li aria-label={pokemon.name} className={ visible ? "pokemon-card" : "pokemon-card hidden" }>
+      <li aria-label={pokemon.name} className={!visible ? "pokemon-card hidden" : "pokemon-card"}>
         <Link to={`/pokemon/${pokemon.name}`}>
         <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
           <img alt={`${pokemon.name}'s back side`} className="sprite-side sprite-side--back" src={pokemon.sprite.back}/>

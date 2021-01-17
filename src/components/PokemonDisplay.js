@@ -10,13 +10,13 @@ import EvolutionChain from './EvolutionChain.js';
 
 import '../styles/PokemonDisplay.scss';
 
-function PokemonDisplay ({ pokemonList }) {
+function PokemonDisplay () {
 
   const { pokemonName } = useParams();
 
-  const [selectedPokemon, selectPokemon] = useState(undefined);
+  const [ selectedPokemon, selectPokemon ] = useState(undefined);
 
-  const polygonChartOptions = {
+  const [ chartOptions, setChartOptions ] = useState({
 
     maxValue: 200,
 
@@ -30,7 +30,7 @@ function PokemonDisplay ({ pokemonList }) {
 
     style: {
 
-      label: { font: `${ 11 * window.devicePixelRatio }px Orbitron` },
+      label: { font: `${ 12.5 * window.devicePixelRatio }px Orbitron` },
 
       chart: {
         background: true,
@@ -46,76 +46,51 @@ function PokemonDisplay ({ pokemonList }) {
 
     }
 
-  };
-
-  function resetDisplay () { selectPokemon(undefined); }
+  });
 
   useEffect(() => {
 
     (async () => {
 
-      const pokemon = pokemonList.find( pokemon => pokemon.name === pokemonName );
+      const pokemon = await Pokemon.fetchPokemonBasicInfo(pokemonName);
 
-      if(pokemon){
+      const pokemonDetails = await pokemon.fetchDetails();
 
-        const pokemonDetails = await pokemon.fetchDetails();
-
-        pokemon.setDetails(pokemonDetails);
-
-        selectPokemon(pokemon);
-
-      } else {
-
-        const specialPokemon = await Pokemon.fetchPokemonBasicInfo(pokemonName);
-
-        const pokemonDetails = await specialPokemon.fetchDetails();
-
-        specialPokemon.setDetails(pokemonDetails);
-
-        selectPokemon(specialPokemon);
-
-      }
+      selectPokemon({...pokemon, ...pokemonDetails});
 
     })();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pokemonName] );
+  }, [pokemonName]);
 
   return (
 
-    <React.Fragment>
-
-      { ( selectedPokemon && selectedPokemon.details ) ?
+    selectedPokemon ?
 
         <div className="display-container">
 
           <main tabIndex="0" className="display-content" aria-label={ `reasons why ${selectedPokemon.name} is awesome!` }>
 
             <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${selectedPokemon.name}'s artwork` }>
-              <img src={ selectedPokemon.details.image } alt={ selectedPokemon.name }/>
+              <img src={ selectedPokemon.image } alt={ selectedPokemon.name }/>
             </figure>
 
             <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${selectedPokemon.name}` }>
-              <PokemonInfo pokemonDetails={ selectedPokemon.details } pokemonName={ selectedPokemon.name }/>
+              <PokemonInfo pokemonDetails={ selectedPokemon } pokemonName={ selectedPokemon.name }/>
             </section>
 
             <div tabIndex="0" className="chart-container" aria-label={ `${selectedPokemon.name}'s stats` }>
-              <Chart data={ selectedPokemon.details.statsObject } options={ polygonChartOptions }/>
+              <Chart options={ chartOptions } data={ selectedPokemon.statsObject } />
             </div>
 
             <section tabIndex="0" className="pokemon-evolution" aria-label={ `${selectedPokemon.name}'s evolution chain` }>
-              <EvolutionChain pokemonName={ selectedPokemon.name } pokemonEvolution={ selectedPokemon.details.evolutionsArray }/>
+              <EvolutionChain pokemonName={ selectedPokemon.name } pokemonEvolution={ selectedPokemon.evolutionsArray }/>
             </section>
 
-            <Link onClick={ resetDisplay } className="home-link" to="/">&larr;back</Link>
+            <Link onClick={ () => selectPokemon(undefined) } className="home-link" to="/">&larr;back</Link>
 
           </main>
 
-        </div>
-
-        : <Loader/> }
-
-    </React.Fragment>
+        </div> : <Loader/>
 
   );
 

@@ -68,8 +68,6 @@ export default class Pokemon {
 
   }
 
-  setDetails (details) { this.details = details; }
-
   static extractEvolutionChain (chainObject, evolutionChain = []) {
 
     evolutionChain.push(chainObject.species.name);
@@ -99,9 +97,8 @@ export default class Pokemon {
 
   }
 
-  static async fetchBatchPokemons (limit, offset) {
+  static async fetchBatchPokemons (offset = 0, limit = 20) {
 
-    //total number of pokemons in first gen
     const pokemons = [];
 
     //catch 'em all!
@@ -110,7 +107,12 @@ export default class Pokemon {
     for(let i=0; i < data.results.length; i++){
 
       const url = data.results[i].url;
-      const { id, name, sprites : { front_default, back_default }} = await fetchData(url);
+
+      const pokemonData = await fetchData(url);
+
+      if(!pokemonData) continue;
+
+      const { id, name, sprites : { front_default, back_default }} = pokemonData;
 
       const pokemon = new Pokemon({
         id: id,

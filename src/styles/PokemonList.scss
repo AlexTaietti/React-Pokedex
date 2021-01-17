@@ -1,3 +1,11 @@
+@keyframes pulse {
+
+  0%{ transform: translate(50%, 0); }
+  30%{ transform: translate(50%, 10px); }
+  60%{ transform: translate(50%, 0); }
+
+}
+
 .list-container{
 
   max-width: var(--content-max-width);
@@ -11,6 +19,34 @@
     max-width: 60%;
 
     & > img{ width: 100%; }
+
+  }
+
+  & > main > span {
+
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 2px 2px black;
+    display: block;
+    text-align: center;
+    margin: 0 auto 160px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    position: relative;
+
+    &::after{
+      content: "\22CE";
+			position: absolute;
+      right: 50%;
+      bottom: -35px;
+      font-size: 2.5rem;
+			transform: translate(50%, 0);
+			text-shadow: 0px 2px black;
+      animation-name: pulse;
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-out;
+    }
 
   }
 

@@ -3,60 +3,19 @@ import PolygonChart from '../classes/PolygonChart.js';
 
 import '../styles/Chart.scss';
 
-function Chart ({data, options}) {
-
-  console.log('Rendering chart...');
+function Chart ({ data, options }) {
 
   const container = useRef();
 
   const chart = useRef();
 
-  useEffect(() => {
+  useEffect(() => {  console.log('Creating chart and mounting it on the view'); chart.current = new PolygonChart(container.current); }, []);
 
-    chart.current = new PolygonChart(data, container.current, options);
+  useEffect(() => {  console.log('Updating the charts options'); chart.current.updateOptions(options); }, [options]);
 
-    if(chart.current.options.animation.animated) {
+  useEffect(() => {  console.log('Updating the charts data'); chart.current.updateData(data); }, [data]);
 
-      chart.current.animate();
-
-    } else {
-
-      chart.current.draw();
-
-    }
-
-    window.addEventListener('resize', chart.current.resizeAndCenter.bind(chart.current));
-
-    return function () {
-
-      console.log('Unmounting chart and cleaning up event handlers...');
-
-      window.removeEventListener('resize', chart.current.resizeAndCenter.bind(chart.current));
-
-    }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-
-    console.log('Updating chart data...')
-
-    chart.current.updateData(data);
-
-    if(chart.current.options.animation.animated) {
-
-      chart.current.animate();
-
-    } else {
-
-      chart.current.clearCanvas();
-
-      chart.current.draw();
-
-    }
-
-  }, [data]);
+  useEffect(() => {  console.log('Rendering the chart'); chart.current.masterDraw(); }, [options, data]);
 
   return <figure aria-label='chart' className="chart" ref={container}></figure>;
 

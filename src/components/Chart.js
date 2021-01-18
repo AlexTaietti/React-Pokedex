@@ -17,7 +17,7 @@ const Chart = ({ data, options }) => {
 
   useEffect(() => {
 
-    console.log('Creating chart, hooking its resize handler to the window and finally mounting it on the view');
+    console.log('Creating chart, hooking its resize handler to the window and then mounting it on the view');
 
     chart.current = new PolygonChart(container.current);
 

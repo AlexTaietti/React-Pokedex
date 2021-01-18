@@ -1,28 +1,28 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const bounce = keyframes`
+  10%{  transform: translateY(-35px); }
+  15%{  transform: translateY(0px); }
+  25%{  transform: translateY(-15px); }
+  30%{  transform: translateY(0px); }
+  50%{  transform: rotateZ(10deg); }
+  60%{  transform: rotateZ(-10deg); }
+  70%{  transform: rotateZ(10deg); }
+  100%{ transform: rotateZ(0deg); }
+`;
+
+const shadow = keyframes`
+  10%{  transform: scaleX(0.6); }
+  15%{  transform: scaleX(1); }
+  25%{  transform: scaleX(0.8); }
+  30%{  transform: scaleX(1); }
+  50%{  transform: translateX(5px); }
+  60%{  transform: translateX(-5px); }
+  70%{  transform: translateX(5px); }
+  100%{ transform: translateX(-5px); }
+`;
 
 const LoaderContainer = styled.div`
-
-  @keyframes bounce {
-    10% {  transform: translateY(-35px); }
-    15%{  transform: translateY(0px); }
-    25%{  transform: translateY(-15px); }
-    30%{  transform: translateY(0px); }
-    50%{  transform: rotateZ(10deg); }
-    60%{  transform: rotateZ(-10deg); }
-    70%{  transform: rotateZ(10deg); }
-    100%{ transform: rotateZ(0deg); }
-  }
-
-  @keyframes shadow {
-    10% {  transform: scaleX(0.6); }
-    15%{  transform: scaleX(1); }
-    25%{  transform: scaleX(0.8); }
-    30%{  transform: scaleX(1); }
-    50%{  transform: translateX(5px); }
-    60%{  transform: translateX(-5px); }
-    70%{  transform: translateX(5px); }
-    100%{ transform: translateX(-5px); }
-  }
 
   position: fixed;
   z-index: 12121996;
@@ -52,7 +52,7 @@ const LoaderContainer = styled.div`
       height: 10px;
       background-color: rgb(50, 10, 10);
       border-radius: 50%;
-      animation-name: shadow;
+      animation-name: ${ shadow };
       animation-duration: 2s;
       animation-timing-function: ease-in-out;
       animation-iteration-count: infinite;
@@ -64,7 +64,7 @@ const LoaderContainer = styled.div`
       width: 100%;
       height: 100%;
       transform-origin: bottom center;
-      animation-name: bounce;
+      animation-name: ${ bounce };
       animation-duration: 2s;
       animation-timing-function: ease-in-out;
       animation-iteration-count: infinite;

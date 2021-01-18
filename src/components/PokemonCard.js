@@ -1,28 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const rotateBack = keyframes`
+  0%{ transform: rotateY(180deg); }
+  50%{ transform: rotateY(360deg); }
+  100%{ transform: rotateY(180deg); }
+`;
+
+const rotateFront = keyframes`
+  0%{ transform: rotateY(0deg); }
+  50%{ transform: rotateY(180deg); }
+  100%{ transform: rotateY(360deg); }
+`;
 
 const Card = styled.li`
-
-  @keyframes rotate-back{
-    0%{ transform: rotateY(180deg); }
-    50%{ transform: rotateY(360deg); }
-    100%{ transform: rotateY(180deg); }
-  }
-
-  @keyframes rotate-front{
-    0%{ transform: rotateY(0deg); }
-    50%{ transform: rotateY(180deg); }
-    100%{ transform: rotateY(360deg); }
-  }
-
-  @keyframes rotate-normal-back{
-    100%{ transform: rotateY(180deg); }
-  }
-
-  @keyframes rotate-normal-front{
-    100%{ transform: rotateY(0deg); }
-  }
 
   text-align: center;
   margin: 10px 10px 60px;
@@ -86,9 +78,9 @@ const Card = styled.li`
 
   &:hover{
 
-    .sprite-side--front{ animation-name: rotate-front; }
+    .sprite-side--front{ animation-name: ${rotateFront}; }
 
-    .sprite-side--back{ animation-name: rotate-back; }
+    .sprite-side--back{ animation-name: ${ rotateBack }; }
 
   }
 

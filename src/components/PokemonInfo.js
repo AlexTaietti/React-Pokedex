@@ -1,5 +1,3 @@
-import React from 'react';
-
 import '../styles/PokemonInfo.scss';
 
 function PokemonInfo ( { pokemonName, pokemonDetails } ) {

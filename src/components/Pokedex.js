@@ -1,13 +1,16 @@
-import React from 'react';
-
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import styled from 'styled-components';
 
 import PokemonDisplay from './PokemonDisplay';
 import PokemonList from './PokemonList.js';
 
-import '../styles/Pokedex.scss';
+const PokedexWrapper = styled.div`
+  background: var(--pokedex-bg);
+  padding: 20px 20px;
+  display: block;
+`;
 
-function Pokedex () {
+const Pokedex = () => {
 
   //render the pokedex!
   return (
@@ -15,21 +18,21 @@ function Pokedex () {
     <Router>
 
       <Route exact path="/pokemon/:pokemonName">
-        <div className="pokedex">
+        <PokedexWrapper>
           <PokemonDisplay/>
-        </div>
+        </PokedexWrapper>
       </Route>
 
       <Route exact path="/">
-        <div className="pokedex">
+        <PokedexWrapper>
           <PokemonList/>
-        </div>
+        </PokedexWrapper>
       </Route>
 
     </Router>
 
   );
 
-}
+};
 
 export default Pokedex;

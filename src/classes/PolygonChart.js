@@ -4,7 +4,25 @@ import easingFunctions from '../utils/easingFunctions.js';
 
 class PolygonChart {
 
-  constructor (element) { [this.container, this.canvas, this.context] = createFittingCanvas(element); }
+  constructor (element) {
+
+    [this.container, this.canvas, this.context] = createFittingCanvas(element);
+
+  }
+
+  setResizeHandler () {
+
+    window.addEventListener( 'resize', this.resizeAndCenter.bind(this) );
+
+    return () => {
+
+      console.log('Unmounting chart and cleaning up event handlers');
+
+      window.removeEventListener( 'resize', this.resizeAndCenter );
+
+    }
+
+  }
 
   updateData (newData) {
 

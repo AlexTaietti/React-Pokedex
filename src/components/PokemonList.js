@@ -108,7 +108,7 @@ function PokemonList () {
 
       loadFreshBatchOfPokemons = async () => {
 
-        if(loading || window.scrollY + window.innerHeight < (document.documentElement.scrollHeight) ){ return; }
+        if(loading || (window.scrollY + window.innerHeight) < document.documentElement.scrollHeight ){ return; }
 
         loading = true;
 

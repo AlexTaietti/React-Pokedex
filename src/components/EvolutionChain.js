@@ -69,8 +69,8 @@ const EvolutionChain = ({ pokemonEvolution, pokemonName }) => {
   return (
 
   	<EvolutionContainer>
-  		<h1>Evolution Chain</h1>
-	    <ul role="listbox">
+      <h1>Evolution Chain</h1>
+      <ul role="listbox">
 	      { pokemonEvolution.map((pokemon, index) => <PokemonCard key={index} pokemon={pokemon} />) }
 	    </ul>
     </EvolutionContainer>

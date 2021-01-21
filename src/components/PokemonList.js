@@ -126,7 +126,7 @@ function PokemonList () {
 
         if(lastPokemonIndex === maximumPokemonAmount){
 
-          console.log('every pokemon in existance has been loaded!');
+          console.log('All pokemons have been loaded!');
 
           window.removeEventListener('scroll', loadFreshBatchOfPokemons);
 
@@ -152,7 +152,7 @@ function PokemonList () {
         <header role="banner" aria-label="pokemon logo">
           <img className="pokemon-logo" src={PokemonLogo} alt="Pokemon"/>
         </header>
-        <main aria-label="list of pokemons">
+        <main aria-label="list of pokemons, scroll to the bottom of the page to catch more of 'em!">
           <ul className="pokemon-list">
             { pokemonList.map( pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} /> ) }
           </ul>

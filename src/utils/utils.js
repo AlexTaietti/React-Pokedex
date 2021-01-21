@@ -76,12 +76,11 @@ export function getLongestStringWidth (font, stringArray) {
     if(currentWidth > widest) widest = currentWidth;
   }
 
-
   return widest;
 
 }
 
-export function getMaxValueInArray (array, previousHighest = 0) {
+export function getMaxValueInArray (array, previousHighest) {
 
   let highest = previousHighest || 0;
 

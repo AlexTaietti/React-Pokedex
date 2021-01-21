@@ -96,6 +96,8 @@ function PokemonList () {
 
       let loading = false;
 
+      const scrollLimit= 40;
+
       const pokemonFetchAmount = 20;
 
       const maximumPokemonAmount = 384; //first 3 generations
@@ -108,7 +110,7 @@ function PokemonList () {
 
       loadFreshBatchOfPokemons = async () => {
 
-        if(loading || (window.scrollY + window.innerHeight) < document.documentElement.scrollHeight ){ return; }
+        if(loading || (window.scrollY + window.innerHeight) < document.documentElement.scrollHeight - scrollLimit ){ return; }
 
         loading = true;
 

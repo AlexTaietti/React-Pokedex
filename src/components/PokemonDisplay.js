@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Pokemon from '../classes/Pokemon.js';
 import styled from 'styled-components';
@@ -110,7 +110,7 @@ const PokemonDisplay = () => {
 
   const [ selectedPokemon, selectPokemon ] = useState(undefined);
 
-  const [ chartOptions, setChartOptions ] = useState({
+  const chartOptions = useRef({
 
     maxValue: 200,
 
@@ -173,7 +173,7 @@ const PokemonDisplay = () => {
             </section>
 
             <div tabIndex="0" className="chart-container" aria-label={ `${selectedPokemon.name}'s stats` }>
-              <Chart options={ chartOptions } data={ selectedPokemon.statsObject } />
+              <Chart options={ chartOptions.current } data={ selectedPokemon.statsObject } />
             </div>
 
             <section tabIndex="0" className="pokemon-evolution" aria-label={ `${selectedPokemon.name}'s evolution chain` }>

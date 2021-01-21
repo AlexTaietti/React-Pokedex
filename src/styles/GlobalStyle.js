@@ -22,36 +22,6 @@ const GlobalStyle = createGlobalStyle`
     --water-info-container-text-color: #090a62;
     --water-info-container-label-color: white;
 
-    //fire info color palette
-    --fire-info-container-bg: #ff6000;
-    --fire-info-container-text-color: #600;
-    --fire-info-container-label-color: white;
-
-    //grass info color palette
-    --grass-info-container-bg: #48e600;
-    --grass-info-container-text-color: #6f0073;
-    --grass-info-container-label-color: white;
-
-    //electric info color palette
-    --electric-info-container-bg: #d9d502;
-    --electric-info-container-text-color: #620a01;
-    --electric-info-container-label-color: white;
-
-    //fairy info color palette
-    --fairy-info-container-bg: #fd6cb7;
-    --fairy-info-container-text-color: #090a62;
-    --fairy-info-container-label-color: white;
-
-    //ghost info color palette
-    --ghost-info-container-bg: #730177;
-    --ghost-info-container-text-color: #01ffcf;
-    --ghost-info-container-label-color: white;
-
-    //rock info color palette
-    --rock-info-container-bg: #919191;
-    --rock-info-container-text-color: black;
-    --rock-info-container-label-color: white;
-
   }
 
   html { font-size: 10px; }

@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Pokemon from '../classes/Pokemon.js';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import PokemonLogo from '../images/pokemon.png';
 
 import Loader from './Loader.js';
 import PokemonCard from './PokemonCard.js';
 
+const pulse = keyframes`
+  0%{ transform: translate(50%, 0); }
+  30%{ transform: translate(50%, 10px); }
+  60%{ transform: translate(50%, 0); }
+`;
+
 const ListContainer = styled.div`
-
-  @keyframes pulse {
-
-    0%{ transform: translate(50%, 0); }
-    30%{ transform: translate(50%, 10px); }
-    60%{ transform: translate(50%, 0); }
-
-  }
 
   max-width: var(--content-max-width);
   margin: 0 auto;
@@ -51,7 +49,7 @@ const ListContainer = styled.div`
       font-size: 2.5rem;
       transform: translate(50%, 0);
       text-shadow: 0px 2px black;
-      animation-name: pulse;
+      animation-name: ${ pulse };
       animation-duration: 1.5s;
       animation-iteration-count: infinite;
       animation-timing-function: ease-out;
@@ -100,7 +98,7 @@ function PokemonList () {
 
       const pokemonFetchAmount = 20;
 
-      const maximumPokemonAmount = 493; //the first 4 generations
+      const maximumPokemonAmount = 384; //first 3 generations
 
       const pokemons = await Pokemon.fetchBatchPokemons(lastPokemonIndex, pokemonFetchAmount);
 
@@ -112,6 +110,8 @@ function PokemonList () {
 
         if(loading || window.scrollY + window.innerHeight < (document.documentElement.scrollHeight) ){ return; }
 
+        loading = true;
+
         console.log('Loading a fresh batch of Pokemons!');
 
         const adjustedfetchAmount = lastPokemonIndex + pokemonFetchAmount > maximumPokemonAmount ? (maximumPokemonAmount - lastPokemonIndex) : pokemonFetchAmount;
@@ -121,6 +121,8 @@ function PokemonList () {
         lastPokemonIndex = nextPokemonBatch[nextPokemonBatch.length - 1].id;
 
         setPokemonList( (oldList) => [...oldList, ...nextPokemonBatch] );
+
+        loading = false;
 
         if(lastPokemonIndex === maximumPokemonAmount){
 

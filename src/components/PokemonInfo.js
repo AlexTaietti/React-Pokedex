@@ -6,80 +6,10 @@ const InfoContainer = styled.div`
 	border-radius: 10px;
 	width: 100%;
 	box-shadow: 0px 15px 15px 0px black;
-
-	&.water{
-		background: var(--water-info-container-bg);
-		& h1{ color: var(--water-info-container-label-color); }
-		& p{ color: var(--water-info-container-text-color); }
-		& h2{ color: var(--water-info-container-label-color); }
-		& span{ color: var(--water-info-container-text-color); }
-	}
-
-	&.normal{
-		background: var(--water-info-container-bg);
-		& h1{ color: var(--water-info-container-label-color); }
-		& p{ color: var(--water-info-container-text-color); }
-		& h2{ color: var(--water-info-container-label-color); }
-		& span{ color: var(--water-info-container-text-color); }
-	}
-
-	&.fire{
-		background: var(--fire-info-container-bg);
-		& h1{ color: var(--fire-info-container-label-color); }
-		& p{ color: var(--fire-info-container-text-color); }
-		& h2{ color: var(--fire-info-container-label-color); }
-		& span{ color: var(--fire-info-container-text-color); }
-	}
-
-	&.grass{
-		background: var(--grass-info-container-bg);
-		& h1{ color: var(--grass-info-container-label-color); }
-		& p{ color: var(--grass-info-container-text-color); }
-		& h2{ color: var(--grass-info-container-label-color); }
-		& span{ color: var(--grass-info-container-text-color); }
-	}
-
-	&.electric{
-		background: var(--electric-info-container-bg);
-		& h1{ color: var(--electric-info-container-label-color); }
-		& p{ color: var(--electric-info-container-text-color); }
-		& h2{ color: var(--electric-info-container-label-color); }
-		& span{ color: var(--electric-info-container-text-color); }
-	}
-
-	&.fairy{
-		background: var(--fairy-info-container-bg);
-		& h1{ color: var(--fairy-info-container-label-color); }
-		& p{ color: var(--fairy-info-container-text-color); }
-		& h2{ color: var(--fairy-info-container-label-color); }
-		& span{ color: var(--fairy-info-container-text-color); }
-	}
-
-	&.ghost{
-		background: var(--ghost-info-container-bg);
-		& h1{ color: var(--ghost-info-container-label-color); }
-		& p{ color: var(--ghost-info-container-text-color); }
-		& h2{ color: var(--ghost-info-container-label-color); }
-		& span{ color: var(--ghost-info-container-text-color); }
-	}
-
-	&.poison{
-		background: var(--ghost-info-container-bg);
-		& h1{ color: var(--ghost-info-container-label-color); }
-		& p{ color: var(--ghost-info-container-text-color); }
-		& h2{ color: var(--ghost-info-container-label-color); }
-		& span{ color: var(--ghost-info-container-text-color); }
-	}
-
-	&.rock{
-		background: var(--rock-info-container-bg);
-		& h1{ color: var(--rock-info-container-label-color); }
-		& p{ color: var(--rock-info-container-text-color); }
-		& h2{ color: var(--rock-info-container-label-color); }
-		& span{ color: var(--rock-info-container-text-color); }
-	}
+	background: #04b5b5;
 
 	h1{
+		color: white;
 		text-transform: capitalize;
 		font-size: 3rem;
 		margin-bottom: 10px;
@@ -87,6 +17,7 @@ const InfoContainer = styled.div`
 	}
 
 	p{
+		color: #090a62;
 		font-size: 2rem;
 		margin-bottom: 30px;
 	}
@@ -104,12 +35,14 @@ const InfoContainer = styled.div`
 			width: 50%;
 
 			& h2{
+				color: white;
 				font-weight: lighter;
 				font-size: 1.6rem;
 				text-shadow: .5px .5px black;
 			}
 
 			& span{
+				color: #090a62;
 				white-space: pre;
 				font-size: 2rem;
 			}

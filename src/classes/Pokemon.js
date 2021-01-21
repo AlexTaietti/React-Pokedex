@@ -78,10 +78,13 @@ export default class Pokemon {
 
   }
 
-  static async fetchPokemonBasicInfo (pokemonName) {
+  static async fetchPokemon (url) {
 
-    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
-    const { id, name, sprites : { front_default, back_default }} = await fetchData(url);
+    const pokemonInformation = await fetchData(url);
+
+    if(!pokemonInformation) { return; }
+
+    const { id, name, sprites : { front_default, back_default } } = pokemonInformation;
 
     const pokemon = new Pokemon({
       id: id,
@@ -92,6 +95,16 @@ export default class Pokemon {
       },
       url: url
     });
+
+    return pokemon;
+
+  }
+
+  static async fetchPokemonBasicInfo (pokemonName) {
+
+    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+
+    const pokemon = await Pokemon.fetchPokemon(url);
 
     return pokemon;
 
@@ -108,21 +121,18 @@ export default class Pokemon {
 
       const url = data.results[i].url;
 
-      const pokemonData = await fetchData(url);
+      const pokemon = await Pokemon.fetchPokemon(url);
 
-      if(!pokemonData) continue;
+      if(!pokemon) {
 
-      const { id, name, sprites : { front_default, back_default }} = pokemonData;
+        const splitURL = url.split('/');
+        const pokemonID = splitURL[splitURL.length - 1];
 
-      const pokemon = new Pokemon({
-        id: id,
-        name: name,
-        sprite: {
-          front: front_default,
-          back: back_default
-        },
-        url: url
-      });
+        console.warn(`Poké ID: ${ pokemonID } => pokemon has been skipped, the data retrieved cannot be used by this app.`);
+
+        continue;
+
+      };
 
       pokemons.push(pokemon);
 

@@ -16,7 +16,7 @@ class PolygonChart {
 
     return () => {
 
-      console.log('Unmounting chart and cleaning up event handlers');
+      console.log('PolygonChart.js: Unmounting chart and cleaning up event handlers');
 
       window.removeEventListener( 'resize', this.resizeAndCenter );
 

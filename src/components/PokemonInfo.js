@@ -88,7 +88,7 @@ function PokemonInfo ( { pokemonName, pokemonDetails } ) {
 
 	return (
 
-		<InfoContainer className="water">
+		<InfoContainer>
       <h1 tabIndex="0">{ pokemonName }</h1>
       <p tabIndex="0">{ pokemonDetails.formattedDescription }</p>
       <ul>

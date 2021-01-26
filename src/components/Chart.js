@@ -17,7 +17,7 @@ const Chart = ({ data, options }) => {
 
   useEffect(() => {
 
-    console.log('Creating chart, hooking its resize handler to the window and then mounting it on the view');
+    console.log('Chart.js: Creating chart, hooking its resize handler to the window and then mounting it on the view');
 
     chart.current = new PolygonChart(container.current);
 
@@ -25,11 +25,11 @@ const Chart = ({ data, options }) => {
 
   }, []);
 
-  useEffect(() => {  console.log('Updating the charts options'); chart.current.updateOptions(options); }, [options]);
+  useEffect(() => {  console.log('Chart.js: Updating the charts options'); chart.current.updateOptions(options); }, [options]);
 
-  useEffect(() => {  console.log('Updating the charts data'); chart.current.updateData(data); }, [data]);
+  useEffect(() => {  console.log('Chart.js: Updating the charts data'); chart.current.updateData(data); }, [data]);
 
-  useEffect(() => {  console.log('Rendering the chart'); chart.current.masterDraw(); }, [options, data]);
+  useEffect(() => {  console.log('Chart.js: Rendering the chart'); chart.current.masterDraw(); }, [options, data]);
 
   return <ChartFigure aria-label='chart' ref={container}></ChartFigure>;
 

@@ -25,7 +25,7 @@ const Card = styled.li`
   width: 165px;
   box-shadow: 0px 7px 11px -3px black;
   transition-property: opacity, transform;
-  transition-duration: 1s;
+  transition-duration: 0.4s;
   transition-delay: 0s;
   transform: translateY(0);
   opacity: 1;
@@ -97,7 +97,7 @@ const Card = styled.li`
 
 `;
 
-const PokemonCard = ({ pokemon }) => {
+const PokemonCard = ({ handleClick, pokemon }) => {
 
   const [visible, setVisibility] = useState(false);
 
@@ -105,7 +105,7 @@ const PokemonCard = ({ pokemon }) => {
 
   return (
 
-      <Card aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
+      <Card onClick={ () => { handleClick ? handleClick(window.scrollY) : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
         <Link to={`/pokemon/${pokemon.name}`}>
         <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
           <img alt={`${pokemon.name}'s back side`} className="sprite-side sprite-side--back" src={pokemon.sprite.back}/>

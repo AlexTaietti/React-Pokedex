@@ -1,7 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useReducer, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Pokemon from '../classes/Pokemon.js';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import themes from '../styles/Themes.js';
+import pokeReducer from '../utils/PokeReducer.js';
 
 import Loader from './Loader.js';
 
@@ -104,87 +106,102 @@ const DisplayContainer = styled.div`
 
 `;
 
-const PokemonDisplay = () => {
+const PokemonDisplay = ({ setLoadingList }) => {
 
   const { pokemonName } = useParams();
 
-  const [ selectedPokemon, selectPokemon ] = useState(undefined);
-
-  const chartOptions = useRef({
-
-    maxValue: 200,
-
-    increments: 10,
-
-    animation:{
-      animated: true,
-      duration: 2000,
-      easingFunction: 'easeOutElastic'
-    },
-
-    style: {
-
-      label: { font: `${ 12.5 * window.devicePixelRatio }px Orbitron` },
-
-      chart: {
-        background: true,
-        fill: 'rgba(0, 255, 255, 0.7)'
-      },
-
-      polygon: {
-        contour: true,
-        fill: 'rgba(255, 0, 0, 0.4)',
-        stroke: 'rgba(255, 0, 0, 1)',
-        lineWidth: 2
-      }
-
-    }
-
+  const [ pokeState, pokeDispatch ] = useReducer( pokeReducer, {
+    pokemon: undefined,
+    theme: undefined,
+    chartOptions: undefined
   });
+
+  const resetSelection = () => pokeDispatch({ type: 'RESET_SELECTION' });
 
   useEffect(() => {
 
-    (async () => {
+    const choosePokemon = async (pokemonName) => {
 
       const pokemon = await Pokemon.fetchPokemonBasicInfo(pokemonName);
-
       const pokemonDetails = await pokemon.fetchDetails();
+      const detailedPokemon = { ...pokemon, details: { ...pokemonDetails } };
 
-      selectPokemon({...pokemon, ...pokemonDetails});
+      const pokemonType = pokemonDetails.type.split('\n')[0];
+      const pokemonTheme = themes[pokemonType];
 
-    })();
+      const pokemonChartOptions = {
+
+        maxValue: 200,
+
+        increments: 10,
+
+        animation:{
+          animated: true,
+          duration: 2000,
+          easingFunction: 'easeOutElastic'
+        },
+
+        style: {
+
+          label: { font: `${ 12.5 * window.devicePixelRatio }px Orbitron` },
+
+          chart: {
+            background: true,
+            fill: pokemonTheme.infoSolid
+          },
+
+          polygon: {
+            contour: true,
+            fill: 'rgba(255, 0, 0, 0.4)',
+            stroke: 'rgba(255, 0, 0, 1)',
+            lineWidth: 2
+          }
+
+        }
+
+      };
+
+      pokeDispatch( { type: 'CHOOSE_POKEMON', pokemon: detailedPokemon, theme: pokemonTheme, chartOptions: pokemonChartOptions });
+
+    };
+
+    choosePokemon(pokemonName);
 
   }, [pokemonName]);
 
   return (
 
-    selectedPokemon ?
+      pokeState.pokemon && pokeState.theme ?
 
-        <DisplayContainer>
+        <ThemeProvider theme={ pokeState.theme }>
 
-          <main tabIndex="0" className="display-content" aria-label={ `reasons why ${selectedPokemon.name} is awesome!` }>
+          <DisplayContainer>
 
-            <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${selectedPokemon.name}'s artwork` }>
-              <img src={ selectedPokemon.image } alt={ selectedPokemon.name }/>
-            </figure>
+            <main tabIndex="0" className="display-content" aria-label={ `reasons why ${pokeState.pokemon.name} is awesome!` }>
 
-            <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${selectedPokemon.name}` }>
-              <PokemonInfo pokemonDetails={ selectedPokemon } pokemonName={ selectedPokemon.name }/>
-            </section>
+              <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${pokeState.pokemon.name}'s artwork` }>
+                <img src={ pokeState.pokemon.details.image } alt={ pokeState.pokemon.name }/>
+              </figure>
 
-            <div tabIndex="0" className="chart-container" aria-label={ `${selectedPokemon.name}'s stats` }>
-              <Chart options={ chartOptions.current } data={ selectedPokemon.statsObject } />
-            </div>
+              <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${pokeState.pokemon.name}` }>
+                <PokemonInfo pokemonDetails={ pokeState.pokemon.details } pokemonName={ pokeState.pokemon.name }/>
+              </section>
 
-            <section tabIndex="0" className="pokemon-evolution" aria-label={ `${selectedPokemon.name}'s evolution chain` }>
-              <EvolutionChain pokemonName={ selectedPokemon.name } pokemonEvolution={ selectedPokemon.evolutionsArray }/>
-            </section>
+              <div tabIndex="0" className="chart-container" aria-label={ `${pokeState.pokemon.name}'s stats` }>
+                <Chart options={ pokeState.chartOptions } data={ pokeState.pokemon.details.statsObject } />
+              </div>
 
-            <Link onClick={ () => selectPokemon(undefined) } className="home-link" to="/">&larr;back</Link>
+              <section tabIndex="0" className="pokemon-evolution" aria-label={ `${pokeState.pokemon.name}'s evolution chain` }>
+                <EvolutionChain pokemonName={ pokeState.pokemon.name } pokemonEvolution={ pokeState.pokemon.details.evolutionsArray }/>
+              </section>
 
-          </main>
+              <Link onClick={ resetSelection } className="home-link" to="/">&larr;back</Link>
 
-        </DisplayContainer> : <Loader/>
+            </main>
+
+          </DisplayContainer>
+
+        </ThemeProvider> : <Loader/>
 
   );
 

@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useEffect, useState } from 'react';
 import Pokemon from '../classes/Pokemon.js';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import PokemonLogo from '../images/pokemon.png';
 
 import Loader from './Loader.js';
 import PokemonCard from './PokemonCard.js';
-
-const pulse = keyframes`
-  0%{ transform: translate(50%, 0); }
-  30%{ transform: translate(50%, 10px); }
-  60%{ transform: translate(50%, 0); }
-`;
+import LoadButton from './LoadButton.js';
 
 const ListContainer = styled.div`
 
@@ -26,34 +21,6 @@ const ListContainer = styled.div`
     max-width: 60%;
 
     & > img{ width: 100%; }
-
-  }
-
-  & > main > span {
-
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 2px 2px black;
-    display: block;
-    text-align: center;
-    margin: 0 auto 160px;
-    color: white;
-    font-size: 2rem;
-    cursor: pointer;
-    position: relative;
-
-    &:after{
-      content: "\\22CE";
-      position: absolute;
-      right: 50%;
-      bottom: -35px;
-      font-size: 2.5rem;
-      transform: translate(50%, 0);
-      text-shadow: 0px 2px black;
-      animation-name: ${ pulse };
-      animation-duration: 1.5s;
-      animation-iteration-count: infinite;
-      animation-timing-function: ease-out;
-    }
 
   }
 
@@ -78,77 +45,15 @@ const ListContainer = styled.div`
 
 `;
 
-function PokemonList () {
+function PokemonList ({ handleListCardClick, scrollValue, loadFreshBatchOfPokemons, pokemons }) {
 
-  const [pokemonList, setPokemonList] = useState([]);
+  useEffect(() => { if(!pokemons.length) loadFreshBatchOfPokemons(); } , []);
 
-  const [loadedEveryPokemon, setLoadedEveryPokemon] = useState(false);
-
-  useEffect(() => {
-
-    let loadFreshBatchOfPokemons;
-
-    (async () => {
-
-      console.log('Mounting pokedex...');
-
-      let lastPokemonIndex = 0;
-
-      let loading = false;
-
-      const scrollLimit= 40;
-
-      const pokemonFetchAmount = 20;
-
-      const maximumPokemonAmount = 384; //first 3 generations
-
-      const pokemons = await Pokemon.fetchBatchPokemons(lastPokemonIndex, pokemonFetchAmount);
-
-      lastPokemonIndex = pokemons[pokemons.length - 1].id;
-
-      setPokemonList(pokemons);
-
-      loadFreshBatchOfPokemons = async () => {
-
-        if(loading || (window.scrollY + window.innerHeight) < document.documentElement.scrollHeight - scrollLimit ){ return; }
-
-        loading = true;
-
-        console.log('Loading a fresh batch of Pokemons!');
-
-        const adjustedfetchAmount = lastPokemonIndex + pokemonFetchAmount > maximumPokemonAmount ? (maximumPokemonAmount - lastPokemonIndex) : pokemonFetchAmount;
-
-        const nextPokemonBatch = await Pokemon.fetchBatchPokemons(lastPokemonIndex, adjustedfetchAmount);
-
-        lastPokemonIndex = nextPokemonBatch[nextPokemonBatch.length - 1].id;
-
-        setPokemonList( (oldList) => [...oldList, ...nextPokemonBatch] );
-
-        loading = false;
-
-        if(lastPokemonIndex === maximumPokemonAmount){
-
-          console.log('All pokemons have been loaded!');
-
-          window.removeEventListener('scroll', loadFreshBatchOfPokemons);
-
-          setLoadedEveryPokemon(true);
-
-        }
-
-      };
-
-      window.addEventListener('scroll', loadFreshBatchOfPokemons);
-
-    })();
-
-    return () => { window.removeEventListener('scroll', loadFreshBatchOfPokemons); }
-
-  }, []);
+  useLayoutEffect(() => { if(scrollValue) window.scrollTo(0, scrollValue); }, []);
 
   return (
 
-    pokemonList.length ?
+    pokemons.length ?
 
       <ListContainer>
         <header role="banner" aria-label="pokemon logo">
@@ -156,13 +61,11 @@ function PokemonList () {
         </header>
         <main aria-label="list of pokemons, scroll to the bottom of the page to catch more of 'em!">
           <ul className="pokemon-list">
-            { pokemonList.map( pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} /> ) }
+            { pokemons.map( pokemon => <PokemonCard handleClick={ handleListCardClick } key={pokemon.id} pokemon={pokemon} /> ) }
           </ul>
-          { loadedEveryPokemon ? <React.Fragment/> : <span>Catch some more!</span> }
+          <LoadButton handleClick={ loadFreshBatchOfPokemons }/>
         </main>
-      </ListContainer>
-
-      : <Loader/>
+      </ListContainer> : <Loader/>
 
   );
 

@@ -43,6 +43,11 @@ const GlobalStyle = createGlobalStyle`
     color: black;
   }
 
+  button{
+    background: none;
+    border: none;
+  }
+
 `;
 
 export default GlobalStyle;

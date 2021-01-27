@@ -12,17 +12,12 @@ const pokedexReducer = (pokedexState, action) => {
     case 'UPDATE_ITEMS_MOUNT':
       return {
         ...pokedexState,
+        listScrollValue: action.scrollValue,
         pokemonCards: pokedexState.pokemonCards.map((pokemonCard) => {
 
           return {...pokemonCard, mountedOnce: true };
 
         })
-      };
-
-    case 'SET_LIST_SCROLL':
-      return {
-        ...pokedexState,
-        listScrollValue: action.scrollValue
       };
 
     default:

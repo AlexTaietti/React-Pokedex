@@ -100,22 +100,11 @@ const Card = styled.li`
 
 const PokemonCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
 
-  const [visible, setVisibility] = useState(mountedOnce);
-
-  useEffect(() => { if(!visible) setTimeout( () => setVisibility(true) ); }, []);
-
-  const handleAll = () => {
-
-    if(pokedexDispatch){
-      pokedexDispatch({ type: 'SET_LIST_SCROLL', scrollValue: window.scrollY });
-      pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' });
-    }
-
-  };
+  const visible = useVisibility(mountedOnce);
 
   return (
 
-      <Card onClick={ () => { pokedexDispatch ? handleAll() : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
+      <Card onClick={ () => { pokedexDispatch ? pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT', scrollValue: window.scrollY }) : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
         <Link to={`/pokemon/${pokemon.name}`}>
         <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
           <img alt={`${pokemon.name}'s back side`} className="sprite-side sprite-side--back" src={pokemon.sprite.back}/>

@@ -51,7 +51,7 @@ const Button = styled.button`
 
 const LoadButton = ({ handleClick }) => {
 
-  const visible = useVisibility();
+  const visible = useVisibility(true);
 
   return ( <Button className={ visible ? 'mounted' : 'hidden' } onClick={ handleClick }>Click to catch some more!</Button> );
 

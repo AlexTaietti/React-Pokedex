@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
-export function useVisibility () {
+export function useVisibility (initialValue) {
 
-  const [visible, setVisibility] = useState(false);
+  const [visible, setVisibility] = useState(initialValue);
 
-  useEffect(() => { setTimeout( () => setVisibility(true) ); }, []);
+  useLayoutEffect(() => { if(!visible) setTimeout( () => setVisibility(true) ); }, []);
 
   return visible;
 

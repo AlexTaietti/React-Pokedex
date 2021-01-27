@@ -45,15 +45,15 @@ const ListContainer = styled.div`
 
 `;
 
-function PokemonList ({ handleListCardClick, scrollValue, loadFreshBatchOfPokemons, pokemons }) {
+function PokemonList ({ pokedexDispatch, scrollValue, loadFreshBatchOfPokemons, pokemonCards }) {
 
-  useEffect(() => { if(!pokemons.length) loadFreshBatchOfPokemons(); } , []);
+  useEffect(() => { if(!pokemonCards.length) loadFreshBatchOfPokemons(); } , []);
 
   useLayoutEffect(() => { if(scrollValue) window.scrollTo(0, scrollValue); }, []);
 
   return (
 
-    pokemons.length ?
+    pokemonCards.length ?
 
       <ListContainer>
         <header role="banner" aria-label="pokemon logo">
@@ -61,7 +61,7 @@ function PokemonList ({ handleListCardClick, scrollValue, loadFreshBatchOfPokemo
         </header>
         <main aria-label="list of pokemons, scroll to the bottom of the page to catch more of 'em!">
           <ul className="pokemon-list">
-            { pokemons.map( pokemon => <PokemonCard handleClick={ handleListCardClick } key={pokemon.id} pokemon={pokemon} /> ) }
+            { pokemonCards.map( ({ pokemon, mountedOnce }) => { return <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} />; } ) }
           </ul>
           <LoadButton handleClick={ loadFreshBatchOfPokemons }/>
         </main>

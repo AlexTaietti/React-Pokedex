@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import Pokemon from '../classes/Pokemon.js';
 import styled, { ThemeProvider } from 'styled-components';
 import themes from '../styles/Themes.js';
-import pokeReducer from '../utils/PokeReducer.js';
+import pokeDisplayReducer from '../state/reducers/PokeDisplayReducer.js';
 
 import Loader from './Loader.js';
 
@@ -110,7 +110,7 @@ const PokemonDisplay = ({ setLoadingList }) => {
 
   const { pokemonName } = useParams();
 
-  const [ pokeState, pokeDispatch ] = useReducer( pokeReducer, {
+  const [ pokeState, pokeDispatch ] = useReducer( pokeDisplayReducer, {
     pokemon: undefined,
     theme: undefined,
     chartOptions: undefined

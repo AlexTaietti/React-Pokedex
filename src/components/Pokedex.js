@@ -1,12 +1,13 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useMemo, useReducer, createContext } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Pokemon from '../classes/Pokemon.js';
-import ScrollContext from '../utils/ScrollContext.js';
+import pokedexReducer from '../state/reducers/pokedexReducer.js';
 
 import PokemonDisplay from './PokemonDisplay';
 import PokemonList from './PokemonList.js';
 import Loader from './Loader.js';
+import PokemonCard from './PokemonCard.js';
 
 const PokedexWrapper = styled.div`
   background: var(--pokedex-bg);
@@ -16,14 +17,26 @@ const PokedexWrapper = styled.div`
 
 const Pokedex = () => {
 
-  const [ pokemons, setPokemonList ] = useState([]);
-  const [ listScrollValue, setListScrollValue ] = useState(0);
+  const [ pokedexState, pokedexDispatch ] = useReducer( pokedexReducer, {
+    pokemonCards: [],
+    lastID: 0,
+    listScrollValue: 0
+  });
 
   const loadFreshBatchOfPokemons = async () => {
+
     const pokemonBatchAmount = 20;
-    const lastPokemonID = pokemons.length ? pokemons[pokemons.length - 1].id : 0;
-    const newPokemons = await Pokemon.fetchBatchPokemons( lastPokemonID, pokemonBatchAmount );
-    setPokemonList([...pokemons, ...newPokemons]);
+    const newPokemons = await Pokemon.fetchBatchPokemons( pokedexState.lastID, pokemonBatchAmount );
+    const lastID = newPokemons[newPokemons.length - 1].id;
+
+    const newPokemonCards = newPokemons.map((pokemon) => {
+
+      return { pokemon: pokemon, mountedOnce: false };
+
+    });
+
+    pokedexDispatch({ type: 'ADD_POKEMONS', pokemonCards: newPokemonCards, lastID: lastID });
+
   };
 
   //render the pokedex!
@@ -38,7 +51,7 @@ const Pokedex = () => {
         </Route>
 
         <Route exact path="/">
-          <PokemonList scrollValue={ listScrollValue } handleListCardClick={ setListScrollValue } loadFreshBatchOfPokemons={ loadFreshBatchOfPokemons } pokemons={ pokemons }/>
+          <PokemonList pokedexDispatch={ pokedexDispatch } scrollValue={ pokedexState.listScrollValue } loadFreshBatchOfPokemons={ loadFreshBatchOfPokemons } pokemonCards={ pokedexState.pokemonCards }/>
         </Route>
 
       </PokedexWrapper>

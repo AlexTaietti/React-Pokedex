@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { useVisibility } from '../state/hooks/useVisibility.js';
 
 const pulse = keyframes`
   0%{ transform: translate(50%, 0); }
@@ -51,9 +51,7 @@ const Button = styled.button`
 
 const LoadButton = ({ handleClick }) => {
 
-  const [visible, setVisibility] = useState(false);
-
-  useEffect(() => { setTimeout(() => setVisibility(true)); }, []);
+  const visible = useVisibility();
 
   return ( <Button className={ visible ? 'mounted' : 'hidden' } onClick={ handleClick }>Click to catch some more!</Button> );
 

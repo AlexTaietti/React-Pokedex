@@ -1,4 +1,4 @@
-const pokeReducer = (pokeState, action) => {
+const pokeDisplayReducer = (pokeDisplayState, action) => {
 
   switch (action.type) {
 
@@ -23,4 +23,4 @@ const pokeReducer = (pokeState, action) => {
 
 };
 
-export default pokeReducer;
+export default pokeDisplayReducer;

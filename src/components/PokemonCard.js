@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import { useVisibility } from '../state/hooks/useVisibility.js';
 
 const rotateBack = keyframes`
   0%{ transform: rotateY(180deg); }
@@ -97,15 +98,24 @@ const Card = styled.li`
 
 `;
 
-const PokemonCard = ({ handleClick, pokemon }) => {
+const PokemonCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
 
-  const [visible, setVisibility] = useState(false);
+  const [visible, setVisibility] = useState(mountedOnce);
 
-  useEffect(() => { setTimeout(() => setVisibility(true)); }, []);
+  useEffect(() => { if(!visible) setTimeout( () => setVisibility(true) ); }, []);
+
+  const handleAll = () => {
+
+    if(pokedexDispatch){
+      pokedexDispatch({ type: 'SET_LIST_SCROLL', scrollValue: window.scrollY });
+      pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' });
+    }
+
+  };
 
   return (
 
-      <Card onClick={ () => { handleClick ? handleClick(window.scrollY) : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
+      <Card onClick={ () => { pokedexDispatch ? handleAll() : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
         <Link to={`/pokemon/${pokemon.name}`}>
         <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
           <img alt={`${pokemon.name}'s back side`} className="sprite-side sprite-side--back" src={pokemon.sprite.back}/>

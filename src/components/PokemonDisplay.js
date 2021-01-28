@@ -2,13 +2,13 @@ import { useEffect, useReducer } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Pokemon from '../classes/Pokemon.js';
 import styled, { ThemeProvider } from 'styled-components';
-import themes from '../styles/Themes.js';
-import pokeDisplayReducer from '../state/reducers/PokeDisplayReducer.js';
+import themes from '../styles/Themes';
+import pokeDisplayReducer from '../state/reducers/PokeDisplayReducer';
 
-import Loader from './Loader.js';
-import PokemonInfo from './PokemonInfo.js';
-import Chart from './Chart.js';
-import EvolutionChain from './EvolutionChain.js';
+import Loader from './Loader';
+import PokemonInfo from './PokemonInfo';
+import Chart from './Chart';
+import EvolutionChain from './EvolutionChain';
 
 const DisplayContainer = styled.div`
 
@@ -105,7 +105,7 @@ const DisplayContainer = styled.div`
 
 `;
 
-const PokemonDisplay = ({ setLoadingList }) => {
+const PokemonDisplay = () => {
 
   const { pokemonName } = useParams();
 

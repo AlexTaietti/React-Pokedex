@@ -1,11 +1,11 @@
-import { useReducer } from 'react';
+import { useReducer, useCallback } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import Pokemon from '../classes/Pokemon.js';
-import pokedexReducer from '../state/reducers/pokedexReducer.js';
+import pokedexReducer from '../state/reducers/pokedexReducer';
+import Pokemon from '../classes/Pokemon';
 
 import PokemonDisplay from './PokemonDisplay';
-import PokemonList from './PokemonList.js';
+import PokemonList from './PokemonList';
 
 const PokedexWrapper = styled.div`
   background: var(--pokedex-bg);
@@ -21,7 +21,7 @@ const Pokedex = () => {
     listScrollValue: 0
   });
 
-  const loadFreshBatchOfPokemons = async () => {
+  const loadFreshBatchOfPokemons = useCallback(async () => {
 
     const pokemonBatchAmount = 20;
     const newPokemons = await Pokemon.fetchBatchPokemons( pokedexState.lastID, pokemonBatchAmount );
@@ -35,7 +35,7 @@ const Pokedex = () => {
 
     pokedexDispatch({ type: 'ADD_POKEMONS', pokemonCardsData: newPokemonCards, lastID: lastID });
 
-  };
+  }, [pokedexDispatch, pokedexState.lastID]);
 
   //render the pokedex!
   return (
@@ -49,7 +49,7 @@ const Pokedex = () => {
         </Route>
 
         <Route exact path="/">
-          <PokemonList pokedexDispatch={ pokedexDispatch } scrollValue={ pokedexState.listScrollValue } loadFreshBatchOfPokemons={ loadFreshBatchOfPokemons } pokemonCardsData={ pokedexState.pokemonCardsData }/>
+          <PokemonList loadFreshBatchOfPokemons={ loadFreshBatchOfPokemons } pokedexState={ pokedexState } pokedexDispatch={ pokedexDispatch }/>
         </Route>
 
       </PokedexWrapper>

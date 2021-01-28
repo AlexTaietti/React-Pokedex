@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import PolygonChart from '../classes/PolygonChart.js';
+import PolygonChart from '../classes/PolygonChart';
 import styled from 'styled-components';
 
 const ChartFigure = styled.figure`

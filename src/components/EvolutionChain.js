@@ -1,4 +1,4 @@
-import PokemonCard from './PokemonCard.js';
+import PokemonCard from './PokemonCard';
 import styled from 'styled-components';
 
 const EvolutionContainer = styled.div`
@@ -64,7 +64,7 @@ const EvolutionContainer = styled.div`
 `;
 
 
-const EvolutionChain = ({ pokemonEvolution, pokemonName }) => {
+const EvolutionChain = ({ pokemonEvolution }) => {
 
   return (
 

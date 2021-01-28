@@ -3,8 +3,8 @@ import styled, { keyframes } from 'styled-components';
 
 import PokemonLogo from '../images/pokemon.png';
 
-import Loader from './Loader.js';
-import PokemonCard from './PokemonCard.js';
+import Loader from './Loader';
+import PokemonCard from './PokemonCard';
 
 const pulse = keyframes`
   0%{ transform: translate(50%, 0); }
@@ -77,37 +77,32 @@ const ListContainer = styled.div`
 
 `;
 
-function PokemonList ({ pokedexDispatch, scrollValue, loadFreshBatchOfPokemons, pokemonCardsData }) {
+function PokemonList ({ loadFreshBatchOfPokemons, pokedexState, pokedexDispatch }) {
 
   useEffect(() => {
 
-    if(!pokemonCardsData.length) loadFreshBatchOfPokemons();
+    if(!pokedexState.pokemonCardsData.length) loadFreshBatchOfPokemons();
 
     return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  } , []);
 
-  useLayoutEffect(() => {
+  } , [loadFreshBatchOfPokemons, pokedexDispatch, pokedexState.pokemonCardsData.length]);
 
-    if(scrollValue) window.scrollTo(0, scrollValue);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useLayoutEffect(() => { if(pokedexState.listScrollValue) window.scrollTo(0, pokedexState.listScrollValue) }, [pokedexState.listScrollValue]);
 
   return (
 
-    pokemonCardsData.length ?
+    pokedexState.pokemonCardsData.length ?
 
       <ListContainer>
-        <header role="banner" aria-label="pokemon logo">
+        <header tabIndex="0" role="banner" aria-label="pokemon logo">
           <img className="pokemon-logo" src={PokemonLogo} alt="Pokemon"/>
         </header>
-        <main aria-label="list of pokemons, scroll to the bottom of the page to catch more of 'em!">
+        <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click on the button to catch more of 'em!">
           <ul className="pokemon-list">
-            { pokemonCardsData.map( ({ pokemon, mountedOnce }) => <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
+            { pokedexState.pokemonCardsData.map( ({ pokemon, mountedOnce }) => <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
           </ul>
-          <button aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button>
+          <button tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button>
         </main>
       </ListContainer> : <Loader/>
 

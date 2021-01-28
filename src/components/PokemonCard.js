@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import { useVisibility } from '../state/hooks/useVisibility.js';
+import { useFadeIn } from '../state/hooks/useFadeIn';
 
 const rotateBack = keyframes`
   0%{ transform: rotateY(180deg); }
@@ -99,11 +99,19 @@ const Card = styled.li`
 
 const PokemonCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
 
-  const visible = useVisibility(mountedOnce);
+  const fadeIn = useFadeIn(mountedOnce);
+
+  const handleClick = () => {
+
+    if(pokedexDispatch) pokedexDispatch({ type: 'SET_SCROLL_VALUE', scrollValue: window.scrollY });
+
+    console.info(`You chose ${pokemon.name}!`);
+
+  };
 
   return (
 
-      <Card onClick={ () => { pokedexDispatch ? pokedexDispatch({ type: 'SET_SCROLL_VALUE', scrollValue: window.scrollY }) : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
+      <Card onClick={ handleClick } aria-label={pokemon.name} className={ fadeIn ? "hidden" : "mounted" }>
         <Link to={`/pokemon/${pokemon.name}`}>
         <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
           <img alt={`${pokemon.name}'s back side`} className="sprite-side sprite-side--back" src={pokemon.sprite.back}/>

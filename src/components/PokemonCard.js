@@ -105,7 +105,7 @@ const PokemonCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
 
     if(pokedexDispatch) pokedexDispatch({ type: 'SET_SCROLL_VALUE', scrollValue: window.scrollY });
 
-    console.info(`You chose ${pokemon.name}!`);
+    console.info(`You chose ${pokemon.name.replace( /\b\w/g, l => l.toUpperCase() )}!`);
 
   };
 

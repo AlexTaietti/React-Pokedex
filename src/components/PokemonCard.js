@@ -17,42 +17,42 @@ const rotateFront = keyframes`
 
 const Card = styled.li`
 
-  text-align: center;
-  margin: 10px 10px 60px;
-  font-family: 'Orbitron', sans-serif;
-  position: relative;
-  border-radius: 10px;
   background: var(--pokecard-bg);
-  width: 165px;
+  border-radius: 10px;
   box-shadow: 0px 7px 11px -3px black;
-  transition-property: opacity, transform;
-  transition-duration: 0.4s;
-  transition-delay: 0s;
-  transform: translateY(0);
+  font-family: 'Orbitron', sans-serif;
+  margin: 10px 10px 60px;
   opacity: 1;
+  position: relative;
+  text-align: center;
+  transform: translateY(0);
+  transition-delay: 0s;
+  transition-duration: 0.4s;
+  transition-property: opacity, transform;
+  width: 165px;
 
   &.hidden{
-    transition-property: opacity, transform;
-    transition-duration: 1s;
-    transition-delay: 0s;
-    transform: translateY(-10px);
     opacity: 0;
+    transform: translateY(-10px);
+    transition-delay: 0s;
+    transition-duration: 1s;
+    transition-property: opacity, transform;
   }
 
   & a { display: block; }
 
   .sprite{
 
-    position: relative;
     padding: 15px 15px 25px;
+    position: relative;
 
     &-side{
 
+      backface-visibility: hidden;
       animation-duration: 1.5s;
+      animation-fill-mode: forwards;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
-      animation-fill-mode: forwards;
-      backface-visibility: hidden;
 
       &--front{
         position: relative;
@@ -104,7 +104,7 @@ const PokemonCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
 
   return (
 
-      <Card onClick={ () => { pokedexDispatch ? pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT', scrollValue: window.scrollY }) : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
+      <Card onClick={ () => { pokedexDispatch ? pokedexDispatch({ type: 'SET_SCROLL_VALUE', scrollValue: window.scrollY }) : console.log(`PokemonCard.js: ${pokemon.name}'s card clicked`); } } aria-label={pokemon.name} className={ visible ? "mounted" : "hidden" }>
         <Link to={`/pokemon/${pokemon.name}`}>
         <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
           <img alt={`${pokemon.name}'s back side`} className="sprite-side sprite-side--back" src={pokemon.sprite.back}/>

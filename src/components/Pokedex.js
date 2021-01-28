@@ -11,8 +11,8 @@ import PokemonCard from './PokemonCard.js';
 
 const PokedexWrapper = styled.div`
   background: var(--pokedex-bg);
-  padding: 20px 20px;
   display: block;
+  padding: 20px 20px;
 `;
 
 const Pokedex = () => {

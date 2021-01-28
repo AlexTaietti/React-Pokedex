@@ -2,18 +2,18 @@ import styled from 'styled-components';
 
 const InfoContainer = styled.div`
 
-	padding: 30px 40px;
-	border-radius: 10px;
-	width: 100%;
-	box-shadow: 0px 15px 15px 0px black;
 	background: #04b5b5;
+	border-radius: 10px;
+	box-shadow: 0px 15px 15px 0px black;
+	padding: 30px 40px;
+	width: 100%;
 
 	h1{
 		color: white;
-		text-transform: capitalize;
 		font-size: 3rem;
 		margin-bottom: 10px;
 		text-shadow: 1.2px 1.2px black;
+		text-transform: capitalize;
 	}
 
 	p{
@@ -30,21 +30,21 @@ const InfoContainer = styled.div`
 
 		& li{
 
-			margin-bottom: 20px;
 			display: inline-block;
+			margin-bottom: 20px;
 			width: 50%;
 
 			& h2{
 				color: white;
-				font-weight: lighter;
 				font-size: 1.6rem;
+				font-weight: lighter;
 				text-shadow: .5px .5px black;
 			}
 
 			& span{
 				color: #090a62;
-				white-space: pre;
 				font-size: 2rem;
+				white-space: pre;
 			}
 
 		}
@@ -52,8 +52,8 @@ const InfoContainer = styled.div`
 	}
 
 	@media screen and (max-width: 950px) {
-		width: 55%;
 		margin: 0 auto;
+		width: 55%;
 	}
 
 	@media screen and (max-width: 800px) { width: 70%; }

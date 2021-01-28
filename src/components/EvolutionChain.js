@@ -7,29 +7,29 @@ const EvolutionContainer = styled.div`
 
   h1 {
     color: white;
-    text-align: center;
     font-size: 3rem;
     font-weight: lighter;
     margin-bottom: 30px;
+    text-align: center;
     text-shadow: 2px 2px black;
   }
 
   ul {
 
-    display: flex;
-    list-style-type: none;
     align-items: center;
+    display: flex;
     justify-content: space-around;
+    list-style-type: none;
 
     > li:not(:last-of-type):after{
+      bottom: 50%;
+      color: white;
       content: "\\227B";
+      font-size: 3rem;
       position: absolute;
       right: -50px;
-      bottom: 50%;
-      font-size: 3rem;
-      transform: translate(-50%, 50%);
-      color: white;
       text-shadow: 1px 1px black;
+      transform: translate(-50%, 50%);
     }
 
   }
@@ -41,12 +41,12 @@ const EvolutionContainer = styled.div`
       flex-direction: column;
 
       > li:not(:last-of-type):after{
+        bottom: -50px;
         content: "\\22CE";
         position: absolute;
         right: 50%;
-        bottom: -50px;
-        transform: translateX(50%);
         text-shadow: 0px 2px black;
+        transform: translateX(50%);
       }
 
     }

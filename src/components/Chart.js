@@ -3,10 +3,10 @@ import PolygonChart from '../classes/PolygonChart.js';
 import styled from 'styled-components';
 
 const ChartFigure = styled.figure`
-  height: 100%;
-  width: 100%;
   display: block;
+  height: 100%;
   position: relative;
+  width: 100%;
 `;
 
 const Chart = ({ data, options }) => {

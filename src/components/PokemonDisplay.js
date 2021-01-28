@@ -13,66 +13,66 @@ import EvolutionChain from './EvolutionChain.js';
 
 const DisplayContainer = styled.div`
 
-  position: relative;
-  max-width: var(--content-max-width);
   margin: 0 auto;
+  max-width: var(--content-max-width);
   padding: 50px 0;
+  position: relative;
 
   .display-content{
+    align-items: center;
+    column-gap: 4%;
     display: grid;
+    font-family: 'Orbitron', sans-serif;
+    grid-template-areas:
+    "artwork details"
+    "chart chart"
+    "evolution-chain evolution-chain";
     grid-template-columns: 48% 48%;
     grid-template-rows: 1fr 600px auto;
-    grid-template-areas:
-      "artwork details"
-      "chart chart"
-      "evolution-chain evolution-chain";
-    column-gap: 4%;
-    align-items: center;
-    font-family: 'Orbitron', sans-serif;
   }
 
   .pokemon-details{ grid-area: details; }
 
   .pokemon-artwork{
 
-    padding: 10px;
     grid-area: artwork;
+    padding: 10px;
 
     & > img{
       display: block;
-      max-height: 400px;
       filter: saturate(2.5);
+      max-height: 400px;
     }
 
   }
 
   .chart-container{
+    align-self: stretch;
     grid-area: chart;
     justify-self: stretch;
-    align-self: stretch;
   }
 
   .pokemon-evolution{ grid-area: evolution-chain; }
 
   .home-link{
+    font-size: 2rem;
+    left: 0;
     position: absolute;
     top: 50px;
-    left: 0;
-    font-size: 2rem;
     z-index: 1;
   }
 
   @media screen and (max-width: 950px) {
 
     .display-content{
+      align-items: center;
+      grid-template-areas:
+      "artwork"
+      "details"
+      "chart"
+      "evolution-chain";
       grid-template-columns: 100%;
       grid-template-rows: auto auto 600px auto;
-      grid-template-areas:
-        "artwork"
-        "details"
-        "chart"
-        "evolution-chain";
-      align-items: center;
       row-gap: 40px;
     }
 

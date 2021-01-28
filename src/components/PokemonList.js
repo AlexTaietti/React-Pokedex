@@ -10,8 +10,8 @@ import LoadButton from './LoadButton.js';
 
 const ListContainer = styled.div`
 
-  max-width: var(--content-max-width);
   margin: 0 auto;
+  max-width: var(--content-max-width);
   padding-top: 40px;
 
   & > header{
@@ -27,8 +27,8 @@ const ListContainer = styled.div`
   .pokemon-list{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
     list-style-type: none;
+    justify-content: space-around;
   }
 
   @media screen and (max-width: 700px){
@@ -47,7 +47,13 @@ const ListContainer = styled.div`
 
 function PokemonList ({ pokedexDispatch, scrollValue, loadFreshBatchOfPokemons, pokemonCards }) {
 
-  useEffect(() => { if(!pokemonCards.length) loadFreshBatchOfPokemons(); } , []);
+  useEffect(() => {
+
+    if(!pokemonCards.length) loadFreshBatchOfPokemons();
+
+    return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
+
+  } , []);
 
   useLayoutEffect(() => { if(scrollValue) window.scrollTo(0, scrollValue); }, []);
 

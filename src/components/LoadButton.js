@@ -9,42 +9,42 @@ const pulse = keyframes`
 
 const Button = styled.button`
 
-  font-family: 'Orbitron', sans-serif;
-  text-shadow: 2px 2px black;
-  display: block;
-  text-align: center;
-  margin: 40px auto 100px;
   color: white;
-  font-size: 2.5rem;
   cursor: pointer;
-  position: relative;
-  transition-property: opacity, transform;
-  transition-duration: 0.5s;
-  transition-delay: 0s;
-  transform: translateY(0);
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  margin: 40px auto 100px;
   opacity: 1;
+  position: relative;
+  text-align: center;
+  text-shadow: 2px 2px black;
+  transform: translateY(0);
+  transition-delay: 0s;
+  transition-duration: 0.5s;
+  transition-property: opacity, transform;
 
   &.hidden{
-    transition-property: opacity, transform;
-    transition-duration: 1s;
-    transition-delay: 0s;
-    transform: translateY(-10px);
     opacity: 0;
+    transform: translateY(-10px);
+    transition-delay: 0s;
+    transition-duration: 1s;
+    transition-property: opacity, transform;
   }
 
 
   &:after{
-    content: "\\22CE";
-    position: absolute;
-    right: 50%;
-    bottom: -35px;
-    font-size: 2.5rem;
-    transform: translate(50%, 0);
-    text-shadow: 0px 2px black;
-    animation-name: ${ pulse };
     animation-duration: 1.5s;
     animation-iteration-count: infinite;
+    animation-name: ${ pulse };
     animation-timing-function: ease-out;
+    bottom: -35px;
+    content: "\\22CE";
+    font-size: 2.5rem;
+    position: absolute;
+    right: 50%;
+    text-shadow: 0px 2px black;
+    transform: translate(50%, 0);
   }
 
 `;

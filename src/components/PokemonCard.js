@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useVisibility } from '../state/hooks/useVisibility.js';

@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef, useMemo, useReducer, createContext } from 'react';
+import { useReducer } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Pokemon from '../classes/Pokemon.js';
@@ -6,8 +6,6 @@ import pokedexReducer from '../state/reducers/pokedexReducer.js';
 
 import PokemonDisplay from './PokemonDisplay';
 import PokemonList from './PokemonList.js';
-import Loader from './Loader.js';
-import PokemonCard from './PokemonCard.js';
 
 const PokedexWrapper = styled.div`
   background: var(--pokedex-bg);
@@ -18,7 +16,7 @@ const PokedexWrapper = styled.div`
 const Pokedex = () => {
 
   const [ pokedexState, pokedexDispatch ] = useReducer( pokedexReducer, {
-    pokemonCards: [],
+    pokemonCardsData: [],
     lastID: 0,
     listScrollValue: 0
   });
@@ -35,7 +33,7 @@ const Pokedex = () => {
 
     });
 
-    pokedexDispatch({ type: 'ADD_POKEMONS', pokemonCards: newPokemonCards, lastID: lastID });
+    pokedexDispatch({ type: 'ADD_POKEMONS', pokemonCardsData: newPokemonCards, lastID: lastID });
 
   };
 
@@ -51,7 +49,7 @@ const Pokedex = () => {
         </Route>
 
         <Route exact path="/">
-          <PokemonList pokedexDispatch={ pokedexDispatch } scrollValue={ pokedexState.listScrollValue } loadFreshBatchOfPokemons={ loadFreshBatchOfPokemons } pokemonCards={ pokedexState.pokemonCards }/>
+          <PokemonList pokedexDispatch={ pokedexDispatch } scrollValue={ pokedexState.listScrollValue } loadFreshBatchOfPokemons={ loadFreshBatchOfPokemons } pokemonCardsData={ pokedexState.pokemonCardsData }/>
         </Route>
 
       </PokedexWrapper>

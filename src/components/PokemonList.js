@@ -1,12 +1,16 @@
-import React, { useLayoutEffect, useEffect, useState } from 'react';
-import Pokemon from '../classes/Pokemon.js';
-import styled from 'styled-components';
+import { useLayoutEffect, useEffect } from 'react';
+import styled, { keyframes } from 'styled-components';
 
 import PokemonLogo from '../images/pokemon.png';
 
 import Loader from './Loader.js';
 import PokemonCard from './PokemonCard.js';
-import LoadButton from './LoadButton.js';
+
+const pulse = keyframes`
+  0%{ transform: translate(50%, 0); }
+  30%{ transform: translate(50%, 10px); }
+  60%{ transform: translate(50%, 0); }
+`;
 
 const ListContainer = styled.div`
 
@@ -31,6 +35,34 @@ const ListContainer = styled.div`
     justify-content: space-around;
   }
 
+  & > main > button{
+
+    color: white;
+    cursor: pointer;
+    display: block;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    margin: 40px auto 100px;
+    position: relative;
+    text-align: center;
+    text-shadow: 2px 2px black;
+
+    &:after{
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+      animation-name: ${ pulse };
+      animation-timing-function: ease-out;
+      bottom: -35px;
+      content: "\\22CE";
+      font-size: 2.5rem;
+      position: absolute;
+      right: 50%;
+      text-shadow: 0px 2px black;
+      transform: translate(50%, 0);
+    }
+
+  }
+
   @media screen and (max-width: 700px){
 
     & > header { max-width: 80%; }
@@ -45,21 +77,27 @@ const ListContainer = styled.div`
 
 `;
 
-function PokemonList ({ pokedexDispatch, scrollValue, loadFreshBatchOfPokemons, pokemonCards }) {
+function PokemonList ({ pokedexDispatch, scrollValue, loadFreshBatchOfPokemons, pokemonCardsData }) {
 
   useEffect(() => {
 
-    if(!pokemonCards.length) loadFreshBatchOfPokemons();
+    if(!pokemonCardsData.length) loadFreshBatchOfPokemons();
 
     return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   } , []);
 
-  useLayoutEffect(() => { if(scrollValue) window.scrollTo(0, scrollValue); }, []);
+  useLayoutEffect(() => {
+
+    if(scrollValue) window.scrollTo(0, scrollValue);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
 
-    pokemonCards.length ?
+    pokemonCardsData.length ?
 
       <ListContainer>
         <header role="banner" aria-label="pokemon logo">
@@ -67,9 +105,9 @@ function PokemonList ({ pokedexDispatch, scrollValue, loadFreshBatchOfPokemons, 
         </header>
         <main aria-label="list of pokemons, scroll to the bottom of the page to catch more of 'em!">
           <ul className="pokemon-list">
-            { pokemonCards.map( ({ pokemon, mountedOnce }) => { return <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} />; } ) }
+            { pokemonCardsData.map( ({ pokemon, mountedOnce }) => <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
           </ul>
-          <LoadButton handleClick={ loadFreshBatchOfPokemons }/>
+          <button aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button>
         </main>
       </ListContainer> : <Loader/>
 

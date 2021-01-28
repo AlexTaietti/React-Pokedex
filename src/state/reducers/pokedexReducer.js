@@ -6,15 +6,15 @@ const pokedexReducer = (pokedexState, action) => {
       return {
         ...pokedexState,
         lastID: action.lastID,
-        pokemonCards: [ ...pokedexState.pokemonCards, ...action.pokemonCards ]
+        pokemonCardsData: [ ...pokedexState.pokemonCardsData, ...action.pokemonCardsData ]
       };
 
     case 'UPDATE_ITEMS_MOUNT':
       return {
         ...pokedexState,
-        pokemonCards: pokedexState.pokemonCards.map((pokemonCard) => {
+        pokemonCardsData: pokedexState.pokemonCardsData.map((pokemonCardData) => {
 
-          return {...pokemonCard, mountedOnce: true };
+          return {...pokemonCardData, mountedOnce: true };
 
         })
       };

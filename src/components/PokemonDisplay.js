@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer, useRef } from 'react';
+import { useEffect, useReducer } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Pokemon from '../classes/Pokemon.js';
 import styled, { ThemeProvider } from 'styled-components';
@@ -6,7 +6,6 @@ import themes from '../styles/Themes.js';
 import pokeDisplayReducer from '../state/reducers/PokeDisplayReducer.js';
 
 import Loader from './Loader.js';
-
 import PokemonInfo from './PokemonInfo.js';
 import Chart from './Chart.js';
 import EvolutionChain from './EvolutionChain.js';

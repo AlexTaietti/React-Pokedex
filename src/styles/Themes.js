@@ -72,6 +72,12 @@ const themes = {
     infoTextColor: 'rgba(117, 1, 17, 1)'
   },
 
+  dragon: {
+    infoSolid: 'rgba(255, 121, 3, 1)',
+    infoLabelColor: 'rgba(255, 255, 255, 1)',
+    infoTextColor: 'rgba(117, 1, 17, 1)'
+  },
+
   psychic: {
     infoSolid: 'rgba(198, 185, 0, 1)',
     infoLabelColor: 'rgba(255, 255, 255, 1)',

@@ -12,11 +12,13 @@ class PolygonChart {
 
   setResizeHandler () {
 
+    if(this.options && this.options.debugging) console.log('PolygonChart.js: Hooking resize handlers to the window object');
+
     window.addEventListener( 'resize', this.resizeAndCenter.bind(this) );
 
     return () => {
 
-      console.log('PolygonChart.js: Unmounting chart and cleaning up event handlers');
+      if(this.options && this.options.debugging) console.log('PolygonChart.js: Unmounting chart and cleaning up event handlers');
 
       window.removeEventListener( 'resize', this.resizeAndCenter );
 
@@ -25,6 +27,8 @@ class PolygonChart {
   }
 
   updateData (newData) {
+
+    if(this.options && this.options.debugging) console.log("PolygonChart.js: updating chart's data");
 
     const _that = this;
 
@@ -113,6 +117,8 @@ class PolygonChart {
 
     const _defaults = {
 
+      debugging: false,
+
       maxValue: undefined,
 
       increments: 10,
@@ -157,9 +163,13 @@ class PolygonChart {
 
     this.options = this.options ? mergeObjects(this.options, newOptions, true) : mergeObjects(_defaults, newOptions, true);
 
+    if(this.options.debugging) console.warn('PolygonChart.js: Debug mode is activated');
+
   }
 
   masterDraw () {
+
+    if(this.options && this.options.debugging) console.log('PolygonChart.js: Drawing chart');
 
     if(this.options.animation.animated === true) {
 

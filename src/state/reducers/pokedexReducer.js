@@ -8,6 +8,12 @@ const pokedexReducer = (pokedexState, action) => {
         loadingPokemonData: true
       }
 
+    case 'SET_LOADED_ALL':
+      return {
+        ...pokedexState,
+        loadedAll: true
+      }
+
     case 'ADD_POKEMONS':
       return {
         ...pokedexState,

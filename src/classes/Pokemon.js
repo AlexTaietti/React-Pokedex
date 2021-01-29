@@ -133,7 +133,7 @@ export default class Pokemon {
 
   }
 
-  static async fetchBatchPokemons (offset = 0, limit = 20) {
+  static async fetchBatchPokemons (offset = 0, limit = 16) {
 
     const pokemons = [];
 

@@ -16,7 +16,7 @@ const rotateFront = keyframes`
 
 const Card = styled.li`
 
-  background: var(--pokecard-bg);
+  background: ${ (props) => props.theme.infoSolid ? props.theme.infoSolid : "var(--pokecard-bg)" };
   border-radius: 10px;
   box-shadow: 0px 7px 11px -3px black;
   font-family: 'Orbitron', sans-serif;

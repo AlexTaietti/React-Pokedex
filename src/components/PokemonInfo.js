@@ -2,14 +2,14 @@ import styled from 'styled-components';
 
 const InfoContainer = styled.div`
 
-	background: #04b5b5;
+	background: ${ (props) => props.theme ? props.theme.infoSolid : "#04b5b5" };
 	border-radius: 10px;
 	box-shadow: 0px 15px 15px 0px black;
 	padding: 30px 40px;
 	width: 100%;
 
 	h1{
-		color: white;
+		color: ${ (props) => props.theme ? props.theme.infoLabelColor : "white" };
 		font-size: 3rem;
 		margin-bottom: 10px;
 		text-shadow: 1.2px 1.2px black;
@@ -17,7 +17,7 @@ const InfoContainer = styled.div`
 	}
 
 	p{
-		color: #090a62;
+		color: ${ (props) => props.theme ? props.theme.infoTextColor : "#090a62" };
 		font-size: 2rem;
 		margin-bottom: 30px;
 	}
@@ -35,14 +35,14 @@ const InfoContainer = styled.div`
 			width: 50%;
 
 			& h2{
-				color: white;
+				color: ${ (props) => props.theme ? props.theme.infoLabelColor : "white" };
 				font-size: 1.6rem;
 				font-weight: lighter;
 				text-shadow: .5px .5px black;
 			}
 
 			& span{
-				color: #090a62;
+				color: ${ (props) => props.theme ? props.theme.infoTextColor : "#090a62" };
 				font-size: 2rem;
 				white-space: pre;
 			}

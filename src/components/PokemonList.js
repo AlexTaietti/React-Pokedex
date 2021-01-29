@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import PokemonLogo from '../images/pokemon.png';
@@ -122,7 +122,7 @@ function PokemonList ({ loadFreshBatchOfPokemons, pokedexState, pokedexDispatch 
           <ul className="pokemon-list">
             { pokedexState.pokemonCardsData.map( ({ pokemon, mountedOnce }) => <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
           </ul>
-          <button className={ pokedexState.loadingPokemonData ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button>
+          { pokedexState.loadedAll ? <React.Fragment/> : <button className={ pokedexState.loadingPokemonData ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button> }
         </main>
       </ListContainer> : <Loader/>
 

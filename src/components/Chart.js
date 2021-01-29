@@ -17,19 +17,17 @@ const Chart = ({ data, options }) => {
 
   useEffect(() => {
 
-    console.log('Chart.js: Creating chart, hooking its resize handler to the window and then mounting it on the view');
-
     chart.current = new PolygonChart(container.current);
 
     return chart.current.setResizeHandler();
 
   }, []);
 
-  useEffect(() => {  console.log('Chart.js: Updating the charts options'); chart.current.updateOptions(options); }, [options]);
+  useEffect(() => { chart.current.updateOptions(options); }, [options]);
 
-  useEffect(() => {  console.log('Chart.js: Updating the charts data'); chart.current.updateData(data); }, [data]);
+  useEffect(() => { chart.current.updateData(data); }, [data]);
 
-  useEffect(() => {  console.log('Chart.js: Rendering the chart'); chart.current.masterDraw(); }, [options, data]);
+  useEffect(() => { chart.current.masterDraw(); }, [options, data]);
 
   return <ChartFigure aria-label='chart' ref={container}></ChartFigure>;
 

@@ -12,6 +12,11 @@ const pulse = keyframes`
   60%{ transform: translate(50%, 0); }
 `;
 
+const spin = keyframes`
+  from { transform: translate(50%, 0) rotateZ(0deg); }
+  to { transform: translate(50%, 0) rotateZ(360deg); }
+`;
+
 const ListContainer = styled.div`
 
   margin: 0 auto;
@@ -46,19 +51,33 @@ const ListContainer = styled.div`
     position: relative;
     text-align: center;
     text-shadow: 2px 2px black;
+    transform-origin: center center;
 
     &:after{
       animation-duration: 1.5s;
       animation-iteration-count: infinite;
       animation-name: ${ pulse };
       animation-timing-function: ease-out;
-      bottom: -35px;
+      bottom: -40px;
       content: "\\22CE";
       font-size: 2.5rem;
       position: absolute;
       right: 50%;
       text-shadow: 0px 2px black;
       transform: translate(50%, 0);
+    }
+
+    &.loading{
+
+      &:after{
+        animation-name: ${ spin };
+        width: 25px;
+        height: 25px;
+        border-left: 2px solid white;
+        border-radius: 50%;
+        content: '';
+      }
+
     }
 
   }
@@ -85,7 +104,6 @@ function PokemonList ({ loadFreshBatchOfPokemons, pokedexState, pokedexDispatch 
 
     return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
 
-
   } , [loadFreshBatchOfPokemons, pokedexDispatch, pokedexState.pokemonCardsData.length]);
 
   useLayoutEffect(() => { if(pokedexState.listScrollValue) window.scrollTo(0, pokedexState.listScrollValue) }, [pokedexState.listScrollValue]);
@@ -102,7 +120,7 @@ function PokemonList ({ loadFreshBatchOfPokemons, pokedexState, pokedexDispatch 
           <ul className="pokemon-list">
             { pokedexState.pokemonCardsData.map( ({ pokemon, mountedOnce }) => <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
           </ul>
-          <button tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button>
+          <button className={ pokedexState.loadingPokemonData ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button>
         </main>
       </ListContainer> : <Loader/>
 

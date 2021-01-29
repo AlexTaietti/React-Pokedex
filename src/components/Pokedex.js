@@ -17,11 +17,14 @@ const Pokedex = () => {
 
   const [ pokedexState, pokedexDispatch ] = useReducer( pokedexReducer, {
     pokemonCardsData: [],
+    loadingPokemonData: false,
     lastID: 0,
     listScrollValue: 0
   });
 
   const loadFreshBatchOfPokemons = useCallback(async () => {
+
+    pokedexDispatch({ type: 'START_FETCH_BATCH' });
 
     const pokemonBatchAmount = 20;
     const newPokemons = await Pokemon.fetchBatchPokemons( pokedexState.lastID, pokemonBatchAmount );

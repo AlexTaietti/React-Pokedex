@@ -70,7 +70,9 @@ const ListContainer = styled.div`
     &.loading{
 
       &:after{
+        animation-duration: .8s;
         animation-name: ${ spin };
+        animation-timing-function: linear;
         width: 25px;
         height: 25px;
         border-left: 2px solid white;

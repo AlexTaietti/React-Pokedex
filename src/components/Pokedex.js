@@ -32,11 +32,13 @@ const Pokedex = () => {
     const maximumPokemonAmount = 384; //first three generations up to Rayquaza
     const pokemonBatchAmount = 16;
 
-    let adjustedFetchAmount;
+    let adjustedFetchAmount, loadedEveryPokemon;
 
-    if(pokedexState.pokemonCardsData.length + pokemonBatchAmount > maximumPokemonAmount){
+    if(pokedexState.pokemonCardsData.length + pokemonBatchAmount >= maximumPokemonAmount){
 
       adjustedFetchAmount = maximumPokemonAmount - pokedexState.pokemonCardsData.length;
+
+      loadedEveryPokemon = true;
 
     } else { adjustedFetchAmount = pokemonBatchAmount; }
 
@@ -49,7 +51,7 @@ const Pokedex = () => {
 
     });
 
-    if(adjustedFetchAmount < pokemonBatchAmount) pokedexDispatch({ type: 'SET_LOADED_ALL' });
+    if(loadedEveryPokemon) pokedexDispatch({ type: 'SET_LOADED_ALL' });
 
     pokedexDispatch({ type: 'ADD_POKEMONS', pokemonCardsData: newPokemonCards, lastID: lastID });
 

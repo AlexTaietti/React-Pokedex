@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import OrbitronPath from "../fonts/Orbitron/static/Orbitron-Regular.ttf";
+import OrbitronPath from "@fonts/Orbitron/static/Orbitron-Regular.ttf";
 
 const GlobalStyle = createGlobalStyle`
 

@@ -1,6 +1,6 @@
-import ListCard from './ListCard';
-import Loader from './Loader';
-import PokemonLogo from '../images/pokemon.png';
+import ListCard from '@components/ListCard';
+import Loader from '@components/Loader';
+import PokemonLogo from '@images/pokemon.png';
 import React, { useLayoutEffect, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 

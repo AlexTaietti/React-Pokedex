@@ -1,4 +1,4 @@
-import PokemonCardContent from './PokemonCardContent';
+import PokemonCardContent from '@components/PokemonCardContent';
 import styled, { keyframes } from 'styled-components';
 
 const rotateBack = keyframes`

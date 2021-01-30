@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import pokedexReducer from '../state/reducers/pokedexReducer';
-import Pokemon from '../classes/Pokemon';
-import PokemonDisplay from './PokemonDisplay';
-import PokemonList from './PokemonList';
+import pokedexReducer from '@reducers/pokedexReducer';
+import Pokemon from '@classes/Pokemon';
+import PokemonDisplay from '@components/PokemonDisplay';
+import PokemonList from '@components/PokemonList';
 import styled from 'styled-components';
 import { useReducer, useCallback } from 'react';
 

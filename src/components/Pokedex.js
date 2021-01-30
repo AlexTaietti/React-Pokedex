@@ -20,7 +20,7 @@ const Pokedex = () => {
     loadingPokemonData: false,
     loadedAll: false,
     lastID: 0,
-    listScrollValue: 0
+    listScrollValue: undefined
   });
 
   const loadFreshBatchOfPokemons = useCallback(async () => {

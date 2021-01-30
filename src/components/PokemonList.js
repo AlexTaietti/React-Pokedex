@@ -98,21 +98,21 @@ const ListContainer = styled.div`
 
 `;
 
-function PokemonList ({ loadFreshBatchOfPokemons, pokedexState, pokedexDispatch }) {
+function PokemonList ({ loadFreshBatchOfPokemons, pokedexState: { loadingPokemonData, loadedAll, listScrollValue, pokemonCardsData }, pokedexDispatch }) {
 
   useEffect(() => {
 
-    if(!pokedexState.pokemonCardsData.length) loadFreshBatchOfPokemons();
+    if(!pokemonCardsData.length) loadFreshBatchOfPokemons();
 
     return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
 
-  } , [loadFreshBatchOfPokemons, pokedexDispatch, pokedexState.pokemonCardsData.length]);
+  } , [loadFreshBatchOfPokemons, pokedexDispatch, pokemonCardsData.length]);
 
-  useLayoutEffect(() => { if(pokedexState.listScrollValue) window.scrollTo(0, pokedexState.listScrollValue) }, [pokedexState.listScrollValue]);
+  useLayoutEffect(() => { if(listScrollValue) window.scrollTo(0, listScrollValue) }, [listScrollValue]);
 
   return (
 
-    pokedexState.pokemonCardsData.length ?
+    pokemonCardsData.length ?
 
       <ListContainer>
         <header tabIndex="0" role="banner" aria-label="pokemon logo">
@@ -120,9 +120,9 @@ function PokemonList ({ loadFreshBatchOfPokemons, pokedexState, pokedexDispatch 
         </header>
         <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click on the button to catch more of 'em!">
           <ul className="pokemon-list">
-            { pokedexState.pokemonCardsData.map( ({ pokemon, mountedOnce }) => <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
+            { pokemonCardsData.map( ({ pokemon, mountedOnce }) => <PokemonCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
           </ul>
-          { pokedexState.loadedAll ? <React.Fragment/> : <button className={ pokedexState.loadingPokemonData ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button> }
+          { loadedAll ? <React.Fragment/> : <button className={ loadingPokemonData ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button> }
         </main>
       </ListContainer> : <Loader/>
 

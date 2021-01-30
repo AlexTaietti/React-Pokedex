@@ -1,6 +1,6 @@
-import { useRef, useEffect } from 'react';
 import PolygonChart from '../classes/PolygonChart';
 import styled from 'styled-components';
+import { useRef, useEffect } from 'react';
 
 const ChartFigure = styled.figure`
   display: block;

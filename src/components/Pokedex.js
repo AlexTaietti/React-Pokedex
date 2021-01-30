@@ -1,11 +1,11 @@
-import { useReducer, useCallback } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import styled from 'styled-components';
 import pokedexReducer from '../state/reducers/pokedexReducer';
 import Pokemon from '../classes/Pokemon';
-
 import PokemonDisplay from './PokemonDisplay';
 import PokemonList from './PokemonList';
+import styled from 'styled-components';
+import { useReducer, useCallback } from 'react';
+
 
 const PokedexWrapper = styled.div`
   background: var(--pokedex-bg);

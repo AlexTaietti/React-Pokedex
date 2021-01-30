@@ -1,5 +1,5 @@
-import styled, { keyframes } from 'styled-components';
 import PokemonCardContent from './PokemonCardContent';
+import styled, { keyframes } from 'styled-components';
 
 const rotateBack = keyframes`
   0%{ transform: rotateY(180deg); }

@@ -1,14 +1,13 @@
-import { useEffect, useReducer } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import Pokemon from '../classes/Pokemon.js';
-import styled, { ThemeProvider } from 'styled-components';
-import themes from '../styles/Themes';
-import pokeDisplayReducer from '../state/reducers/PokeDisplayReducer';
-
-import Loader from './Loader';
-import PokemonInfo from './PokemonInfo';
 import Chart from './Chart';
 import EvolutionChain from './EvolutionChain';
+import { Link, useParams } from 'react-router-dom';
+import Loader from './Loader';
+import pokeDisplayReducer from '../state/reducers/PokeDisplayReducer';
+import Pokemon from '../classes/Pokemon.js';
+import PokemonInfo from './PokemonInfo';
+import styled, { ThemeProvider } from 'styled-components';
+import themes from '../styles/Themes';
+import { useEffect, useReducer } from 'react';
 
 const DisplayContainer = styled.div`
 

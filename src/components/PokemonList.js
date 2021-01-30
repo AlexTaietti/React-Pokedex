@@ -1,10 +1,8 @@
+import ListCard from './ListCard';
+import Loader from './Loader';
+import PokemonLogo from '../images/pokemon.png';
 import React, { useLayoutEffect, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-
-import PokemonLogo from '../images/pokemon.png';
-
-import Loader from './Loader';
-import ListCard from './ListCard';
 
 const pulse = keyframes`
   0%{ transform: translate(50%, 0); }

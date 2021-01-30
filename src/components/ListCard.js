@@ -1,6 +1,5 @@
-import { useFadeIn } from '../state/hooks/useFadeIn';
-
 import Card from './Card';
+import { useFadeIn } from '../state/hooks/useFadeIn';
 
 const ListCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
 

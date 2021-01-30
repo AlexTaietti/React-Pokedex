@@ -55,7 +55,7 @@ const themes = {
   },
 
   ghost: {
-    infoSolid: 'rgba(140, 2, 145, 1)',
+    infoSolid: 'rgba(187, 1, 158, 1)',
     infoLabelColor: 'rgba(255, 255, 255, 1)',
     infoTextColor: 'rgba(0, 0, 0, 1)'
   },
@@ -76,6 +76,12 @@ const themes = {
     infoSolid: 'rgba(255, 121, 3, 1)',
     infoLabelColor: 'rgba(255, 255, 255, 1)',
     infoTextColor: 'rgba(117, 1, 17, 1)'
+  },
+
+  dark: {
+    infoSolid: 'rgba(8, 9, 55, 1)',
+    infoLabelColor: 'rgba(255, 255, 255, 1)',
+    infoTextColor: 'rgba(24, 223, 255, 1)'
   },
 
   psychic: {

@@ -1,5 +1,5 @@
-import PokemonCard from './PokemonCard';
 import styled from 'styled-components';
+import Card from './Card';
 
 const EvolutionContainer = styled.div`
 
@@ -71,7 +71,7 @@ const EvolutionChain = ({ pokemonEvolution }) => {
   	<EvolutionContainer>
       <h1>Evolution Chain</h1>
       <ul role="listbox">
-	      { pokemonEvolution.map((pokemon, index) => <PokemonCard key={index} pokemon={pokemon} />) }
+	      { pokemonEvolution.map((pokemon) => <Card key={pokemon.id} pokemon={pokemon} /> )}
 	    </ul>
     </EvolutionContainer>
 

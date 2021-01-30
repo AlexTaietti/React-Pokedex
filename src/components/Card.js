@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import { useFadeIn } from '../state/hooks/useFadeIn';
+import PokemonCardContent from './PokemonCardContent';
 
 const rotateBack = keyframes`
   0%{ transform: rotateY(180deg); }
@@ -14,7 +13,7 @@ const rotateFront = keyframes`
   100%{ transform: rotateY(360deg); }
 `;
 
-const Card = styled.li`
+const StyledCard = styled.li`
 
   background: ${ (props) => props.theme.infoSolid ? props.theme.infoSolid : "var(--pokecard-bg)" };
   border-radius: 10px;
@@ -97,32 +96,16 @@ const Card = styled.li`
 
 `;
 
-const PokemonCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
-
-  const fadeIn = useFadeIn(mountedOnce);
-
-  const handleClick = () => {
-
-    if(pokedexDispatch) pokedexDispatch({ type: 'SET_SCROLL_VALUE', scrollValue: window.scrollY });
-
-    console.info(`You chose ${pokemon.name.replace( /\b\w/g, l => l.toUpperCase() )}!`);
-
-  };
+const Card = ({ pokemon, ...restOfProps }) => {
 
   return (
 
-      <Card onClick={ handleClick } aria-label={pokemon.name} className={ fadeIn ? "hidden" : "mounted" }>
-        <Link to={`/pokemon/${pokemon.name}`}>
-        <figure aria-label={`${pokemon.name}'s sprite`} className="sprite">
-          <img alt={`${pokemon.name}'s back side`} className="sprite-side sprite-side--back" src={pokemon.sprite.back}/>
-          <img alt={`${pokemon.name}'s front side`} className="sprite-side sprite-side--front" src={pokemon.sprite.front}/>
-          <figcaption>{pokemon.name}</figcaption>
-        </figure>
-        </Link>
-      </Card>
+    <StyledCard aria-label={ pokemon.name } {...restOfProps}>
+      <PokemonCardContent pokemon={ pokemon } />
+    </StyledCard>
 
   );
 
 }
 
-export default PokemonCard;
+export default Card;

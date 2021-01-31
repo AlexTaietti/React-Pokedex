@@ -2,13 +2,6 @@ import PolygonChart from '@classes/PolygonChart/PolygonChart';
 import styled from 'styled-components';
 import { useRef, useEffect } from 'react';
 
-const ChartFigure = styled.figure`
-  display: block;
-  height: 100%;
-  position: relative;
-  width: 100%;
-`;
-
 const Chart = ({ data, options }) => {
 
   const container = useRef();
@@ -31,6 +24,13 @@ const Chart = ({ data, options }) => {
 
   return <ChartFigure aria-label='chart' ref={container}></ChartFigure>;
 
-}
+};
+
+const ChartFigure = styled.figure`
+  display: block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+`;
 
 export default Chart;

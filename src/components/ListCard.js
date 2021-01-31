@@ -15,6 +15,6 @@ const ListCard = ({ pokedexDispatch, mountedOnce, pokemon }) => {
 
   return <Card pokemon={ pokemon } onClick={ handleClick } className={ fadeIn ? "hidden" : "mounted" }/>;
 
-}
+};
 
 export default ListCard;

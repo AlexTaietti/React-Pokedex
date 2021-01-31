@@ -1,5 +1,15 @@
 import styled, { keyframes } from 'styled-components';
 
+const Loader = () => {
+  return (
+    <LoaderContainer tabIndex="0" role="progressbar" aria-label="loading pokedex">
+      <div className="pokeball-container">
+        <div className="pokeball"></div>
+      </div>
+    </LoaderContainer>
+  )
+};
+
 const bounce = keyframes`
   10%{  transform: translateY(-35px); }
   15%{  transform: translateY(0px); }
@@ -101,15 +111,5 @@ const LoaderContainer = styled.div`
 
 
 `;
-
-const Loader = () => {
-  return (
-    <LoaderContainer tabIndex="0" role="progressbar" aria-label="loading pokedex">
-      <div className="pokeball-container">
-        <div className="pokeball"></div>
-      </div>
-    </LoaderContainer>
-  )
-}
 
 export default Loader;

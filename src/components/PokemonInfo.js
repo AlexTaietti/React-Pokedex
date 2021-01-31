@@ -1,5 +1,36 @@
 import styled from 'styled-components';
 
+function PokemonInfo ( { pokemonName, pokemonDetails } ) {
+
+	return (
+
+		<InfoContainer>
+      <h1 tabIndex="0">{ pokemonName }</h1>
+      <p tabIndex="0">{ pokemonDetails.formattedDescription }</p>
+      <ul>
+        <li>
+          <h2 id="height-label">Height:</h2>
+          <span tabIndex="0" aria-labelledby="height-label">{pokemonDetails.height}</span>
+        </li>
+        <li>
+          <h2 id="weight-label">Weight:</h2>
+          <span tabIndex="0" aria-labelledby="weight-label">{pokemonDetails.weight}</span>
+        </li>
+        <li>
+          <h2 id="type-label">Type:</h2>
+          <span tabIndex="0" aria-labelledby="type-label">{pokemonDetails.type}</span>
+        </li>
+        <li>
+          <h2 id="attribute-label">Abilities:</h2>
+          <span tabIndex="0" aria-labelledby="attribute-label">{pokemonDetails.abilities}</span>
+        </li>
+      </ul>
+   </InfoContainer>
+
+	);
+
+};
+
 const InfoContainer = styled.div`
 
 	background: ${ (props) => props.theme ? props.theme.infoSolid : "#04b5b5" };
@@ -83,36 +114,5 @@ const InfoContainer = styled.div`
   }
 
 `;
-
-function PokemonInfo ( { pokemonName, pokemonDetails } ) {
-
-	return (
-
-		<InfoContainer>
-      <h1 tabIndex="0">{ pokemonName }</h1>
-      <p tabIndex="0">{ pokemonDetails.formattedDescription }</p>
-      <ul>
-        <li>
-          <h2 id="height-label">Height:</h2>
-          <span tabIndex="0" aria-labelledby="height-label">{pokemonDetails.height}</span>
-        </li>
-        <li>
-          <h2 id="weight-label">Weight:</h2>
-          <span tabIndex="0" aria-labelledby="weight-label">{pokemonDetails.weight}</span>
-        </li>
-        <li>
-          <h2 id="type-label">Type:</h2>
-          <span tabIndex="0" aria-labelledby="type-label">{pokemonDetails.type}</span>
-        </li>
-        <li>
-          <h2 id="attribute-label">Abilities:</h2>
-          <span tabIndex="0" aria-labelledby="attribute-label">{pokemonDetails.abilities}</span>
-        </li>
-      </ul>
-   </InfoContainer>
-
-	);
-
-}
 
 export default PokemonInfo;

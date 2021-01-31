@@ -6,13 +6,6 @@ import PokemonList from '@components/PokemonList';
 import styled from 'styled-components';
 import { useReducer, useCallback } from 'react';
 
-
-const PokedexWrapper = styled.div`
-  background: var(--pokedex-bg);
-  display: block;
-  padding: 20px 20px;
-`;
-
 const Pokedex = () => {
 
   const [ pokedexState, pokedexDispatch ] = useReducer( pokedexReducer, {
@@ -79,5 +72,11 @@ const Pokedex = () => {
   );
 
 };
+
+const PokedexWrapper = styled.div`
+  background: var(--pokedex-bg);
+  display: block;
+  padding: 20px 20px;
+`;
 
 export default Pokedex;

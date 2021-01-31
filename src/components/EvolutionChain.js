@@ -1,6 +1,21 @@
 import Card from '@components/Card';
 import styled from 'styled-components';
 
+const EvolutionChain = ({ pokemonEvolution }) => {
+
+  return (
+
+  	<EvolutionContainer>
+      <h1>Evolution Chain</h1>
+      <ul role="listbox">
+	      { pokemonEvolution.map((pokemon) => <Card key={pokemon.id} pokemon={pokemon} /> )}
+	    </ul>
+    </EvolutionContainer>
+
+  );
+
+};
+
 const EvolutionContainer = styled.div`
 
   padding-top: 20px;
@@ -62,21 +77,5 @@ const EvolutionContainer = styled.div`
   }
 
 `;
-
-
-const EvolutionChain = ({ pokemonEvolution }) => {
-
-  return (
-
-  	<EvolutionContainer>
-      <h1>Evolution Chain</h1>
-      <ul role="listbox">
-	      { pokemonEvolution.map((pokemon) => <Card key={pokemon.id} pokemon={pokemon} /> )}
-	    </ul>
-    </EvolutionContainer>
-
-  );
-
-};
 
 export default EvolutionChain;

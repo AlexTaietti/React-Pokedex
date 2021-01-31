@@ -4,6 +4,38 @@ import PokemonLogo from '@images/pokemon.png';
 import React, { useLayoutEffect, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
+function PokemonList ({ loadFreshBatchOfPokemons, pokedexState: { loadingPokemonData, loadedAll, listScrollValue, pokemonCardsData }, pokedexDispatch }) {
+
+  useEffect(() => {
+
+    if(!pokemonCardsData.length) loadFreshBatchOfPokemons();
+
+    return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
+
+  } , [loadFreshBatchOfPokemons, pokedexDispatch, pokemonCardsData.length]);
+
+  useLayoutEffect(() => { if(listScrollValue) window.scrollTo(0, listScrollValue) }, [listScrollValue]);
+
+  return (
+
+    pokemonCardsData.length ?
+
+      <ListContainer>
+        <header tabIndex="0" role="banner" aria-label="pokemon logo">
+          <img className="pokemon-logo" src={PokemonLogo} alt="Pokemon"/>
+        </header>
+        <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click on the button to catch more of 'em!">
+          <ul className="pokemon-list">
+            { pokemonCardsData.map( ({ pokemon, mountedOnce }) => <ListCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
+          </ul>
+          { loadedAll ? <React.Fragment/> : <button className={ loadingPokemonData ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button> }
+        </main>
+      </ListContainer> : <Loader/>
+
+  );
+
+};
+
 const pulse = keyframes`
   0%{ transform: translate(50%, 0); }
   30%{ transform: translate(50%, 10px); }
@@ -95,37 +127,5 @@ const ListContainer = styled.div`
   }
 
 `;
-
-function PokemonList ({ loadFreshBatchOfPokemons, pokedexState: { loadingPokemonData, loadedAll, listScrollValue, pokemonCardsData }, pokedexDispatch }) {
-
-  useEffect(() => {
-
-    if(!pokemonCardsData.length) loadFreshBatchOfPokemons();
-
-    return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
-
-  } , [loadFreshBatchOfPokemons, pokedexDispatch, pokemonCardsData.length]);
-
-  useLayoutEffect(() => { if(listScrollValue) window.scrollTo(0, listScrollValue) }, [listScrollValue]);
-
-  return (
-
-    pokemonCardsData.length ?
-
-      <ListContainer>
-        <header tabIndex="0" role="banner" aria-label="pokemon logo">
-          <img className="pokemon-logo" src={PokemonLogo} alt="Pokemon"/>
-        </header>
-        <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click on the button to catch more of 'em!">
-          <ul className="pokemon-list">
-            { pokemonCardsData.map( ({ pokemon, mountedOnce }) => <ListCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
-          </ul>
-          { loadedAll ? <React.Fragment/> : <button className={ loadingPokemonData ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="click to catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button> }
-        </main>
-      </ListContainer> : <Loader/>
-
-  );
-
-}
 
 export default PokemonList;

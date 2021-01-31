@@ -9,101 +9,6 @@ import styled, { ThemeProvider } from 'styled-components';
 import themes from '@styles/Themes';
 import { useEffect, useReducer } from 'react';
 
-const DisplayContainer = styled.div`
-
-  margin: 0 auto;
-  max-width: var(--content-max-width);
-  padding: 50px 0;
-  position: relative;
-
-  .display-content{
-    align-items: center;
-    column-gap: 4%;
-    display: grid;
-    font-family: 'Orbitron', sans-serif;
-    grid-template-areas:
-    "artwork details"
-    "chart chart"
-    "evolution-chain evolution-chain";
-    grid-template-columns: 48% 48%;
-    grid-template-rows: 1fr 600px auto;
-  }
-
-  .pokemon-details{ grid-area: details; }
-
-  .pokemon-artwork{
-
-    grid-area: artwork;
-    padding: 10px;
-
-    & > img{
-      display: block;
-      filter: saturate(2.5);
-      max-height: 400px;
-    }
-
-  }
-
-  .chart-container{
-    align-self: stretch;
-    grid-area: chart;
-    justify-self: stretch;
-  }
-
-  .pokemon-evolution{ grid-area: evolution-chain; }
-
-  .home-link{
-    font-size: 2rem;
-    left: 0;
-    position: absolute;
-    top: 50px;
-    z-index: 1;
-  }
-
-  @media screen and (max-width: 950px) {
-
-    .display-content{
-      align-items: center;
-      grid-template-areas:
-      "artwork"
-      "details"
-      "chart"
-      "evolution-chain";
-      grid-template-columns: 100%;
-      grid-template-rows: auto auto 600px auto;
-      row-gap: 40px;
-    }
-
-    .pokemon-artwork > img { margin: 0 auto; }
-
-    .home-link{ top: 15px; }
-
-  }
-
-  @media screen and (max-width: 600px) {
-
-    padding: 30px 0;
-
-    .pokemon-artwork > img { width: 300px; }
-
-    .display-content{
-      grid-template-rows: auto auto 450px auto;
-      row-gap: 30px;
-    }
-
-  }
-
-  @media screen and (max-width: 400px) {
-
-    padding: 15px 0;
-
-    .display-content{ grid-template-rows: auto auto 370px auto; }
-
-  }
-
-
-`;
-
 const PokemonDisplay = () => {
 
   const { pokemonName } = useParams();
@@ -204,6 +109,101 @@ const PokemonDisplay = () => {
 
   );
 
-}
+};
+
+const DisplayContainer = styled.div`
+
+  margin: 0 auto;
+  max-width: var(--content-max-width);
+  padding: 50px 0;
+  position: relative;
+
+  .display-content{
+    align-items: center;
+    column-gap: 4%;
+    display: grid;
+    font-family: 'Orbitron', sans-serif;
+    grid-template-areas:
+    "artwork details"
+    "chart chart"
+    "evolution-chain evolution-chain";
+    grid-template-columns: 48% 48%;
+    grid-template-rows: 1fr 600px auto;
+  }
+
+  .pokemon-details{ grid-area: details; }
+
+  .pokemon-artwork{
+
+    grid-area: artwork;
+    padding: 10px;
+
+    & > img{
+      display: block;
+      filter: saturate(2.5);
+      max-height: 400px;
+    }
+
+  }
+
+  .chart-container{
+    align-self: stretch;
+    grid-area: chart;
+    justify-self: stretch;
+  }
+
+  .pokemon-evolution{ grid-area: evolution-chain; }
+
+  .home-link{
+    font-size: 2rem;
+    left: 0;
+    position: absolute;
+    top: 50px;
+    z-index: 1;
+  }
+
+  @media screen and (max-width: 950px) {
+
+    .display-content{
+      align-items: center;
+      grid-template-areas:
+      "artwork"
+      "details"
+      "chart"
+      "evolution-chain";
+      grid-template-columns: 100%;
+      grid-template-rows: auto auto 600px auto;
+      row-gap: 40px;
+    }
+
+    .pokemon-artwork > img { margin: 0 auto; }
+
+    .home-link{ top: 15px; }
+
+  }
+
+  @media screen and (max-width: 600px) {
+
+    padding: 30px 0;
+
+    .pokemon-artwork > img { width: 300px; }
+
+    .display-content{
+      grid-template-rows: auto auto 450px auto;
+      row-gap: 30px;
+    }
+
+  }
+
+  @media screen and (max-width: 400px) {
+
+    padding: 15px 0;
+
+    .display-content{ grid-template-rows: auto auto 370px auto; }
+
+  }
+
+
+`;
 
 export default PokemonDisplay;

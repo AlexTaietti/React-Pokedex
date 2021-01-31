@@ -17,6 +17,6 @@ const PokemonCardContent = ({ pokemon }) => {
 
   );
 
-}
+};
 
 export default PokemonCardContent;

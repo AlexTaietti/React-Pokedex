@@ -1,6 +1,18 @@
 import PokemonCardContent from '@components/PokemonCardContent';
 import styled, { keyframes } from 'styled-components';
 
+const Card = ({ pokemon, ...restOfProps }) => {
+
+  return (
+
+    <StyledCard aria-label={ pokemon.name } {...restOfProps}>
+      <PokemonCardContent pokemon={ pokemon } />
+    </StyledCard>
+
+  );
+
+};
+
 const rotateBack = keyframes`
   0%{ transform: rotateY(180deg); }
   50%{ transform: rotateY(360deg); }
@@ -95,17 +107,5 @@ const StyledCard = styled.li`
 
 
 `;
-
-const Card = ({ pokemon, ...restOfProps }) => {
-
-  return (
-
-    <StyledCard aria-label={ pokemon.name } {...restOfProps}>
-      <PokemonCardContent pokemon={ pokemon } />
-    </StyledCard>
-
-  );
-
-}
 
 export default Card;

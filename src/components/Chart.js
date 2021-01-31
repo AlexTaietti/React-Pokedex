@@ -1,4 +1,4 @@
-import PolygonChart from '@classes/PolygonChart';
+import PolygonChart from '@classes/PolygonChart/PolygonChart';
 import styled from 'styled-components';
 import { useRef, useEffect } from 'react';
 

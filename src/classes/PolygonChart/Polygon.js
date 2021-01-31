@@ -1,4 +1,4 @@
-import { mergeObjects } from '../utils/utils.js';
+import { mergeObjects } from './utils/utils.js';
 
 class Polygon  {
 

@@ -1,4 +1,4 @@
-import { fetchData } from '../utils/utils.js';
+import { fetchData } from '@utils/utils.js';
 
 export default class Pokemon {
 

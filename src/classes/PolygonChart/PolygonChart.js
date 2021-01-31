@@ -1,6 +1,6 @@
-import { mergeObjects, createFittingCanvas, getLongestStringWidth, getMaxValueInArray } from '../utils/utils.js';
+import { mergeObjects, createFittingCanvas, getLongestStringWidth, getMaxValueInArray } from './utils/utils.js';
 import Polygon from './Polygon.js';
-import easingFunctions from '../utils/easingFunctions.js';
+import easingFunctions from './utils/easingFunctions.js';
 
 class PolygonChart {
 

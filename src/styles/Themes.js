@@ -10,7 +10,7 @@ const themes = {
   },
 
   grass: {
-    infoSolid: 'rgba(4, 181, 48, 1)',
+    infoSolid: 'rgba(27, 150, 58, 1)',
     infoLabelColor: 'rgba(255, 255, 255, 1)',
     infoTextColor: 'rgba(1, 28, 0, 1)',
     chartStroke: 'rgba(0, 0, 0, 1)',
@@ -28,7 +28,7 @@ const themes = {
   },
 
   bug: {
-    infoSolid: 'rgba(4, 181, 48, 1)',
+    infoSolid: 'rgba(27, 150, 58, 1)',
     infoLabelColor: 'rgba(255, 255, 255, 1)',
     infoTextColor: 'rgba(1, 28, 0, 1)',
     chartStroke: 'rgba(0, 0, 0, 1)',
@@ -55,7 +55,7 @@ const themes = {
   },
 
   normal: {
-    infoSolid: 'rgba(44, 71, 216, 1)',
+    infoSolid: 'rgba(47, 59, 121, 1)',
     infoLabelColor: 'rgba(0, 195, 255, 1)',
     infoTextColor: 'rgba(255, 255, 255, 1)',
     chartStroke: 'rgba(0, 0, 0, 1)',
@@ -82,7 +82,7 @@ const themes = {
   },
 
   ghost: {
-    infoSolid: 'rgba(42, 0, 255, 1)',
+    infoSolid: 'rgba(67, 56, 125, 1)',
     infoLabelColor: 'rgba(255, 255, 255, 1)',
     infoTextColor: 'rgba(0, 255, 200, 1)',
     chartStroke: 'rgba(0, 0, 0, 1)',
@@ -91,8 +91,8 @@ const themes = {
   },
 
   poison: {
-    infoSolid: 'rgba(42, 0, 255, 1)',
-    infoLabelColor: 'rgba(255, 255, 0, 1)',
+    infoSolid: 'rgba(47, 59, 121, 1)',
+    infoLabelColor: 'rgba(195, 195, 15, 1)',
     infoTextColor: 'rgba(255, 255, 255, 1)',
     chartStroke: 'rgba(0, 0, 0, 1)',
     polygonFill: 'rgba(0, 0, 0, 0.4)',
@@ -118,11 +118,11 @@ const themes = {
   },
 
   dark: {
-    infoSolid: 'rgba(0, 25, 100, 1)',
-    infoLabelColor: 'rgba(255, 255, 0, 1)',
+    infoSolid: 'rgba(47, 59, 121, 1)',
+    infoLabelColor: 'rgba(195, 195, 15, 1)',
     infoTextColor: 'rgba(255, 255, 255, 1)',
-    chartStroke: 'rgba(50, 100, 255, 1)',
-    polygonFill: 'rgba(255, 255, 255, 0.1)',
+    chartStroke: 'rgba(0, 0, 0, 1)',
+    polygonFill: 'rgba(0, 0, 0, 0.4)',
     polygonStroke: 'rgba(255, 255, 0, 1)'
   },
 

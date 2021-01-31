@@ -12,7 +12,7 @@ module.exports = {
         "@reducers"   : path.resolve(__dirname, "src/state/reducers/"),
         "@styles"     : path.resolve(__dirname, "src/styles/"),
         "@utils"      : path.resolve(__dirname, "src/utils/"),
-        "@tests"      : path.resolve(__dirname, "src/tests/")
+        "@test"      : path.resolve(__dirname, "src/__test__/")
       }
   }
 

@@ -14,13 +14,8 @@ const GlobalStyle = createGlobalStyle`
     --content-max-width: 900px;
 
     //pokedex main colors
-    --pokedex-bg: linear-gradient(15deg, rgba(255,45,157,1) 0%, rgba(255,23,0,1) 100%);
-    --pokecard-bg: linear-gradient(0deg, rgba(0,93,255,1) 0%, rgba(71,191,165,1) 100%);
-
-    //water info color palette
-    --water-info-container-bg: #04b5b5;
-    --water-info-container-text-color: #090a62;
-    --water-info-container-label-color: white;
+    --pokedex-bg: linear-gradient(15deg,rgba(255,45,157,1) 0%,rgb(203 31 13) 100%);
+    --pokecard-bg: linear-gradient(0deg,rgb(28 81 172) 0%,rgba(71,191,165,1) 100%);
 
   }
 

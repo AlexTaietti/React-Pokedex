@@ -145,13 +145,14 @@ const PokemonDisplay = () => {
 
           chart: {
             background: true,
-            fill: pokemonTheme.infoSolid
+            fill: pokemonTheme.infoSolid,
+            stroke: pokemonTheme.chartStroke
           },
 
           polygon: {
             contour: true,
-            fill: 'rgba(255, 0, 0, 0.4)',
-            stroke: 'rgba(255, 0, 0, 1)',
+            fill: pokemonTheme.polygonFill,
+            stroke: pokemonTheme.polygonStroke,
             lineWidth: 2
           }
 

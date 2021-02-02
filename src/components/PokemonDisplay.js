@@ -2,7 +2,7 @@ import Chart from '@components/Chart';
 import EvolutionChain from '@components/EvolutionChain';
 import { Link, useParams } from 'react-router-dom';
 import Loader from '@components/Loader';
-import pokeDisplayReducer from '@reducers/PokeDisplayReducer';
+import pokeDisplayReducer from '@reducers/pokeDisplayReducer';
 import Pokemon from '@classes/Pokemon.js';
 import PokemonInfo from '@components/PokemonInfo';
 import styled, { ThemeProvider } from 'styled-components';

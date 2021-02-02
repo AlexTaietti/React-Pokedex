@@ -2,24 +2,10 @@ const pokedexReducer = (pokedexState, action) => {
 
   switch (action.type) {
 
-    case 'START_FETCH_BATCH':
-      return {
-        ...pokedexState,
-        loadingPokemonData: true
-      }
-
-    case 'SET_LOADED_ALL':
-      return {
-        ...pokedexState,
-        loadedAll: true
-      }
-
     case 'ADD_POKEMONS':
       return {
         ...pokedexState,
-        lastID: action.lastID,
         pokemonCardsData: [ ...pokedexState.pokemonCardsData, ...action.pokemonCardsData ],
-        loadingPokemonData: false
       };
 
     case 'UPDATE_ITEMS_MOUNT':

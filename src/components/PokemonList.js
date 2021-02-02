@@ -1,6 +1,6 @@
+import { catchSomePokemons } from '@utils/utils';
 import ListCard from '@components/ListCard';
 import Loader from '@components/Loader';
-import Pokemon from '@classes/Pokemon';
 import PokemonLogo from '@images/pokemon.png';
 import React, { useLayoutEffect, useState, useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -16,7 +16,7 @@ function PokemonList ({ listScrollValue, pokemonCardsData , pokedexDispatch }) {
 
     setLoading(true);
 
-    const lastID = pokemonCardsData.length ? pokemonCardsData[pokemonCardsData.length -  1].pokemon.id : 0;
+    const lastID = pokemonCardsData.length ? pokemonCardsData[pokemonCardsData.length -  1].id : 0;
     const maximumPokemonAmount = 384; //first three generations up to Rayquaza
     const pokemonBatchAmount = 16;
 
@@ -30,11 +30,11 @@ function PokemonList ({ listScrollValue, pokemonCardsData , pokedexDispatch }) {
 
     } else { adjustedFetchAmount = pokemonBatchAmount; }
 
-    const newPokemons = await Pokemon.fetchBatchPokemons( lastID, adjustedFetchAmount );
+    const newPokemons = await catchSomePokemons( lastID, adjustedFetchAmount );
 
-    const newPokemonCards = newPokemons.map((pokemon) => {
+    const newPokemonCards = newPokemons.map((pokemonInfo) => {
 
-      return { id: pokemon.id, pokemon: pokemon, mountedOnce: false };
+      return { ...pokemonInfo, mountedOnce: false };
 
     });
 
@@ -70,7 +70,7 @@ function PokemonList ({ listScrollValue, pokemonCardsData , pokedexDispatch }) {
         </header>
         <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click on the button at the end of the page to catch more of 'em!">
           <ul className="pokemon-list">
-            { pokemonCardsData.map( ({ pokemon, mountedOnce }) => <ListCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={pokemon.id} pokemon={pokemon} /> ) }
+            { pokemonCardsData.map( ({ id, data, mountedOnce }) => <ListCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={id} pokemon={data} /> ) }
           </ul>
           { loadedAll ? <React.Fragment/> : <button className={ loading ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button> }
         </main>

@@ -1,9 +1,9 @@
 import Chart from '@components/Chart';
 import EvolutionChain from '@components/EvolutionChain';
+import { fetchPokemonByName, fetchPokemonDetails } from '@utils/utils';
 import { Link, useParams } from 'react-router-dom';
 import Loader from '@components/Loader';
 import pokeDisplayReducer from '@reducers/pokeDisplayReducer';
-import Pokemon from '@classes/Pokemon.js';
 import PokemonInfo from '@components/PokemonInfo';
 import styled, { ThemeProvider } from 'styled-components';
 import themes from '@styles/Themes';
@@ -25,9 +25,9 @@ const PokemonDisplay = () => {
 
     const choosePokemon = async (pokemonName) => {
 
-      const pokemon = await Pokemon.fetchPokemonBasicInfo(pokemonName);
-      const pokemonDetails = await pokemon.fetchDetails();
-      const detailedPokemon = { ...pokemon, details: { ...pokemonDetails } };
+      const pokemon = await fetchPokemonByName(pokemonName);
+      const pokemonDetails = await fetchPokemonDetails(pokemon.id);
+      const detailedPokemon = { ...pokemon.data, details: { ...pokemonDetails } };
 
       const pokemonType = pokemonDetails.type.split('\n')[0];
       const pokemonTheme = themes[pokemonType];

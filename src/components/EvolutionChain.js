@@ -8,7 +8,7 @@ const EvolutionChain = ({ pokemonEvolution }) => {
   	<EvolutionContainer>
       <h1>Evolution Chain</h1>
       <ul role="listbox">
-	      { pokemonEvolution.map((pokemon) => <Card key={pokemon.id} pokemon={pokemon} /> )}
+	      { pokemonEvolution.map(({ id, data }) => <Card key={id} pokemon={data} /> )}
 	    </ul>
     </EvolutionContainer>
 

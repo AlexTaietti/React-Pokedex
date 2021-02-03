@@ -9,7 +9,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import themes from '@styles/Themes';
 import { useEffect, useReducer } from 'react';
 
-const PokemonDisplay = () => {
+const PokemonDisplay = ({ pokemonCardsData, setPokemonCardsData }) => {
 
   const { pokemonName } = useParams();
 
@@ -23,11 +23,50 @@ const PokemonDisplay = () => {
 
   useEffect(() => {
 
+    const searchEnhancePokemonInCardsDataArray = async (name, pokemonCardsList) => {
+
+      let newPokemonObject;
+
+      if(pokemonCardsList[name]){
+
+        if(pokemonCardsList[name].details) return pokemonCardsList[name];
+
+        const selectedPokemon = pokemonCardsList[name];
+        const selectedPokemonDetails = await fetchPokemonByName(selectedPokemon.data.name);
+        newPokemonObject = { ...selectedPokemon, details: { ...selectedPokemonDetails } };
+
+        setPokemonCardsData((oldPokemonCardsList) => {
+
+          oldPokemonCardsList[newPokemonObject.data.name] = newPokemonObject;
+
+          return { ...oldPokemonCardsList };
+
+        });
+
+      }
+
+      const selectedPokemon = await fetchPokemonByName(name);
+      const selectedPokemonDetails = await fetchPokemonDetails(selectedPokemon.data.name);
+
+      newPokemonObject = { ...selectedPokemon, details: { ...selectedPokemonDetails } };
+
+      setPokemonCardsData((oldPokemonCardsList) => {
+
+        oldPokemonCardsList[newPokemonObject.data.name] = newPokemonObject;
+
+        return { ...oldPokemonCardsList };
+
+      });
+
+      return {...newPokemonObject};
+
+    };
+
     const choosePokemon = async (pokemonName) => {
 
-      const pokemon = await fetchPokemonByName(pokemonName);
-      const pokemonDetails = await fetchPokemonDetails(pokemon.id);
-      const detailedPokemon = { ...pokemon.data, details: { ...pokemonDetails } };
+      const detailedPokemon = await searchEnhancePokemonInCardsDataArray(pokemonName, pokemonCardsData);
+
+      const pokemonDetails = detailedPokemon.details;
 
       const pokemonType = pokemonDetails.type.split('\n')[0];
       const pokemonTheme = themes[pokemonType];
@@ -81,22 +120,22 @@ const PokemonDisplay = () => {
 
           <DisplayContainer>
 
-            <main tabIndex="0" className="display-content" aria-label={ `reasons why ${pokeState.pokemon.name} is awesome!` }>
+            <main tabIndex="0" className="display-content" aria-label={ `reasons why ${pokeState.pokemon.data.name} is awesome!` }>
 
-              <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${pokeState.pokemon.name}'s artwork` }>
-                <img src={ pokeState.pokemon.details.image } alt={ pokeState.pokemon.name }/>
+              <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${pokeState.pokemon.data.name}'s artwork` }>
+                <img src={ pokeState.pokemon.details.image } alt={ pokeState.pokemon.data.name }/>
               </figure>
 
-              <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${pokeState.pokemon.name}` }>
-                <PokemonInfo pokemonDetails={ pokeState.pokemon.details } pokemonName={ pokeState.pokemon.name }/>
+              <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${pokeState.pokemon.data.name}` }>
+                <PokemonInfo pokemonDetails={ pokeState.pokemon.details } pokemonName={ pokeState.pokemon.data.name }/>
               </section>
 
-              <div tabIndex="0" className="chart-container" aria-label={ `${pokeState.pokemon.name}'s stats` }>
+              <div tabIndex="0" className="chart-container" aria-label={ `${pokeState.pokemon.data.name}'s stats` }>
                 <Chart options={ pokeState.chartOptions } data={ pokeState.pokemon.details.statsObject } />
               </div>
 
-              <section tabIndex="0" className="pokemon-evolution" aria-label={ `${pokeState.pokemon.name}'s evolution chain` }>
-                <EvolutionChain pokemonName={ pokeState.pokemon.name } pokemonEvolution={ pokeState.pokemon.details.evolutionsArray }/>
+              <section tabIndex="0" className="pokemon-evolution" aria-label={ `${pokeState.pokemon.data.name}'s evolution chain` }>
+                <EvolutionChain pokemonName={ pokeState.pokemon.data.name } pokemonEvolution={ pokeState.pokemon.details.evolutionsArray }/>
               </section>
 
               <Link onClick={ resetSelection } className="home-link" to="/">&larr;back</Link>

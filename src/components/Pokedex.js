@@ -3,14 +3,12 @@ import pokedexReducer from '@reducers/pokedexReducer';
 import PokemonDisplay from '@components/PokemonDisplay';
 import PokemonList from '@components/PokemonList';
 import styled from 'styled-components';
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 
-const Pokedex = () => { //holds pokemon data { basicInfo, details } & the last scroll value of list
+const Pokedex = () => {
 
-  const [ pokedexState, pokedexDispatch ] = useReducer( pokedexReducer, {
-    pokemonCardsData: [],
-    listScrollValue: undefined
-  });
+  const [ listScrollValue, setListScrollValue ] = useState(undefined);
+  const [ pokemonCardsData, setPokemonCardsData ] = useState({});
 
   //render the pokedex!
   return (
@@ -19,12 +17,12 @@ const Pokedex = () => { //holds pokemon data { basicInfo, details } & the last s
 
       <PokedexWrapper>
 
-        <Route exact path="/pokemon/:pokemonName">
-          <PokemonDisplay pokedexDispatch={ pokedexDispatch }/>
+        <Route path="/pokemon/:pokemonName">
+          <PokemonDisplay setPokemonCardsData={ setPokemonCardsData } pokemonCardsData={ pokemonCardsData }/>
         </Route>
 
         <Route exact path="/">
-          <PokemonList pokedexDispatch={ pokedexDispatch } pokemonCardsData={ pokedexState.pokemonCardsData } listScrollValue={ pokedexState.listScrollValue }/>
+          <PokemonList listScrollValue={ listScrollValue } setListScrollValue={ setListScrollValue } pokemonCardsData={ pokemonCardsData } setPokemonCardsData={ setPokemonCardsData }/>
         </Route>
 
       </PokedexWrapper>

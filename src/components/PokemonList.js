@@ -4,11 +4,28 @@ import Loader from '@components/Loader';
 import PokemonLogo from '@images/pokemon.png';
 import React, { useLayoutEffect, useState, useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { isEmpty } from '@utils/utils';
 
-function PokemonList ({ listScrollValue, pokemonCardsData , pokedexDispatch }) {
+function PokemonList ({ listScrollValue, setListScrollValue, pokemonCardsData, setPokemonCardsData }) {
 
   const [ loading, setLoading ] = useState(false);
   const [ loadedAll, setLoadedAll ] = useState(false);
+
+  const [ pokemonIDs, setPokemonIDs ] = useState(() => {
+
+    let keys = [];
+
+    if(!isEmpty(pokemonCardsData)){
+
+      const pokemonNamesList = Object.keys(pokemonCardsData);
+
+      keys = [...pokemonNamesList];
+
+    }
+
+    return keys;
+
+  });
 
   const loadFreshBatchOfPokemons = useCallback(async () => {
 
@@ -16,15 +33,15 @@ function PokemonList ({ listScrollValue, pokemonCardsData , pokedexDispatch }) {
 
     setLoading(true);
 
-    const lastID = pokemonCardsData.length ? pokemonCardsData[pokemonCardsData.length -  1].id : 0;
+    const lastID = pokemonIDs.length || 0;
     const maximumPokemonAmount = 384; //first three generations up to Rayquaza
     const pokemonBatchAmount = 16;
 
     let adjustedFetchAmount, loadedEveryPokemon;
 
-    if(pokemonCardsData.length + pokemonBatchAmount >= maximumPokemonAmount){
+    if(pokemonIDs.length + pokemonBatchAmount >= maximumPokemonAmount){
 
-      adjustedFetchAmount = maximumPokemonAmount - pokemonCardsData.length;
+      adjustedFetchAmount = maximumPokemonAmount - pokemonIDs.length;
 
       loadedEveryPokemon = true;
 
@@ -32,37 +49,41 @@ function PokemonList ({ listScrollValue, pokemonCardsData , pokedexDispatch }) {
 
     const newPokemons = await catchSomePokemons( lastID, adjustedFetchAmount );
 
-    const newPokemonCards = newPokemons.map((pokemonInfo) => {
+    const newPokemonCardsData = newPokemons.reduce((newPokemonInfoObject, pokemonInfo) => {
 
-      return { ...pokemonInfo, mountedOnce: false };
+      newPokemonInfoObject[pokemonInfo.data.name] = { id: pokemonInfo.id, data: {...pokemonInfo.data}, mountedOnce: false };
 
-    });
+      return newPokemonInfoObject;
 
-    pokedexDispatch({ type: 'ADD_POKEMONS', pokemonCardsData: newPokemonCards });
+    }, {});
+
+    setPokemonCardsData( (oldPokemonCardsData) => { return { ...oldPokemonCardsData, ...newPokemonCardsData }; } );
 
     if(loadedEveryPokemon) setLoadedAll(true);
 
     setLoading(false);
 
   //eslint-disable-next-line
-  }, [loading, loadedAll]);
+}, [pokemonIDs, loading, loadedAll]);
 
 
   useEffect(() => {
 
-    if (!pokemonCardsData.length) loadFreshBatchOfPokemons();
+    if (isEmpty(pokemonCardsData)) loadFreshBatchOfPokemons();
 
-    return () => { pokedexDispatch({ type: 'UPDATE_ITEMS_MOUNT' }); };
+    setPokemonIDs(Object.keys(pokemonCardsData));
+
+    return () => {};
 
   //eslint-disable-next-line
-  }, []);
+}, [pokemonCardsData]);
 
   //eslint-disable-next-line
   useLayoutEffect(() => { if (listScrollValue) window.scrollTo(0, listScrollValue); }, []);
 
   return (
 
-    pokemonCardsData.length ?
+    !isEmpty(pokemonCardsData) ?
 
       <ListContainer>
         <header tabIndex="0" role="banner" aria-label="pokemon logo">
@@ -70,7 +91,7 @@ function PokemonList ({ listScrollValue, pokemonCardsData , pokedexDispatch }) {
         </header>
         <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click on the button at the end of the page to catch more of 'em!">
           <ul className="pokemon-list">
-            { pokemonCardsData.map( ({ id, data, mountedOnce }) => <ListCard mountedOnce={mountedOnce} pokedexDispatch={pokedexDispatch} key={id} pokemon={data} /> ) }
+            { pokemonIDs.map( (pokemonName) => <ListCard setListScrollValue={setListScrollValue} mountedOnce={pokemonCardsData[pokemonName].mountedOnce} key={pokemonCardsData[pokemonName].id} pokemon={pokemonCardsData[pokemonName].data} /> ) }
           </ul>
           { loadedAll ? <React.Fragment/> : <button className={ loading ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!" onClick={ loadFreshBatchOfPokemons }>Click to catch some more!</button> }
         </main>

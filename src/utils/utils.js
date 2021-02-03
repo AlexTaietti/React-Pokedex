@@ -14,6 +14,18 @@ export const fetchData = async (url) => {
 
 }
 
+export const isEmpty = (object) => {
+
+  for(let prop in object){
+
+    if(object.hasOwnProperty(prop)) return false;
+
+  }
+
+  return true;
+
+}
+
 export const fetchPokemonDetails = async (id) => {
 
   const pokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${id}`);

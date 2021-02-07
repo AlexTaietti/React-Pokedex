@@ -1,34 +1,8 @@
-export const fetchData = async (url) => {
+import { fetchData } from './general';
 
-  try{
+const fetchPokemonDetails = async (pokemonName) => {
 
-    const response = await fetch(url);
-
-    if(!response.ok){ throw new Error(response.status); }
-
-    const data = await response.json();
-
-    return data;
-
-  } catch(e) { console.error(e); }
-
-}
-
-export const isEmpty = (object) => {
-
-  for(let prop in object){
-
-    if(object.hasOwnProperty(prop)) return false;
-
-  }
-
-  return true;
-
-}
-
-export const fetchPokemonDetails = async (id) => {
-
-  const pokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  const pokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
 
   let { abilities, weight, height, stats, types, sprites: { other: { 'official-artwork': { front_default: image}}}, species: { url: speciesURL }  } = pokemonData;
 
@@ -108,7 +82,7 @@ export const fetchPokemonDetails = async (id) => {
 
 };
 
-export const extractEvolutionChain = (chainObject, evolutionChain = []) => {
+const extractEvolutionChain = (chainObject, evolutionChain = []) => {
 
   evolutionChain.push(chainObject.species.name);
 
@@ -118,7 +92,7 @@ export const extractEvolutionChain = (chainObject, evolutionChain = []) => {
 
 };
 
-export const catchPokemon = async (url) => {
+const catchPokemon = async (url) => {
 
   const pokemonData = await fetchData(url);
 
@@ -141,7 +115,7 @@ export const catchPokemon = async (url) => {
 
 };
 
-export const fetchPokemonByName = async (pokemonName) => {
+const fetchPokemonByName = async (pokemonName) => {
 
   const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
 
@@ -151,36 +125,4 @@ export const fetchPokemonByName = async (pokemonName) => {
 
 };
 
-export const catchSomePokemons = async (offset = 0, limit = 16) => {
-
-  const pokemonInfoObjects = [];
-
-  //catch 'em all!
-  const pokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
-
-  for(let i=0; i < pokemonData.results.length; i++){
-
-    const url = pokemonData.results[i].url;
-
-    const pokemonInfo = await catchPokemon(url);
-
-    if(!pokemonInfo) {
-
-      const splitURL = url.split('/');
-      const pokemonID = splitURL[splitURL.length - 1];
-
-      console.warn(`Poké ID: ${ pokemonID } => pokemon has been skipped, the data retrieved cannot be used by this app.`);
-
-      continue;
-
-    };
-
-    pokemonInfoObjects.push(pokemonInfo);
-
-  }
-
-  //return pokemons array
-  return pokemonInfoObjects;
-
-
-};
+export { fetchPokemonByName, fetchPokemonDetails };

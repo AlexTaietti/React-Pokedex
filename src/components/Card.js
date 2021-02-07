@@ -1,4 +1,4 @@
-import PokemonCardContent from '@components/PokemonCardContent';
+import { PokemonCardContent } from '@components';
 import styled, { keyframes } from 'styled-components';
 
 const Card = ({ pokemon, ...restOfProps }) => {
@@ -12,6 +12,11 @@ const Card = ({ pokemon, ...restOfProps }) => {
   );
 
 };
+
+const fadeIn = keyframes`
+  0%{ opacity: 0; transform: translateY(-10px); }
+  100%{ opacity: 1; transform: translateY(0); }
+`;
 
 const rotateBack = keyframes`
   0%{ transform: rotateY(180deg); }
@@ -41,15 +46,14 @@ const StyledCard = styled.li`
   transition-property: opacity, transform;
   width: 165px;
 
-  &.hidden{
-    opacity: 0;
-    transform: translateY(-10px);
-    transition-delay: 0s;
-    transition-duration: 1s;
-    transition-property: opacity, transform;
+  &.list-card {
+    animation-delay: 0.2s;
+    animation-duration: 0.4s;
+    animation-fill-mode: backwards;
+    animation-name: ${ fadeIn };
   }
 
-  & a { display: block; }
+  a { display: block; }
 
   .sprite{
 

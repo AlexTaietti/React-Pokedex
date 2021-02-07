@@ -1,4 +1,4 @@
-import Card from '@components/Card';
+import { Card } from '@components';
 import styled from 'styled-components';
 
 const EvolutionChain = ({ pokemonEvolution }) => {

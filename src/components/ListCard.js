@@ -1,19 +1,17 @@
-import Card from '@components/Card';
-import { useFadeIn } from '@hooks/useFadeIn';
+import { sessionStorageReducer } from '@utils';
+import { Card } from '@components';
 
-const ListCard = ({ setListScrollValue, mountedOnce, pokemon }) => {
-
-  const fadeIn = useFadeIn(mountedOnce);
+const ListCard = ({ pokemon }) => {
 
   const handleClick = () => {
 
-    if(setListScrollValue) setListScrollValue( window.scrollY );
+    sessionStorageReducer( 'SET', { key: 'pokeListScrollValue', data: window.scrollY } );
 
     console.info(`You chose ${pokemon.name.replace( /\b\w/g, l => l.toUpperCase() )}!`);
 
   };
 
-  return <Card pokemon={ pokemon } onClick={ handleClick } className={ fadeIn ? "hidden" : "mounted" }/>;
+  return <Card className="list-card" pokemon={ pokemon } onClick={ handleClick }/>;
 
 };
 

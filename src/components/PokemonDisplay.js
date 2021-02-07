@@ -1,15 +1,11 @@
-import Chart from '@components/Chart';
-import EvolutionChain from '@components/EvolutionChain';
-import { fetchPokemonByName, fetchPokemonDetails } from '@utils/utils';
+import { Chart, EvolutionChain, Loader, PokemonInfo } from '@components';
 import { Link, useParams } from 'react-router-dom';
-import Loader from '@components/Loader';
-import pokeDisplayReducer from '@reducers/pokeDisplayReducer';
-import PokemonInfo from '@components/PokemonInfo';
+import { pokeDisplayReducer } from '@reducers';
 import styled, { ThemeProvider } from 'styled-components';
-import themes from '@styles/Themes';
+import { themes } from '@styles';
 import { useEffect, useReducer } from 'react';
 
-const PokemonDisplay = ({ pokemonCardsData, setPokemonCardsData }) => {
+const PokemonDisplay = ({ getEnhancedPokemon }) => {
 
   const { pokemonName } = useParams();
 
@@ -23,48 +19,9 @@ const PokemonDisplay = ({ pokemonCardsData, setPokemonCardsData }) => {
 
   useEffect(() => {
 
-    const searchEnhancePokemonInCardsDataArray = async (name, pokemonCardsList) => {
-
-      let newPokemonObject;
-
-      if(pokemonCardsList[name]){
-
-        if(pokemonCardsList[name].details) return pokemonCardsList[name];
-
-        const selectedPokemon = pokemonCardsList[name];
-        const selectedPokemonDetails = await fetchPokemonByName(selectedPokemon.data.name);
-        newPokemonObject = { ...selectedPokemon, details: { ...selectedPokemonDetails } };
-
-        setPokemonCardsData((oldPokemonCardsList) => {
-
-          oldPokemonCardsList[newPokemonObject.data.name] = newPokemonObject;
-
-          return { ...oldPokemonCardsList };
-
-        });
-
-      }
-
-      const selectedPokemon = await fetchPokemonByName(name);
-      const selectedPokemonDetails = await fetchPokemonDetails(selectedPokemon.data.name);
-
-      newPokemonObject = { ...selectedPokemon, details: { ...selectedPokemonDetails } };
-
-      setPokemonCardsData((oldPokemonCardsList) => {
-
-        oldPokemonCardsList[newPokemonObject.data.name] = newPokemonObject;
-
-        return { ...oldPokemonCardsList };
-
-      });
-
-      return {...newPokemonObject};
-
-    };
-
     const choosePokemon = async (pokemonName) => {
 
-      const detailedPokemon = await searchEnhancePokemonInCardsDataArray(pokemonName, pokemonCardsData);
+      const detailedPokemon = await getEnhancedPokemon(pokemonName);
 
       const pokemonDetails = detailedPokemon.details;
 

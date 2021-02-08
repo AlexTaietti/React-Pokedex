@@ -6,14 +6,16 @@ const pokeDisplayReducer = (pokeDisplayState, action) => {
       return {
         pokemon: action.pokemon,
         theme: action.theme,
-        chartOptions: action.chartOptions
+        chartOptions: action.chartOptions,
+        evolutionChain: action.evolutionChain
       };
 
     case 'RESET_SELECTION':
       return {
         pokemon: undefined,
         theme: undefined,
-        chartOptions: undefined
+        chartOptions: undefined,
+        evolutionChain: []
       }
 
     default:

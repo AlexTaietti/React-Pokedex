@@ -70,14 +70,6 @@ const fetchPokemonDetails = async (pokemonName) => {
   //extract evolution chain
   const evolutionsArray = extractEvolutionChain(evolutionData.chain);
 
-  for(let i = 0; i < evolutionsArray.length; i++){
-
-    const pokemon = await fetchPokemonByName(evolutionsArray[i]);
-
-    evolutionsArray[i] = pokemon;
-
-  }
-
   return { evolutionsArray, statsObject, abilities, weight, height, image, formattedDescription, type };
 
 };

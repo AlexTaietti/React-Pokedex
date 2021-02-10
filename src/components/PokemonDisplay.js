@@ -5,28 +5,35 @@ import styled, { ThemeProvider } from 'styled-components';
 import { themes } from '@styles';
 import { useEffect, useReducer } from 'react';
 
-const PokemonDisplay = ({ getEnhancedPokemon }) => {
+const PokemonDisplay = ({ catchPokemons, getEnhancedPokemon }) => {
 
+
+  //extract the name of the selected pokemon from the URL
   const { pokemonName } = useParams();
 
+
+  //set-up the state of the display
   const [ pokeState, pokeDispatch ] = useReducer( pokeDisplayReducer, {
     pokemon: undefined,
     theme: undefined,
-    chartOptions: undefined
+    chartOptions: undefined,
+    evolutionChain: []
   });
 
-  const resetSelection = () => pokeDispatch({ type: 'RESET_SELECTION' });
 
+  //whenever a new pokemon is choosen set the display's state accordingly
   useEffect(() => {
 
     const choosePokemon = async (pokemonName) => {
 
       const detailedPokemon = await getEnhancedPokemon(pokemonName);
 
-      const pokemonDetails = detailedPokemon.details;
+      const { type, evolutionsArray } = detailedPokemon.details;
 
-      const pokemonType = pokemonDetails.type.split('\n')[0];
+      const pokemonType = type.split('\n')[0];
       const pokemonTheme = themes[pokemonType];
+
+      const evolution = await catchPokemons(evolutionsArray);
 
       const pokemonChartOptions = {
 
@@ -61,17 +68,19 @@ const PokemonDisplay = ({ getEnhancedPokemon }) => {
 
       };
 
-      pokeDispatch( { type: 'CHOOSE_POKEMON', pokemon: detailedPokemon, theme: pokemonTheme, chartOptions: pokemonChartOptions });
+      pokeDispatch( { type: 'CHOOSE_POKEMON', pokemon: detailedPokemon, evolutionChain: evolution, theme: pokemonTheme, chartOptions: pokemonChartOptions });
 
     };
 
+    //catch that pokemon!
     choosePokemon(pokemonName);
 
   }, [pokemonName]);
 
+
   return (
 
-      pokeState.pokemon && pokeState.theme ?
+      pokeState.pokemon ?
 
         <ThemeProvider theme={ pokeState.theme }>
 
@@ -92,10 +101,10 @@ const PokemonDisplay = ({ getEnhancedPokemon }) => {
               </div>
 
               <section tabIndex="0" className="pokemon-evolution" aria-label={ `${pokeState.pokemon.data.name}'s evolution chain` }>
-                <EvolutionChain pokemonName={ pokeState.pokemon.data.name } pokemonEvolution={ pokeState.pokemon.details.evolutionsArray }/>
+                <EvolutionChain pokemonName={ pokeState.pokemon.data.name } pokemonEvolution={ pokeState.evolutionChain }/>
               </section>
 
-              <Link onClick={ resetSelection } className="home-link" to="/">&larr;back</Link>
+              <Link className="home-link" to="/">&larr;back</Link>
 
             </main>
 

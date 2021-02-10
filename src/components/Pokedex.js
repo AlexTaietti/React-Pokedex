@@ -1,36 +1,39 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { fetchData, fetchPokemonByName, fetchPokemonDetails, localStorageReducer } from '@utils';
 import { Loader, PokemonDisplay, PokemonList, ListHeader, ListView } from '@components';
+import { pokedexReducer } from '@reducers';
 import styled, { keyframes } from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useReducer } from 'react';
 
 const Pokedex = () => {
 
-  const [ pokeReference, setPokeReference ] = useState(undefined); //will hold an iterable list of all pokemon names and their respective URLs
-  const [ pokemonData, setPokemonData ] = useState(undefined); //will hold all the actual pokemon data
+  const [ pokedexState, pokedexDispatch ] = useReducer( pokedexReducer, {
 
-  const [ pokemonList, setPokemonList ] = useState([]); //pokemons to be displayed in the list component
-  const [ listIndex, setListIndex ] = useState(0); //will be the "pointer" used to traverse the pokeReference arrayy
+    pokeReference: undefined,  //will hold an iterable list of all pokemon names and their respective URLs
+    pokemonData: undefined,    //will hold all the actual pokemon data
+    pokemonList: [],           //pokemons to be displayed in the list component
+    listIndex: 0,              //will be the "pointer" used to traverse the pokeReference array
+    booting: true,             //app initial set-up process flag
+    loadedAllPokemons: false,  //flag to prevent surpassing the pokemon amount limit
+    loadingMorePokemons: false //flag for the spinner at the bottom of the pokeList
 
-  const [ booting, setBooting ] = useState(true); //app initial set-up process flag
-  const [ loadedAllPokemons, setLoadedAllPokemons ] = useState(false); //flag to prevent surpassing the pokemon amount limit
-  const [ loadingMorePokemons, setLoadingMorePokemons ] = useState(false); //flag for the spinner at the bottom of the pokeList
+  });
 
 
   //mash together a basic pokemon object and the corresponding details, return result
-  const makeDetailedPokemon = async (pokemon) => {
+  const makeDetailedPokemon = useCallback(async (pokemon) => {
 
     const pokemonDetails = await fetchPokemonDetails(pokemon.data.name);
 
     return { ...pokemon, details: { ...pokemonDetails } };
 
-  };
+  }, []);
 
 
   //this callback is used gets a detailed pokemon (used in the display component)
   const getEnhancedPokemon = async (pokemonName) => {
 
-    const pokemon = pokemonData[pokemonName];
+    const pokemon = pokedexState.pokemonData[pokemonName];
 
     if(pokemon){
 
@@ -38,11 +41,7 @@ const Pokedex = () => {
 
       const detailedPokemon = await makeDetailedPokemon(pokemon);
 
-      setPokemonData( currentPokemons => {
-
-        return { ...currentPokemons, [detailedPokemon.data.name]: { ...detailedPokemon } }
-
-      });
+      pokedexDispatch({ type: 'ADD_POKEMON_DATA', pokemon: detailedPokemon });
 
       return detailedPokemon;
 
@@ -52,11 +51,7 @@ const Pokedex = () => {
 
     const detailedPokemon = await makeDetailedPokemon(newPokemon);
 
-    setPokemonData( currentPokemons => {
-
-      return { ...currentPokemons, [detailedPokemon.data.name]: { ...detailedPokemon } }
-
-    });
+    pokedexDispatch({ type: 'ADD_POKEMON_DATA', pokemon: detailedPokemon });
 
     return detailedPokemon;
 
@@ -71,7 +66,7 @@ const Pokedex = () => {
 
     const newPokemonsData = await Promise.all( pokemons.filter( currentPokemon => {
 
-      const pokemon = pokemonData[currentPokemon];
+      const pokemon = pokedexState.pokemonData[currentPokemon];
 
       if (pokemon){
 
@@ -101,11 +96,7 @@ const Pokedex = () => {
 
     }, {});
 
-    setPokemonData(currentPokemons => {
-
-      return { ...currentPokemons, ...newPokemonsObject };
-
-    });
+    pokedexDispatch({ type: 'ADD_MULTI_POKEMON_DATA', data: newPokemonsObject });
 
     const pokemonsArray = Promise.all([...cachedPokemons, ...newPokemons]);
 
@@ -114,31 +105,27 @@ const Pokedex = () => {
   };
 
 
-  //click callback for the "load more" button
+  //click callback for the "load more" button (not using useCallback here because the function needs an up to date scope basically every time)
   const catchMorePokemons = async () => {
 
-    if(loadedAllPokemons) return;
+    if(pokedexState.loadedAllPokemons) return;
 
-    setLoadingMorePokemons(true);
+    pokedexDispatch({ type: 'START_LOADING_POKEMONS'});
 
     const batchAmount = 20;
 
-    const pokemonsListLength = pokeReference.length;
-    const adjustedFetchAmount = listIndex + batchAmount >= pokemonsListLength ? pokemonsListLength - listIndex : batchAmount;
+    const pokemonsListLength = pokedexState.pokeReference.length;
+    const adjustedFetchAmount = pokedexState.listIndex + batchAmount >= pokemonsListLength ? pokemonsListLength - pokedexState.listIndex : batchAmount;
 
-    const lastIndex = listIndex + adjustedFetchAmount;
+    const lastIndex = pokedexState.listIndex + adjustedFetchAmount;
 
-    const referenceSlice = pokeReference.slice(listIndex, lastIndex).map(pokemon => pokemon.name);
+    const referenceSlice = pokedexState.pokeReference.slice(pokedexState.listIndex, lastIndex).map(pokemon => pokemon.name);
 
     const newPokemons = await catchPokemons(referenceSlice);
 
-    setPokemonList(currentList => [...currentList, ...newPokemons]);
+    pokedexDispatch({ type: 'ADD_POKEMONS_TO_POKELIST', pokemons: newPokemons, index: lastIndex });
 
-    setListIndex(oldIndex => oldIndex + adjustedFetchAmount);
-
-    if(adjustedFetchAmount < batchAmount) { setLoadedAllPokemons(true); }
-
-    setLoadingMorePokemons(false);
+    if(adjustedFetchAmount < batchAmount) { pokedexDispatch({ type: 'LOADED_ALL'}); }
 
   };
 
@@ -156,27 +143,27 @@ const Pokedex = () => {
 
       if(cachedReference){ //if so load the cached one...
 
-        setPokeReference(cachedReference);
+        pokedexDispatch({ type: 'SET_POKEMON_REFERENCE', reference: cachedReference});
 
       } else { //otherwise fetch new one
 
         const referenceData = await fetchData(`https://pokeapi.co/api/v2/pokemon?limit=${maximumPokemonAmount}`);
 
-        setPokeReference(referenceData.results);
+        pokedexDispatch({ type: 'SET_POKEMON_REFERENCE', reference: [] });
 
       }
 
       if(cachedPokemons){ //if so load the cached pokemons...
 
-        setPokemonData(cachedPokemons);
+        pokedexDispatch({ type: 'SET_POKEMON_DATA', data: cachedPokemons });
 
       } else { //otherwise set an empty array
 
-        setPokemonData({});
+        pokedexDispatch({ type: 'SET_POKEMON_DATA', data: {} });
 
       }
 
-      setBooting(false);
+      pokedexDispatch({ type: 'FINISH_BOOTING'});
 
     })();
 
@@ -186,23 +173,23 @@ const Pokedex = () => {
   //whenever pokemonData changes cache it
   useEffect(() => {
 
-    return () => { if (pokemonData) localStorageReducer('SET', { key: 'pokemonData', data: pokemonData }); };
+    return () => { if (pokedexState.pokemonData) localStorageReducer('SET', { key: 'pokemonData', data: pokedexState.pokemonData }); };
 
-  }, [pokemonData]);
+  }, [pokedexState.pokemonData]);
 
 
   ////whenever setPokeReference changes cache it
   useEffect(() => {
 
-    return () => { if (pokeReference) localStorageReducer('SET', { key: 'pokeReference', data: pokeReference }); };
+    return () => { if (pokedexState.pokeReference) localStorageReducer('SET', { key: 'pokeReference', reference: pokedexState.pokeReference }); };
 
-  }, [pokeReference]);
+  }, [pokedexState.pokeReference]);
 
 
   //render the pokedex!
   return (
 
-    !booting ?
+    !pokedexState.booting ?
 
       <Router>
 
@@ -216,15 +203,15 @@ const Pokedex = () => {
 
           <Route exact path="/">
 
-            <ListView pokemons={ pokemonList } catchMorePokemons={ catchMorePokemons }>
+            <ListView pokemons={ pokedexState.pokemonList } catchMorePokemons={ catchMorePokemons }>
 
               <ListHeader/>
 
               <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click the button at the end of the page to catch more of 'em!">
 
-                <PokemonList pokemons={ pokemonList }/>
+                <PokemonList pokemons={ pokedexState.pokemonList }/>
 
-                { !loadedAllPokemons && <LoadButton onClick={ catchMorePokemons } className={ loadingMorePokemons ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!">Click to catch some more!</LoadButton> }
+                { !pokedexState.loadedAllPokemons && <LoadButton onClick={ catchMorePokemons } className={ pokedexState.loadingMorePokemons ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!">Click to catch some more!</LoadButton> }
 
               </main>
 

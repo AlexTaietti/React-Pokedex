@@ -11,8 +11,7 @@ module.exports = {
         "@images"     : path.resolve(__dirname, "src/images/"),
         "@reducers"   : path.resolve(__dirname, "src/state/reducers/"),
         "@styles"     : path.resolve(__dirname, "src/styles/"),
-        "@utils"      : path.resolve(__dirname, "src/utils/"),
-        "@test"      : path.resolve(__dirname, "src/__test__/")
+        "@utils"      : path.resolve(__dirname, "src/utils/")
       }
   }
 

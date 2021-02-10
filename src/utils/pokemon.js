@@ -88,7 +88,7 @@ const catchPokemon = async (url) => {
 
   const pokemonData = await fetchData(url);
 
-  if(!pokemonData) { return; }
+  if(!pokemonData) { return null; }
 
   const { id, name, sprites : { front_default, back_default } } = pokemonData;
 

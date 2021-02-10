@@ -10,11 +10,17 @@ const fetchData = async (url) => {
 
     return data;
 
-  } catch(e) { console.error(e); }
+  } catch(e) {
+
+    console.error(e);
+
+    return null;
+
+  }
 
 };
 
-const localStorageReducer = (action, payload = undefined) => {
+const localStorageReducer = (action, payload) => {
 
   switch(action){
 
@@ -24,14 +30,14 @@ const localStorageReducer = (action, payload = undefined) => {
 
     case 'GET':
     const data = localStorage.getItem( payload );
-    return data ? JSON.parse(data) : false;
+    return data ? JSON.parse(data) : null;
 
     case 'CLEAR':
       localStorage.clear();
       return true;
 
     default:
-      console.error('The localStorageReducer helper can only handle either a SET or GET action');
+      console.error('The localStorageReducer helper can only handle either SET, GET or CLEAR directives');
       return false;
 
   }
@@ -49,14 +55,14 @@ const sessionStorageReducer = (action, payload = undefined) => {
 
     case 'GET':
       const data = sessionStorage.getItem( payload );
-      return data ? JSON.parse(data) : false;
+      return data ? JSON.parse(data) : null;
 
     case 'CLEAR':
       sessionStorage.clear();
       return true;
 
     default:
-      console.error('The localStorageReducer helper can only handle either a SET or GET action');
+      console.error('The localStorageReducer helper can only handle either a SET, GET or CLEAR directives');
       return false;
 
   }

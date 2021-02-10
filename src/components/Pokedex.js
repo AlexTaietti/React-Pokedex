@@ -3,7 +3,7 @@ import { fetchData, fetchPokemonByName, fetchPokemonDetails, localStorageReducer
 import { Loader, PokemonDisplay, PokemonList, ListHeader, ListView } from '@components';
 import { pokedexReducer } from '@reducers';
 import styled, { keyframes } from 'styled-components';
-import { useState, useEffect, useCallback, useReducer } from 'react';
+import { useEffect, useCallback, useReducer } from 'react';
 
 const Pokedex = () => {
 
@@ -105,10 +105,10 @@ const Pokedex = () => {
   };
 
 
-  //click callback for the "load more" button (not using useCallback here because the function needs an up to date scope basically every time)
+  //click callback for the "load more" button
   const catchMorePokemons = async () => {
 
-    if(pokedexState.loadedAllPokemons) return;
+    if(pokedexState.loadingMorePokemons || pokedexState.loadedAllPokemons) return;
 
     pokedexDispatch({ type: 'START_LOADING_POKEMONS'});
 
@@ -149,7 +149,7 @@ const Pokedex = () => {
 
         const referenceData = await fetchData(`https://pokeapi.co/api/v2/pokemon?limit=${maximumPokemonAmount}`);
 
-        pokedexDispatch({ type: 'SET_POKEMON_REFERENCE', reference: [] });
+        pokedexDispatch({ type: 'SET_POKEMON_REFERENCE', reference: referenceData.results });
 
       }
 

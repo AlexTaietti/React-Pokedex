@@ -3,6 +3,7 @@ import { Card } from '@components';
 
 const ListCard = ({ pokemon }) => {
 
+  //on click cache the current scroll position in sessionStorage
   const handleClick = () => {
 
     sessionStorageReducer( 'SET', { key: 'pokeListScrollValue', data: window.scrollY } );

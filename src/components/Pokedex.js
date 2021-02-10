@@ -1,20 +1,23 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { fetchData, fetchPokemonByName, fetchPokemonDetails, localStorageReducer } from '@utils';
-import { Loader, PokemonDisplay, PokemonList } from '@components';
-import styled from 'styled-components';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { Loader, PokemonDisplay, PokemonList, ListHeader, ListView } from '@components';
+import styled, { keyframes } from 'styled-components';
+import { useState, useEffect } from 'react';
 
 const Pokedex = () => {
 
+  const [ pokeReference, setPokeReference ] = useState(undefined); //will hold an iterable list of all pokemon names and their respective URLs
   const [ pokemonData, setPokemonData ] = useState(undefined); //will hold all the actual pokemon data
+
+  const [ pokemonList, setPokemonList ] = useState([]); //pokemons to be displayed in the list component
+  const [ listIndex, setListIndex ] = useState(0); //will be the "pointer" used to traverse the pokeReference arrayy
+
+  const [ booting, setBooting ] = useState(true); //app initial set-up process flag
   const [ loadedAllPokemons, setLoadedAllPokemons ] = useState(false); //flag to prevent surpassing the pokemon amount limit
   const [ loadingMorePokemons, setLoadingMorePokemons ] = useState(false); //flag for the spinner at the bottom of the pokeList
-  const [ listIndex, setListIndex ] = useState(0); //will be used like a pointer to traverse the pokeReference array
-
-  const pokeReference = useRef(undefined); //will hold an iterable list of all pokemon names and their respective URLs
 
 
-  //mash together a basic pokemon object and the corresponding details
+  //mash together a basic pokemon object and the corresponding details, return result
   const makeDetailedPokemon = async (pokemon) => {
 
     const pokemonDetails = await fetchPokemonDetails(pokemon.data.name);
@@ -37,7 +40,7 @@ const Pokedex = () => {
 
       setPokemonData( currentPokemons => {
 
-        return { ...currentPokemons, [pokemonName]: { ...detailedPokemon } }
+        return { ...currentPokemons, [detailedPokemon.data.name]: { ...detailedPokemon } }
 
       });
 
@@ -51,11 +54,62 @@ const Pokedex = () => {
 
     setPokemonData( currentPokemons => {
 
-      return { ...currentPokemons, [pokemonName]: { ...detailedPokemon } }
+      return { ...currentPokemons, [detailedPokemon.data.name]: { ...detailedPokemon } }
 
     });
 
     return detailedPokemon;
+
+  };
+
+
+  //retrieve pokemons either from cache or API call based on an array of names
+  const catchPokemons = async (pokemons) => {
+
+    const cachedPokemons = [];
+    const newPokemons = [];
+
+    const newPokemonsData = await Promise.all( pokemons.filter( currentPokemon => {
+
+      const pokemon = pokemonData[currentPokemon];
+
+      if (pokemon){
+
+        cachedPokemons.push(pokemon);
+
+        return false;
+
+      }
+
+      return true;
+
+    }).map( currentPokemon => {
+
+      const pokemon = fetchPokemonByName(currentPokemon);
+
+      return pokemon;
+
+    }));
+
+    const newPokemonsObject = newPokemonsData.reduce( (pokemonObject, currentPokemon) => {
+
+      if(!currentPokemon) return pokemonObject;
+
+      newPokemons.push(currentPokemon);
+
+      return { ...pokemonObject, [currentPokemon.data.name]: { ...currentPokemon } };
+
+    }, {});
+
+    setPokemonData(currentPokemons => {
+
+      return { ...currentPokemons, ...newPokemonsObject };
+
+    });
+
+    const pokemonsArray = Promise.all([...cachedPokemons, ...newPokemons]);
+
+    return pokemonsArray;
 
   };
 
@@ -68,27 +122,17 @@ const Pokedex = () => {
     setLoadingMorePokemons(true);
 
     const batchAmount = 20;
-    const pokemonsListLength = pokeReference.current.length;
+
+    const pokemonsListLength = pokeReference.length;
     const adjustedFetchAmount = listIndex + batchAmount >= pokemonsListLength ? pokemonsListLength - listIndex : batchAmount;
-    const pokemonBatch = {};
 
-    for(let i=0; i < adjustedFetchAmount; i++){
+    const lastIndex = listIndex + adjustedFetchAmount;
 
-      const pokemonName = pokeReference.current[listIndex + i].name;
+    const referenceSlice = pokeReference.slice(listIndex, lastIndex).map(pokemon => pokemon.name);
 
-      if(pokemonData[pokemonName]) continue;
+    const newPokemons = await catchPokemons(referenceSlice);
 
-      const newPokemon = await fetchPokemonByName(pokemonName);
-
-      pokemonBatch[pokemonName] = newPokemon;
-
-    }
-
-    setPokemonData(currentPokemons => {
-
-      return { ...currentPokemons, ...pokemonBatch };
-
-    });
+    setPokemonList(currentList => [...currentList, ...newPokemons]);
 
     setListIndex(oldIndex => oldIndex + adjustedFetchAmount);
 
@@ -99,27 +143,6 @@ const Pokedex = () => {
   };
 
 
-  //these are the pokemons that are gonna be rendered in the list
-  const pokemons = useMemo(() => {
-
-    const listPokemons = [];
-
-    for(let i=0; i < listIndex; i++){
-
-      const currentPokemon = pokeReference.current[i].name;
-
-      const pokemon = pokemonData[currentPokemon];
-
-      if(!pokemon) continue;
-
-      listPokemons.push(pokemon);
-
-    }
-
-    return listPokemons;
-
-  }, [listIndex]);
-
   //on mount retrieve all the cached data
   useEffect(() => {
 
@@ -128,17 +151,18 @@ const Pokedex = () => {
       const maximumPokemonAmount = 384; //first 3 generations up to Rayquaza
 
       const cachedReference = localStorageReducer('GET', 'pokeReference'); //check if a cached reference exists
-      const cachedPokemons = localStorageReducer('GET', 'pokemonData'); //check if a cached reference exists
+
+      const cachedPokemons = localStorageReducer('GET', 'pokemonData'); //check if there are any pokemons in cache
 
       if(cachedReference){ //if so load the cached one...
 
-        pokeReference.current = cachedReference;
+        setPokeReference(cachedReference);
 
       } else { //otherwise fetch new one
 
         const referenceData = await fetchData(`https://pokeapi.co/api/v2/pokemon?limit=${maximumPokemonAmount}`);
 
-        pokeReference.current = referenceData.results;
+        setPokeReference(referenceData.results);
 
       }
 
@@ -152,49 +176,129 @@ const Pokedex = () => {
 
       }
 
-    })();
+      setBooting(false);
 
-    //save the reference to local storage
-    return () => localStorageReducer('SET', { key: 'pokeReference', data: pokeReference.current });
+    })();
 
   }, []);
 
 
+  //whenever pokemonData changes cache it
   useEffect(() => {
 
-    //save the pokemon data to local storage
-    return () => localStorageReducer('SET', { key: 'pokemonData', data: pokemonData });
+    return () => { if (pokemonData) localStorageReducer('SET', { key: 'pokemonData', data: pokemonData }); };
 
   }, [pokemonData]);
+
+
+  ////whenever setPokeReference changes cache it
+  useEffect(() => {
+
+    return () => { if (pokeReference) localStorageReducer('SET', { key: 'pokeReference', data: pokeReference }); };
+
+  }, [pokeReference]);
 
 
   //render the pokedex!
   return (
 
-    <Router>
+    !booting ?
 
-      <PokedexWrapper>
+      <Router>
 
-        <Route path="/pokemon/:pokemonName">
-          { pokeReference.current ? <PokemonDisplay getEnhancedPokemon={ getEnhancedPokemon }/> : <Loader/> }
-        </Route>
+        <PokedexWrapper>
 
-        <Route exact path="/">
-          { pokeReference.current ? <PokemonList loadingMorePokemons={ loadingMorePokemons } loadedAllPokemons={ loadedAllPokemons } pokemons={ pokemons } catchMorePokemons={ catchMorePokemons }/> : <Loader/> }
-        </Route>
+          <Route path="/pokemon/:pokemonName">
 
-      </PokedexWrapper>
+            <PokemonDisplay catchPokemons={ catchPokemons } getEnhancedPokemon={ getEnhancedPokemon }/>
 
-    </Router>
+          </Route>
+
+          <Route exact path="/">
+
+            <ListView pokemons={ pokemonList } catchMorePokemons={ catchMorePokemons }>
+
+              <ListHeader/>
+
+              <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click the button at the end of the page to catch more of 'em!">
+
+                <PokemonList pokemons={ pokemonList }/>
+
+                { !loadedAllPokemons && <LoadButton onClick={ catchMorePokemons } className={ loadingMorePokemons ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!">Click to catch some more!</LoadButton> }
+
+              </main>
+
+            </ListView>
+
+          </Route>
+
+        </PokedexWrapper>
+
+      </Router> : <Loader/>
 
   );
 
 };
 
+const pulse = keyframes`
+  0%{ transform: translate(50%, 0); }
+  30%{ transform: translate(50%, 10px); }
+  60%{ transform: translate(50%, 0); }
+`;
+
+const spin = keyframes`
+  from { transform: translate(50%, 0) rotateZ(0deg); }
+  to { transform: translate(50%, 0) rotateZ(360deg); }
+`;
+
 const PokedexWrapper = styled.div`
   background: var(--pokedex-bg);
   display: block;
   padding: 20px 20px;
+`;
+
+const LoadButton = styled.button`
+
+  color: white;
+  cursor: pointer;
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  margin: 40px auto 100px;
+  position: relative;
+  text-align: center;
+  text-shadow: 2px 2px black;
+  transform-origin: center center;
+
+  &:after{
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-name: ${ pulse };
+    animation-timing-function: ease-out;
+    bottom: -40px;
+    content: "\\22CE";
+    font-size: 2.5rem;
+    position: absolute;
+    right: 50%;
+    text-shadow: 0px 2px black;
+    transform: translate(50%, 0);
+  }
+
+  &.loading{
+
+    &:after{
+      animation-duration: .8s;
+      animation-name: ${ spin };
+      animation-timing-function: linear;
+      width: 25px;
+      height: 25px;
+      border-left: 2px solid white;
+      border-radius: 50%;
+      content: '';
+    }
+
+  }
+
 `;
 
 export default Pokedex;

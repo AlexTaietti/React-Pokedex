@@ -30,7 +30,7 @@ const localStorageReducer = (action, payload) => {
 
     case 'GET':
     const data = localStorage.getItem( payload );
-    return data ? JSON.parse(data) : null;
+    return data !== 'undefined' ? JSON.parse(data) : null;
 
     case 'CLEAR':
       localStorage.clear();
@@ -55,7 +55,7 @@ const sessionStorageReducer = (action, payload = undefined) => {
 
     case 'GET':
       const data = sessionStorage.getItem( payload );
-      return data ? JSON.parse(data) : null;
+      return data !== 'undefined' ? JSON.parse(data) : null;
 
     case 'CLEAR':
       sessionStorage.clear();

@@ -4,12 +4,14 @@ import easingFunctions from './utils/easingFunctions.js';
 
 class PolygonChart {
 
+  //create a canvas and fit it to a given container element
   constructor (element) {
 
     [this.container, this.canvas, this.context] = createFittingCanvas(element);
 
   }
 
+  //hook resize handlers to the window
   setResizeHandler () {
 
     if(this.options && this.options.debugging) console.log('PolygonChart.js: Hooking resize handlers to the window object');
@@ -179,6 +181,7 @@ class PolygonChart {
 
   }
 
+  //extract and array of values from a supplied object (has to contain only numerical values)
   static extractDataFrom (array) {
 
     const data = [];
@@ -340,7 +343,6 @@ class PolygonChart {
 
   }
 
-
   draw (index = undefined, lastIndex = undefined) {
 
     this.context.save();
@@ -374,22 +376,6 @@ class PolygonChart {
     this.context.restore();
 
   }
-
-
-  animate () {
-
-    if(this.options.animation.tween) {
-
-      this.tween();
-
-    } else {
-
-      this.basicAnimate();
-
-    }
-
-  }
-
 
   basicAnimate () {
 
@@ -527,6 +513,21 @@ class PolygonChart {
 
   }
 
+  //either animate all polygons at the same time or tween them based on supplied options
+  animate () {
+
+    if(this.options.animation.tween) {
+
+      this.tween();
+
+    } else {
+
+      this.basicAnimate();
+
+    }
+
+  }
+
   clearCanvas () { this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); }
 
   pauseAnimation () { if(this.frameID) window.cancelAnimationFrame(this.frameID); }
@@ -541,13 +542,9 @@ class PolygonChart {
 
     this.canvas.style.height = this.canvas.style.width = `${ minDimension + "px"}`;
 
-    this.canvas.style.position = "absolute";
-
     this.canvas.style.top = `${this.container.clientHeight / 2}px`;
 
     this.canvas.style.left = `${this.container.clientWidth / 2}px`;
-
-    this.canvas.style.transform = "translate(-50%, -50%)";
 
     this.context.canvas.width = this.context.canvas.height = Math.floor(minDimension * pixelRatio);
 

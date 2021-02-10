@@ -173,7 +173,7 @@ class PolygonChart {
 
     if(this.options && this.options.debugging) console.log('PolygonChart.js: Drawing chart');
 
-    if(this.options.animation.animated === true) {
+    if(this.options.animation.animated === true || this.options.animation.animated.length) {
 
       this.animate();
 
@@ -477,7 +477,7 @@ class PolygonChart {
 
     this.context.restore();
 
-    if(interval) {
+    if(interval >= 0) {
 
       let complete = this.poly.reduce((progress, currentPolygon) =>{
 
@@ -487,7 +487,7 @@ class PolygonChart {
 
       this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
 
-      this.draw(0, this.currentPolygon);
+      this.draw();
 
       window.cancelAnimationFrame(this.frameID);
 

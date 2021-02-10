@@ -5,7 +5,7 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/AlexTaietti/React-Pokedex/master/preview/landing-list.png" width="60%"/></p>
 
-<h3 align="center">Including details for each member of these iconic generations</h3>
+<h3 align="center">Including the stats of each pokemon</h3>
 
 <table><tr><td><img src='https://raw.githubusercontent.com/AlexTaietti/React-Pokedex/master/preview/bulbasaur-stats.png'></td><td><img src='https://raw.githubusercontent.com/AlexTaietti/React-Pokedex/master/preview/charmander-stats.png'></td></tr><tr><td><img src='https://raw.githubusercontent.com/AlexTaietti/React-Pokedex/master/preview/squirtle-stats.png'></td><td><img src='https://raw.githubusercontent.com/AlexTaietti/React-Pokedex/master/preview/pikachu-stats.png'></td></tr></table>
 

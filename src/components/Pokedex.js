@@ -30,7 +30,7 @@ const Pokedex = () => {
   }, []);
 
 
-  //this callback is used gets a detailed pokemon (used in the display component)
+  //this callback retrieves a detailed pokemon from cache or API (used by the display component on mount)
   const getEnhancedPokemon = async (pokemonName) => {
 
     const pokemon = pokedexState.pokemonData[pokemonName];
@@ -58,7 +58,7 @@ const Pokedex = () => {
   };
 
 
-  //retrieve pokemons either from cache or API call based on an array of names
+  //retrieve pokemons either from cache or API call based on the supplied array of names
   const catchPokemons = async (pokemons) => {
 
     const cachedPokemons = [];
@@ -178,7 +178,7 @@ const Pokedex = () => {
   }, [pokedexState.pokemonData]);
 
 
-  ////whenever setPokeReference changes cache it
+  //whenever setPokeReference changes cache it
   useEffect(() => {
 
     return () => { if (pokedexState.pokeReference) localStorageReducer('SET', { key: 'pokeReference', reference: pokedexState.pokeReference }); };

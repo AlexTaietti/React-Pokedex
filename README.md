@@ -1,7 +1,7 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/AlexTaietti/React-Pokedex/master/preview/pokemon.png" width="60%"/></p>
 
-<h3 align="center">This React Pokedex showcases the first 3 generations of pokemons</h3>
+<h3 align="center">This React Pokedex showcases the first 3 generations</h3>
 
 <p align="center"><img src="https://raw.githubusercontent.com/AlexTaietti/React-Pokedex/master/preview/landing-list.png" width="60%"/></p>
 

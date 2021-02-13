@@ -20,6 +20,10 @@ const Pokedex = () => {
   });
 
 
+  //destructuring state for easier access throughout the component
+  const { pokeReference, pokemonData, pokemonList, listIndex, booting, loadedAllPokemons, loadingMorePokemons } = pokedexState;
+
+
   //mash together a basic pokemon object and the corresponding details, return result
   const makeDetailedPokemon = useCallback(async (pokemon) => {
 
@@ -33,7 +37,7 @@ const Pokedex = () => {
   //this callback retrieves a detailed pokemon from cache or API (used by the display component on mount)
   const getEnhancedPokemon = async (pokemonName) => {
 
-    const pokemon = pokedexState.pokemonData[pokemonName];
+    const pokemon = pokemonData[pokemonName];
 
     if(pokemon){
 
@@ -66,7 +70,7 @@ const Pokedex = () => {
 
     const newPokemonsData = await Promise.all( pokemons.filter( currentPokemon => {
 
-      const pokemon = pokedexState.pokemonData[currentPokemon];
+      const pokemon = pokemonData[currentPokemon];
 
       if (pokemon){
 
@@ -108,18 +112,18 @@ const Pokedex = () => {
   //click callback for the "load more" button
   const catchMorePokemons = async () => {
 
-    if(pokedexState.loadingMorePokemons || pokedexState.loadedAllPokemons) return;
+    if(loadingMorePokemons || loadedAllPokemons) return;
 
     pokedexDispatch({ type: 'START_LOADING_POKEMONS'});
 
     const batchAmount = 20;
 
-    const pokemonsListLength = pokedexState.pokeReference.length;
-    const adjustedFetchAmount = pokedexState.listIndex + batchAmount >= pokemonsListLength ? pokemonsListLength - pokedexState.listIndex : batchAmount;
+    const pokemonsListLength = pokeReference.length;
+    const adjustedFetchAmount = listIndex + batchAmount >= pokemonsListLength ? pokemonsListLength - listIndex : batchAmount;
 
-    const lastIndex = pokedexState.listIndex + adjustedFetchAmount;
+    const lastIndex = listIndex + adjustedFetchAmount;
 
-    const referenceSlice = pokedexState.pokeReference.slice(pokedexState.listIndex, lastIndex).map(pokemon => pokemon.name);
+    const referenceSlice = pokeReference.slice(listIndex, lastIndex).map(pokemon => pokemon.name);
 
     const newPokemons = await catchPokemons(referenceSlice);
 
@@ -157,7 +161,7 @@ const Pokedex = () => {
 
         pokedexDispatch({ type: 'SET_POKEMON_DATA', data: cachedPokemons });
 
-      } else { //otherwise set an empty array
+      } else { //otherwise set an empty object
 
         pokedexDispatch({ type: 'SET_POKEMON_DATA', data: {} });
 
@@ -173,23 +177,23 @@ const Pokedex = () => {
   //whenever pokemonData changes cache it
   useEffect(() => {
 
-    return () => { if (pokedexState.pokemonData) localStorageReducer('SET', { key: 'pokemonData', data: pokedexState.pokemonData }); };
+    return () => { if (pokemonData) localStorageReducer('SET', { key: 'pokemonData', data: pokemonData }); };
 
-  }, [pokedexState.pokemonData]);
+  }, [pokemonData]);
 
 
   //whenever setPokeReference changes cache it
   useEffect(() => {
 
-    return () => { if (pokedexState.pokeReference) localStorageReducer('SET', { key: 'pokeReference', reference: pokedexState.pokeReference }); };
+    return () => { if (pokeReference) localStorageReducer('SET', { key: 'pokeReference', reference: pokeReference }); };
 
-  }, [pokedexState.pokeReference]);
+  }, [pokeReference]);
 
 
   //render the pokedex!
   return (
 
-    !pokedexState.booting ?
+    !booting ?
 
       <Router>
 
@@ -203,15 +207,15 @@ const Pokedex = () => {
 
           <Route exact path="/">
 
-            <ListView pokemons={ pokedexState.pokemonList } catchMorePokemons={ catchMorePokemons }>
+            <ListView pokemons={ pokemonList } catchMorePokemons={ catchMorePokemons }>
 
               <ListHeader/>
 
               <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click the button at the end of the page to catch more of 'em!">
 
-                <PokemonList pokemons={ pokedexState.pokemonList }/>
+                <PokemonList pokemons={ pokemonList }/>
 
-                { !pokedexState.loadedAllPokemons && <LoadButton onClick={ catchMorePokemons } className={ pokedexState.loadingMorePokemons ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!">Click to catch some more!</LoadButton> }
+                { !loadedAllPokemons && <LoadButton onClick={ catchMorePokemons } className={ loadingMorePokemons ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!">Click to catch some more!</LoadButton> }
 
               </main>
 

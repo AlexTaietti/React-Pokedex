@@ -9,19 +9,20 @@ const Pokedex = () => {
 
   const [ pokedexState, pokedexDispatch ] = useReducer( pokedexReducer, {
 
-    pokeReference: undefined,  //will hold an iterable list of all pokemon names and their respective URLs
-    pokemonData: undefined,    //will hold all the actual pokemon data
-    pokemonList: [],           //pokemons to be displayed in the list component
-    listIndex: 0,              //will be the "pointer" used to traverse the pokeReference array
-    booting: true,             //app initial set-up process flag
-    loadedAllPokemons: false,  //flag to prevent surpassing the pokemon amount limit
-    loadingMorePokemons: false //flag for the spinner at the bottom of the pokeList
+    pokeReference: undefined,   //will hold an iterable list of all pokemon names and their respective URLs
+    pokemonData: undefined,     //will hold all the actual pokemon data
+    pokemonList: [],            //pokemons to be displayed in the list component
+    listIndex: 0,               //will be the "pointer" used to traverse the pokeReference array
+    booting: true,              //app initial set-up process flag
+    loadedAllPokemons: false,   //flag to prevent surpassing the pokemon amount limit
+    loadingMorePokemons: false, //flag for the spinner at the bottom of the pokeList
+    tabAccessible: false        //if set to true all focusable HTML elements will have an outline (yay for accessibility!)
 
   });
 
 
   //destructuring state for easier access throughout the component
-  const { pokeReference, pokemonData, pokemonList, listIndex, booting, loadedAllPokemons, loadingMorePokemons } = pokedexState;
+  const { pokeReference, pokemonData, pokemonList, listIndex, booting, loadedAllPokemons, loadingMorePokemons, tabAccessible } = pokedexState;
 
 
   //mash together a basic pokemon object and the corresponding details, return result
@@ -137,6 +138,17 @@ const Pokedex = () => {
   //on mount retrieve all the cached data
   useEffect(() => {
 
+    //create and add to window an event listener to check wether a user is using the tab key, if so add outline to all tabIndex elements
+    const checkTabAccessible = (e) => {
+
+      if(e.keyCode === 9) pokedexDispatch({ type: 'SET_TAB_ACCESSIBLE' });
+
+    };
+
+    window.addEventListener('keydown', checkTabAccessible);
+
+
+    //boot the pokedex on mount
     (async () => {
 
       const maximumPokemonAmount = 384; //first 3 generations up to Rayquaza
@@ -171,6 +183,8 @@ const Pokedex = () => {
 
     })();
 
+    return () => window.removeEventListener('keydown', checkTabAccessible);
+
   }, []);
 
 
@@ -197,7 +211,7 @@ const Pokedex = () => {
 
       <Router>
 
-        <PokedexWrapper>
+        <PokedexWrapper className={ tabAccessible && 'tab-accessible' }>
 
           <Route path="/pokemon/:pokemonName">
 
@@ -243,9 +257,15 @@ const spin = keyframes`
 `;
 
 const PokedexWrapper = styled.div`
+
   background: var(--pokedex-bg);
   display: block;
   padding: 20px 20px;
+
+  *:focus{ outline: none; }
+
+  &.tab-accessible *:focus{ outline: dashed; }
+
 `;
 
 const LoadButton = styled.button`

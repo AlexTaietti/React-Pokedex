@@ -8,6 +8,12 @@ const pokeDisplayReducer = (pokedexState, action) => {
         pokeReference: action.reference
       };
 
+    case 'SET_TAB_ACCESSIBLE':
+      return {
+        ...pokedexState,
+        tabAccessible: true
+      };
+
     case 'SET_POKEMON_DATA':
       return {
         ...pokedexState,

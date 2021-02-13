@@ -21,6 +21,10 @@ const PokemonDisplay = ({ catchPokemons, getEnhancedPokemon }) => {
   });
 
 
+  //destructure state for easier access throughout the component
+  const { pokemon, theme, chartOptions, evolutionChain } = pokeState;
+
+
   //whenever a new pokemon is choosen set the display's state accordingly
   useEffect(() => {
 
@@ -80,28 +84,28 @@ const PokemonDisplay = ({ catchPokemons, getEnhancedPokemon }) => {
 
   return (
 
-      pokeState.pokemon ?
+      pokemon ?
 
-        <ThemeProvider theme={ pokeState.theme }>
+        <ThemeProvider theme={ theme }>
 
           <DisplayContainer>
 
-            <main tabIndex="0" className="display-content" aria-label={ `reasons why ${pokeState.pokemon.data.name} is awesome!` }>
+            <main tabIndex="0" className="display-content" aria-label={ `reasons why ${pokemon.data.name} is awesome!` }>
 
-              <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${pokeState.pokemon.data.name}'s artwork` }>
-                <img src={ pokeState.pokemon.details.image } alt={ pokeState.pokemon.data.name }/>
+              <figure tabIndex="0" className="pokemon-artwork" aria-label={ `${pokemon.data.name}'s artwork` }>
+                <img src={ pokemon.details.image } alt={ pokemon.data.name }/>
               </figure>
 
-              <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${pokeState.pokemon.data.name}` }>
-                <PokemonInfo pokemonDetails={ pokeState.pokemon.details } pokemonName={ pokeState.pokemon.data.name }/>
+              <section tabIndex="0" className="pokemon-details" aria-label={ `general info about ${pokemon.data.name}` }>
+                <PokemonInfo pokemonDetails={ pokemon.details } pokemonName={ pokemon.data.name }/>
               </section>
 
-              <div tabIndex="0" className="chart-container" aria-label={ `${pokeState.pokemon.data.name}'s stats` }>
-                <Chart options={ pokeState.chartOptions } data={ pokeState.pokemon.details.statsObject } />
+              <div tabIndex="0" className="chart-container" aria-label={ `${pokemon.data.name}'s stats` }>
+                <Chart options={ chartOptions } data={ pokemon.details.statsObject } />
               </div>
 
-              <section tabIndex="0" className="pokemon-evolution" aria-label={ `${pokeState.pokemon.data.name}'s evolution chain` }>
-                <EvolutionChain pokemonName={ pokeState.pokemon.data.name } pokemonEvolution={ pokeState.evolutionChain }/>
+              <section tabIndex="0" className="pokemon-evolution" aria-label={ `${pokemon.data.name}'s evolution chain` }>
+                <EvolutionChain pokemonName={ pokemon.data.name } pokemonEvolution={ evolutionChain }/>
               </section>
 
               <Link className="home-link" to="/">&larr;back</Link>

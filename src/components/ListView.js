@@ -6,7 +6,7 @@ import { useLayoutEffect, useEffect } from 'react';
 const ListView = ({ children, pokemons, catchMorePokemons }) => {
 
 
-  //if the pokemons list is empty cache the first batch
+  //if the pokemons list is empty get the first batch of pokedudes
   useEffect(() => {
 
     if ( !pokemons.length ) catchMorePokemons();

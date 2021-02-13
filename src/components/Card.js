@@ -53,7 +53,19 @@ const StyledCard = styled.li`
     animation-name: ${ fadeIn };
   }
 
-  a { display: block; }
+  a {
+
+    display: block;
+
+    &:hover, &:focus{
+
+      .sprite-side--front{ animation-name: ${rotateFront}; }
+
+      .sprite-side--back{ animation-name: ${ rotateBack }; }
+
+    }
+
+  }
 
   .sprite{
 
@@ -88,14 +100,6 @@ const StyledCard = styled.li`
       letter-spacing: .5px;
       text-transform: capitalize;
     }
-
-  }
-
-  &:hover{
-
-    .sprite-side--front{ animation-name: ${rotateFront}; }
-
-    .sprite-side--back{ animation-name: ${ rotateBack }; }
 
   }
 

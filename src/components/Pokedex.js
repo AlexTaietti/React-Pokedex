@@ -211,11 +211,11 @@ const Pokedex = () => {
 
               <ListHeader/>
 
-              <main tabIndex="0" id="pokemon-list" aria-label="list of pokemons, click the button at the end of the page to catch more of 'em!">
+              <main tabIndex="0" aria-label="list of pokemons, click the button at the bottom of the page to catch more of 'em!">
 
                 <PokemonList pokemons={ pokemonList }/>
 
-                { !loadedAllPokemons && <LoadButton onClick={ catchMorePokemons } className={ loadingMorePokemons ? 'loading' : 'ready' } tabIndex="0" aria-describedby="pokemon-list" aria-label="catch more pokemons!">Click to catch some more!</LoadButton> }
+                { !loadedAllPokemons && <LoadButton onClick={ catchMorePokemons } className={ loadingMorePokemons ? 'loading' : 'ready' } tabIndex="0" aria-label="click to catch more pokemons!">Click to catch some more!</LoadButton> }
 
               </main>
 

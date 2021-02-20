@@ -1,27 +1,12 @@
-import Card from './Card';
-import Chart from './Chart';
-import EvolutionChain from './EvolutionChain';
-import ListCard from './ListCard';
-import ListHeader from './ListHeader';
-import ListView from './ListView';
-import Loader from './Loader';
-import Pokedex from './Pokedex';
-import PokemonCardContent from './PokemonCardContent';
-import PokemonDisplay from './PokemonDisplay';
-import PokemonInfo from './PokemonInfo';
-import PokemonList from './PokemonList';
-
-export {
-  Card,
-  Chart,
-  EvolutionChain,
-  ListCard,
-  ListHeader,
-  ListView,
-  Loader,
-  Pokedex,
-  PokemonCardContent,
-  PokemonDisplay,
-  PokemonInfo,
-  PokemonList
-};
+export { default as Card } from './Card';
+export { default as Chart } from './Chart';
+export { default as EvolutionChain } from './EvolutionChain';
+export { default as ListCard } from './ListCard';
+export { default as ListHeader } from './ListHeader';
+export { default as ListView } from './ListView';
+export { default as Loader } from './Loader';
+export { default as Pokedex } from './Pokedex';
+export { default as PokemonCardContent } from './PokemonCardContent';
+export { default as PokemonDisplay } from './PokemonDisplay';
+export { default as PokemonInfo } from './PokemonInfo';
+export { default as PokemonList } from './PokemonList';

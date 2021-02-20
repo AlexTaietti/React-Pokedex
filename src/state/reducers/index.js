@@ -1,4 +1,2 @@
-import pokeDisplayReducer from './pokeDisplayReducer';
-import pokedexReducer from './pokedexReducer';
-
-export { pokedexReducer, pokeDisplayReducer };
+export { default as pokeDisplayReducer } from './pokeDisplayReducer';
+export { default as pokedexReducer } from './pokedexReducer';

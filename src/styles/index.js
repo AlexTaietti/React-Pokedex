@@ -1,4 +1,2 @@
-import GlobalStyle from './GlobalStyle';
-import themes from './Themes';
-
-export { GlobalStyle, themes };
+export { default as GlobalStyle } from './GlobalStyle';
+export { default as themes } from './Themes';

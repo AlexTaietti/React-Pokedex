@@ -1,3 +1,1 @@
-import PolygonChart from './PolygonChart';
-
-export default PolygonChart;
+export { default as PolygonChart } from './PolygonChart';
